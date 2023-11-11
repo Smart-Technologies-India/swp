@@ -24,6 +24,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               email,
               user_uid,
               userId,
+              village_id,
               date_of_birth,
               gender,
               date_of_registration,
@@ -99,6 +100,20 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       },
     },
   });
+
+  const village = await ApiCall({
+    query: `
+        query getAllVillageById($id:Int!){
+          getAllVillageById(id:$id){
+              id,
+              name
+            }
+          }
+      `,
+    veriables: {
+      id: parseInt(data.data.getBirthCertificateById.village_id),
+    },
+  });
   return json({
     user: cookie,
     formid: id,
@@ -106,6 +121,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     submit: submit.status,
     common: submit.data.searchCommon,
     payment: searchpayment.status,
+    village: village.data.getAllVillageById,
     paymentinfo: searchpayment.status
       ? searchpayment.data.searchPayment[0]
       : "",
@@ -120,9 +136,11 @@ const BirthCertificateView = (): JSX.Element => {
   const from_data = loader.from_data;
 
   const navigator = useNavigate();
+  const villagedata = loader.village;
 
   const isSubmited = loader.submit;
   const common = isSubmited ? loader.common[0] : null;
+
   const submit = async () => {
     const authuserid = await ApiCall({
       query: `
@@ -150,7 +168,7 @@ const BirthCertificateView = (): JSX.Element => {
           focal_user_id: "51",
           intra_user_id: "51",
           inter_user_id: "0",
-          village: "Daman",
+          village: villagedata.name,
           name: from_data.name,
           number: from_data.mobile.toString(),
           form_status: 1,
@@ -1144,7 +1162,7 @@ const BirthCertificateView = (): JSX.Element => {
             <span className="mr-2">1.1</span> Applicant village
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {common.village}
+            {villagedata.name}
           </div>
         </div>
 

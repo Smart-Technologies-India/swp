@@ -191,6 +191,8 @@ const DeathCertificate: React.FC = (): JSX.Element => {
       gender: gender,
     };
 
+    console.log(deathCertificateScheme);
+
     const parsed = DeathCertificateScheme.safeParse(deathCertificateScheme);
 
     if (parsed.success) {
@@ -256,12 +258,14 @@ const DeathCertificate: React.FC = (): JSX.Element => {
               iagree: deathCertificateScheme.iagree,
               status: "ACTIVE",
               date_of_death: deathCertificateScheme.date_of_death,
+              date_of_birth: deathCertificateScheme.date_of_birth,
               date_of_registration: deathCertificateScheme.date_of_registration,
               gender: deathCertificateScheme.gender,
             },
           },
         });
         if (!data.status) {
+          console.log(data.message);
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(

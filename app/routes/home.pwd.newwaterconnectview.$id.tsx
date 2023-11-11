@@ -73,7 +73,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       },
     },
   });
-  console.log(submit);
+
 
   const village = await ApiCall({
     query: `
@@ -88,7 +88,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(data.data.getNewWaterConnectById.village_id),
     },
   });
-  console.log(data.data.getNewWaterConnectById.village_id);
 
   return json({
     user: cookie,
@@ -131,7 +130,7 @@ const NewWaterConnectView: React.FC = (): JSX.Element => {
           intra_user_id: "41,42",
           inter_user_id: "0",
           village: villagedata.name,
-          name: from_data.event_name,
+          name: from_data.name,
           number: from_data.mobile.toString(),
           event_date: from_data.from_date,
           form_status: 1,
@@ -681,7 +680,7 @@ const NewWaterConnectView: React.FC = (): JSX.Element => {
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.1</span> DMC / Panachayat
-            </div>
+          </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.muncipal_type}
           </div>
@@ -736,12 +735,10 @@ const NewWaterConnectView: React.FC = (): JSX.Element => {
               .join("/")}
           </div>
         </div>
-      
-         {/*--------------------- section 3 end here ------------------------- */}
+
+        {/*--------------------- section 3 end here ------------------------- */}
 
         {/*--------------------- section 4 start here ------------------------- */}
-
-      
 
         <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
           <p className="text-left font-semibold text-xl text-white">
@@ -961,8 +958,6 @@ const NewWaterConnectView: React.FC = (): JSX.Element => {
                         Forward to SUPTD
                       </button>
                     ) : null}
-
-                   
 
                     {/* Suptd button */}
                     {common.form_status == 50 && user.id == 41 ? (

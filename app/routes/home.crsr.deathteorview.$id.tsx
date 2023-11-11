@@ -24,6 +24,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               email,
               user_uid,
               userId,
+              village_id,
               date_of_birth,
               date_of_death,
               place_of_death,
@@ -74,6 +75,20 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     },
   });
 
+  const village = await ApiCall({
+    query: `
+        query getAllVillageById($id:Int!){
+          getAllVillageById(id:$id){
+              id,
+              name
+            }
+          }
+      `,
+    veriables: {
+      id: parseInt(data.data.getDeathTeorById.village_id),
+    },
+  });
+
   const searchpayment = await ApiCall({
     query: `
         query searchPayment($searchPaymentInput:SearchPaymentInput!){
@@ -107,6 +122,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     formid: id,
     from_data: data.data.getDeathTeorById,
     submit: submit.status,
+    village: village.data.getAllVillageById,
     common: submit.data.searchCommon,
     payment: searchpayment.status,
     paymentinfo: searchpayment.status
@@ -119,6 +135,7 @@ const DeathTeorView = (): JSX.Element => {
   const loader = useLoaderData();
 
   const user = loader.user;
+  const villagedata = loader.village;
   const isUser = user.role == "USER";
   const from_data = loader.from_data;
 
@@ -153,7 +170,7 @@ const DeathTeorView = (): JSX.Element => {
           focal_user_id: "51",
           intra_user_id: "51",
           inter_user_id: "0",
-          village: "Daman",
+          village: villagedata.name,
           name: from_data.name,
           number: from_data.mobile.toString(),
           form_status: 1,
@@ -1147,7 +1164,7 @@ const DeathTeorView = (): JSX.Element => {
             <span className="mr-2">1.1</span> Applicant village
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {common.village}
+            {villagedata.name}
           </div>
         </div>
 

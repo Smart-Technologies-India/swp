@@ -131,7 +131,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
           intra_user_id: "41,42",
           inter_user_id: "0",
           village: villagedata.name,
-          name: from_data.event_name,
+          name: from_data.name,
           number: from_data.mobile.toString(),
           event_date: from_data.from_date,
           form_status: 1,

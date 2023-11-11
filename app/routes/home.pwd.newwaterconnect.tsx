@@ -54,7 +54,8 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
 
   const OwnerShipType: string[] = ["OWNERSHIP", "TENANT"];
   type OwnerShipType = (typeof OwnerShipType)[number];
-  const [ownerShipType, setOwnerShipType] = useState<OwnerShipType>("OWNERSHIP");
+  const [ownerShipType, setOwnerShipType] =
+    useState<OwnerShipType>("OWNERSHIP");
 
   const EntityType: string[] = ["RESIDENTIAL", "COMMERCIAL", "INDUSTRIAL"];
   type EntityType = (typeof EntityType)[number];
@@ -62,7 +63,8 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
 
   const ConnectionType: string[] = ["DOMESTIC", "NONDOMESTIC"];
   type ConnectionType = (typeof ConnectionType)[number];
-  const [connectionType, setConnectionType] = useState<ConnectionType>("DOMESTIC");
+  const [connectionType, setConnectionType] =
+    useState<ConnectionType>("DOMESTIC");
 
   const fromDateRef = useRef<HTMLInputElement>(null);
 
@@ -71,7 +73,7 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
   const wardNumberRef = useRef<HTMLInputElement>(null);
   const diameterRef = useRef<HTMLInputElement>(null);
   const purposeRef = useRef<HTMLTextAreaElement>(null);
-  
+
   const remarkRef = useRef<HTMLInputElement>(null);
 
   const applicant_uid_url_Ref = useRef<HTMLInputElement>(null);
@@ -104,6 +106,8 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
       `,
       veriables: {},
     });
+
+    console.log(village);
     if (village.status) {
       setVillage((val) => village.data.getAllVillage);
     }
@@ -151,7 +155,6 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
           invalid_type_error: "Select a valid village",
           required_error: "Select a village",
         }),
-        
 
         ownership_type: z.string().nonempty("Select your Ownership Type."),
         muncipal_type: z.string().nonempty("Select your Muncipal Type."),
@@ -162,13 +165,10 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
         diameter: z.string().nonempty("Enter Diameter"),
         purpose: z.string().nonempty("Enter Purpose"),
 
-        
         from_date: z.date({
           required_error: "Enter From date",
           invalid_type_error: "Enter a valid from date",
         }),
-        
-       
 
         iagree: z.string().nonempty("I solemnly affirm & hereby."),
       })
@@ -187,14 +187,12 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
       ward_number: wardNumberRef!.current!.value,
       diameter: diameterRef!.current!.value,
       purpose: purposeRef!.current!.value,
-      
 
       iagree: isChecked ? "YES" : "NO",
       connection_type: connectionType,
       entity_type: entityType,
       muncipal_type: muncipalType,
       ownership_type: ownerShipType,
-      
     };
 
     const parsed = NewWaterConnectScheme.safeParse(newWaterConnectScheme);
@@ -264,7 +262,6 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
               entity_type: newWaterConnectScheme.entity_type,
               muncipal_type: newWaterConnectScheme.muncipal_type,
               ownership_type: newWaterConnectScheme.ownership_type,
-
             },
           },
         });
@@ -426,7 +423,6 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">2.6</span> House Ownership Type
@@ -586,7 +582,7 @@ const NewWaterConnect: React.FC = (): JSX.Element => {
             />
           </div>
         </div>
-        
+
         {/*--------------------- section 3 end here ------------------------- */}
 
         {/*--------------------- section 4 start here ------------------------- */}

@@ -88,11 +88,69 @@ const Dashboard: React.FC = (): JSX.Element => {
     if (6 == userid) return "JTP";
     if (7 == userid) return "JE";
     if (8 == userid) return "Field Inspector";
-    if (8 == userid) return "Site Supervisor";
+    if (9 == userid) return "Site Supervisor";
     if (10 == userid) return "Architect Assistant";
     if (11 == userid) return "Planning Draughtsman";
     if (12 == userid) return "SP Draughtsman";
     if (13 == userid) return "ST Draughtsman";
+    if (14 == userid) return "Dept 1";
+    if (15 == userid) return "Mamlatdar";
+    if (16 == userid) return "EOCS";
+    if (17 == userid) return "Dept 1";
+    if (18 == userid) return "Dept 1";
+    if (19 == userid) return "Dept 1";
+    if (20 == userid) return "Dept 1";
+    if (21 == userid) return "Suptd";
+    if (22 == userid) return "Head Clerk";
+    if (23 == userid) return "LDC";
+    if (24 == userid) return "UDC";
+    if (25 == userid) return "Dept 1";
+    if (26 == userid) return "Dept 2";
+    if (27 == userid) return "Dept 3";
+    if (28 == userid) return "Dept 4";
+    if (29 == userid) return "Dept 5";
+    if (30 == userid) return "Dept 6";
+    if (31 == userid) return "Suptd";
+    if (32 == userid) return "Head Clerk";
+    if (33 == userid) return "LDC";
+    if (34 == userid) return "UDC";
+    if (35 == userid) return "Dept 1";
+    if (36 == userid) return "Dept 2";
+    if (37 == userid) return "Dept 3";
+    if (38 == userid) return "Dept 4";
+    if (39 == userid) return "Dept 5";
+    if (40 == userid) return "Dept 6";
+    if (41 == userid) return "Suptd";
+    if (42 == userid) return "Head Clerk";
+    if (43 == userid) return "LDC";
+    if (44 == userid) return "UDC";
+    if (45 == userid) return "Dept 1";
+    if (46 == userid) return "Dept 2";
+    if (47 == userid) return "Dept 3";
+    if (48 == userid) return "Dept 4";
+    if (49 == userid) return "Dept 5";
+    if (50 == userid) return "Dept 6";
+    if (51 == userid) return "Suptd";
+    if (52 == userid) return "Head Clerk";
+    if (53 == userid) return "LDC";
+    if (54 == userid) return "UDC";
+    if (55 == userid) return "Dept 1";
+    if (56 == userid) return "Dept 2";
+    if (57 == userid) return "Dept 3";
+    if (58 == userid) return "Dept 4";
+    if (59 == userid) return "Dept 5";
+    if (60 == userid) return "Dept 6";
+    if (61 == userid) return "Suptd";
+    if (62 == userid) return "Head Clerk";
+    if (63 == userid) return "LDC";
+    if (64 == userid) return "UDC";
+    if (65 == userid) return "Dept 1";
+    if (66 == userid) return "Dept 2";
+    if (67 == userid) return "Dept 3";
+    if (68 == userid) return "Dept 4";
+    if (69 == userid) return "Dept 5";
+    if (70 == userid) return "Dept 6";
+
     return "USER";
   };
 
@@ -149,35 +207,70 @@ const Dashboard: React.FC = (): JSX.Element => {
     init();
   };
 
+  
   const getViewLink = (value: string, id: number): string => {
     if (value == "MARRIAGE") {
-      return `/home/marriageview/${id}`;
+      return `/home/est/marriageview/${id}`;
     } else if (value == "RELIGIOUS") {
-      return `/home/religiousview/${id}`;
+      return `/home/est/religiousview/${id}`;
     } else if (value == "ROADSHOW") {
-      return `/home/roadshowview/${id}`;
+      return `/home/est/roadshowview/${id}`;
     } else if (value == "GENERIC") {
-      return `/home/genericview/${id}`;
+      return `/home/est/genericview/${id}`;
     } else if (value == "PETROLEUM") {
-      return `/home/petroleumview/${id}`;
+      return `/home/pda/petroleumview/${id}`;
     } else if (value == "RTI") {
-      return `/home/rtiview/${id}`;
+      return `/home/pda/rtiview/${id}`;
     } else if (value == "ZONE") {
-      return `/home/zoneinfoview/${id}`;
+      return `/home/pda/zoneinfoview/${id}`;
     } else if (value == "CP") {
-      return `/home/cpview/${id}`;
+      return `/home/pda/cpview/${id}`;
     } else if (value == "OC") {
-      return `/home/ocview/${id}`;
+      return `/home/pda/ocview/${id}`;
     } else if (value == "PLINTH") {
-      return `/home/plinthview/${id}`;
+      return `/home/pda/plinthview/${id}`;
     } else if (value == "DEMOLITION") {
       return "/home";
     } else if (value == "OLDCOPY") {
-      return `/home/oldcopyview/${id}`;
+      return `/home/pda/oldcopyview/${id}`;
     } else if (value == "LANDRECORDS") {
-      return `/home/landsection/${id}`;
+      return `/home/pda/landsection/${id}`;
     } else if (value == "MAMLATDAR") {
       return "/home";
+    } else if (value == "OLDCOPY") {
+      return `/home/pda/oldcopyview/${id}`;
+    } else if (value == "LANDRECORDS") {
+      return `/home/pda/landsection/${id}`;
+    } else if (value == "DEATHREGISTER") {
+      return `/home/dmc/newdeathregisterview/${id}`;
+    } else if (value == "BIRTHREGISTER") {
+      return `/home/dmc/newbirthregisterview/${id}`;
+    } else if (value == "TEMPWATERCONNECT") {
+      return `/home/pwd/tempwaterconnectview/${id}`;
+    } else if (value == "TEMPWATERDISCONNECT") {
+      return `/home/pwd/tempwaterdisconnectview/${id}`;
+    } else if (value == "WATERSIZECHANGE") {
+      return `/home/pwd/watersizechangeview/${id}`;
+    } else if (value == "NEWWATERCONNECT") {
+      return `/home/pwd/newwaterconnectview/${id}`;
+    } else if (value == "WATERRECONNECT") {
+      return `/home/pwd/waterreconnectview/${id}`;
+    } else if (value == "PERMANENTWATERDISCONNECT") {
+      return `/home/pwd/permanentwaterdisconnectview/${id}`;
+    } else if (value == "BIRTHCERT") {
+      return `/home/crsr/birthcertview/${id}`;
+    } else if (value == "BIRTHTEOR") {
+      return `/home/crsr/birthteorview/${id}`;
+    } else if (value == "DEATHCERT") {
+      return `/home/crsr/deathcertview/${id}`;
+    } else if (value == "DEATHTEOR") {
+      return `/home/crsr/deathteorview/${id}`;
+    } else if (value == "MARRIAGECERT") {
+      return `/home/crsr/marriagecertview/${id}`;
+    } else if (value == "MARRIAGETEOR") {
+      return `/home/crsr/marriageteorview/${id}`;
+    } else if (value == "MARRIAGEREGISTER") {
+      return `/home/crsr/newmarriageregisterview/${id}`;
     } else {
       return "/home";
     }

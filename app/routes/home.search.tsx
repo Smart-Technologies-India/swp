@@ -114,30 +114,73 @@ const search = () => {
   };
 
   const getViewLink = (value: string, id: number): string => {
-    if (value == "PETROLEUM") {
-      return `/home/petroleumview/${id}`;
+    if (value == "MARRIAGE") {
+      return `/home/est/marriageview/${id}`;
+    } else if (value == "RELIGIOUS") {
+      return `/home/est/religiousview/${id}`;
+    } else if (value == "ROADSHOW") {
+      return `/home/est/roadshowview/${id}`;
+    } else if (value == "GENERIC") {
+      return `/home/est/genericview/${id}`;
+    } else if (value == "PETROLEUM") {
+      return `/home/pda/petroleumview/${id}`;
     } else if (value == "RTI") {
-      return `/home/rtiview/${id}`;
+      return `/home/pda/rtiview/${id}`;
     } else if (value == "ZONE") {
-      return `/home/zoneinfoview/${id}`;
+      return `/home/pda/zoneinfoview/${id}`;
     } else if (value == "CP") {
-      return `/home/cpview/${id}`;
+      return `/home/pda/cpview/${id}`;
     } else if (value == "OC") {
-      return `/home/ocview/${id}`;
+      return `/home/pda/ocview/${id}`;
     } else if (value == "PLINTH") {
-      return `/home/plinthview/${id}`;
+      return `/home/pda/plinthview/${id}`;
     } else if (value == "DEMOLITION") {
       return "/home";
     } else if (value == "OLDCOPY") {
-      return `/home/oldcopyview/${id}`;
+      return `/home/pda/oldcopyview/${id}`;
     } else if (value == "LANDRECORDS") {
-      return `/home/landsection/${id}`;
+      return `/home/pda/landsection/${id}`;
     } else if (value == "MAMLATDAR") {
       return "/home";
+    } else if (value == "OLDCOPY") {
+      return `/home/pda/oldcopyview/${id}`;
+    } else if (value == "LANDRECORDS") {
+      return `/home/pda/landsection/${id}`;
+    } else if (value == "DEATHREGISTER") {
+      return `/home/dmc/newdeathregisterview/${id}`;
+    } else if (value == "BIRTHREGISTER") {
+      return `/home/dmc/newbirthregisterview/${id}`;
+    } else if (value == "TEMPWATERCONNECT") {
+      return `/home/pwd/tempwaterconnectview/${id}`;
+    } else if (value == "TEMPWATERDISCONNECT") {
+      return `/home/pwd/tempwaterdisconnectview/${id}`;
+    } else if (value == "WATERSIZECHANGE") {
+      return `/home/pwd/watersizechangeview/${id}`;
+    } else if (value == "NEWWATERCONNECT") {
+      return `/home/pwd/newwaterconnectview/${id}`;
+    } else if (value == "WATERRECONNECT") {
+      return `/home/pwd/waterreconnectview/${id}`;
+    } else if (value == "PERMANENTWATERDISCONNECT") {
+      return `/home/pwd/permanentwaterdisconnectview/${id}`;
+    } else if (value == "BIRTHCERT") {
+      return `/home/crsr/birthcertview/${id}`;
+    } else if (value == "BIRTHTEOR") {
+      return `/home/crsr/birthteorview/${id}`;
+    } else if (value == "DEATHCERT") {
+      return `/home/crsr/deathcertview/${id}`;
+    } else if (value == "DEATHTEOR") {
+      return `/home/crsr/deathteorview/${id}`;
+    } else if (value == "MARRIAGECERT") {
+      return `/home/crsr/marriagecertview/${id}`;
+    } else if (value == "MARRIAGETEOR") {
+      return `/home/crsr/marriageteorview/${id}`;
+    } else if (value == "MARRIAGEREGISTER") {
+      return `/home/crsr/newmarriageregisterview/${id}`;
     } else {
       return "/home";
     }
   };
+
 
   return (
     <>
@@ -203,6 +246,54 @@ const search = () => {
               >
                 UNAUTHORISED
               </option>
+
+              <option value="BIRTHREGISTER" className="bg-white text-blakc text-lg">
+              Birth Register
+              </option>
+              <option value="DEATHREGISTER" className="bg-white text-blakc text-lg">
+              Death Register
+              </option>
+              <option value="TEMPWATERCONNECT" className="bg-white text-blakc text-lg">
+              Temporary Water Connection
+              </option>
+              <option value="TEMPWATERDISCONNECT" className="bg-white text-blakc text-lg">
+              Temporary Water Disconnection
+              </option>
+              <option value="WATERSIZECHANGE" className="bg-white text-blakc text-lg">
+              Water Size Change
+              </option>
+              <option value="NEWWATERCONNECT" className="bg-white text-blakc text-lg">
+              New Water Connection
+              </option>
+
+              <option value="WATERRECONNECT" className="bg-white text-blakc text-lg">
+              Water Reconnect
+              </option>
+              <option value="PERMANENTWATERDISCONNECT" className="bg-white text-blakc text-lg">
+              Permanent Water Disconnect
+              </option>
+              <option value="BIRTHCERT" className="bg-white text-blakc text-lg">
+              Birth Cert
+              </option>
+              <option value="BIRTHTEOR" className="bg-white text-blakc text-lg">
+              Birth Teor
+              </option>
+              <option value="DEATHCERT" className="bg-white text-blakc text-lg">
+              Death Cert
+              </option>
+              <option value="DEATHTEOR" className="bg-white text-blakc text-lg">
+              Death Teor
+              </option>
+
+              <option value="MARRIAGECERT" className="bg-white text-blakc text-lg">
+              Marriage Cert
+              </option>
+              <option value="MARRIAGETEOR" className="bg-white text-blakc text-lg">
+              Marriage Teor              </option>
+              <option value="MARRIAGEREGISTER" className="bg-white text-blakc text-lg">
+              Marriage Register
+              </option>
+             
             </select>
           </div>
           <div className="bg-gray-300 w-full h-[1px] my-3"></div>
