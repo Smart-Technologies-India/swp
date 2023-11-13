@@ -543,7 +543,6 @@ const DeathTeorView = (): JSX.Element => {
     }
   };
   useEffect(() => {
-    console.log(from_data);
     getNotings();
   }, []);
 

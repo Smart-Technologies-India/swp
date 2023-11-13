@@ -74,7 +74,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       },
     },
   });
-  console.log(submit);
 
   const village = await ApiCall({
     query: `
@@ -89,7 +88,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(data.data.getTempWaterConnectById.village_id),
     },
   });
-  console.log(data.data.getTempWaterConnectById.village_id);
 
   return json({
     user: cookie,

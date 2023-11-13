@@ -143,6 +143,9 @@ const DeathCertificate: React.FC = (): JSX.Element => {
         village_id: z.number({
           invalid_type_error: "Select a valid village",
           required_error: "Select a village",
+        })
+        .refine((val) => val != 0, {
+          message: "Please select village",
         }),
         gender: z.string().nonempty("Select your gender."),
 
@@ -191,7 +194,6 @@ const DeathCertificate: React.FC = (): JSX.Element => {
       gender: gender,
     };
 
-    console.log(deathCertificateScheme);
 
     const parsed = DeathCertificateScheme.safeParse(deathCertificateScheme);
 
@@ -265,7 +267,6 @@ const DeathCertificate: React.FC = (): JSX.Element => {
           },
         });
         if (!data.status) {
-          console.log(data.message);
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(

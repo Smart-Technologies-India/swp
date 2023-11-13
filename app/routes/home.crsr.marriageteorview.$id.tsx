@@ -544,7 +544,6 @@ const MarriageTeorView = (): JSX.Element => {
     }
   };
   useEffect(() => {
-    console.log(from_data);
     getNotings();
   }, []);
 

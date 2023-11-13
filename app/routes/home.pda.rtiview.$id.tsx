@@ -1205,7 +1205,11 @@ const RightToInformationView = (): JSX.Element => {
             <span className="mr-2">2.2</span> From Date
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {new Date(from_data.from_date).toLocaleString()}
+            {new Date(from_data.from_date) .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1213,7 +1217,11 @@ const RightToInformationView = (): JSX.Element => {
             <span className="mr-2">2.3</span> To Date
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {new Date(from_data.to_date).toLocaleString()}
+            {new Date(from_data.to_date) .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">

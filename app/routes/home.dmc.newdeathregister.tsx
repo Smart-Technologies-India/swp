@@ -54,7 +54,7 @@ const DeathRegister: React.FC = (): JSX.Element => {
 
   const BirthPlace: string[] = ["HOME", "HOSPITAL", "OTHER"];
   type BirthPlace = (typeof BirthPlace)[number];
-  const [birthPlace, setBirthPlace] = useState<BirthPlace>("HOSPITAL");
+  const [deathPlace, setDeathPlace] = useState<BirthPlace>("HOSPITAL");
 
   const AttendentType: string[] = [
     "DOCTOR",
@@ -167,15 +167,19 @@ const DeathRegister: React.FC = (): JSX.Element => {
             message: "Invalid UIDAI Number",
           })
           .optional(),
-        village_id: z.number({
-          invalid_type_error: "Select a valid village",
-          required_error: "Select a village",
-        }),
+        village_id: z
+          .number({
+            invalid_type_error: "Select a valid village",
+            required_error: "Select a village",
+          })
+          .refine((val) => val != 0, {
+            message: "Please select village",
+          }),
 
         gender: z.string().nonempty("Select Gender of Child."),
-        religion_child: z.string().nonempty("Select religion of Child"),
+        religion_deceased: z.string().nonempty("Select religion of Deceased"),
         attender_type: z.string().nonempty("Select Attender TYpe"),
-        birth_place: z.string().nonempty("Select Death Place"),
+        death_place: z.string().nonempty("Select Death Place"),
 
         name_of_deceased: z.string().nonempty("Enter Name of Deceased"),
         deceased_uid: z.string().nonempty("Enter Aadhar Details of Deceased"),
@@ -223,7 +227,6 @@ const DeathRegister: React.FC = (): JSX.Element => {
       user_uid: uidRef!.current!.value,
       village_id: parseInt(villageRef!.current!.value),
 
-
       date_of_birth: new Date(dateOfBirthRef!.current!.value),
       date_of_death: new Date(dateOfDeathRef!.current!.value),
       name_of_deceased: nameOfDeceasedRef!.current!.value,
@@ -236,7 +239,7 @@ const DeathRegister: React.FC = (): JSX.Element => {
       current_address: currentAddressRef!.current!.value,
       permanent_address: permanentAddressRef!.current!.value,
       death_place_address: deathPlaceAddressRef!.current!.value,
-      
+
       deceased_occupation: deceasedOccupationRef!.current!.value,
       pregnancy_death: pregnancyDeath,
       alcoholic_death: alcoholicDeath,
@@ -245,10 +248,9 @@ const DeathRegister: React.FC = (): JSX.Element => {
 
       iagree: isChecked ? "YES" : "NO",
       gender: gender,
-      religion_child: religion,
-      birth_place: birthPlace,
+      religion_deceased: religion,
+      death_place: deathPlace,
       attender_type: attendentType,
-      
     };
 
     const parsed = DeathRegisterScheme.safeParse(deathRegisterScheme);
@@ -288,15 +290,14 @@ const DeathRegister: React.FC = (): JSX.Element => {
       ) {
         const data = await ApiCall({
           query: `
-              mutation createDeathRegister($createDeathRegisterInput:CreateDeathRegisterInput!){
-                createDeathRegister(createDeathRegisterInput:$createDeathRegisterInput){
+              mutation createDeathRegister($createDeathRegiserInput:CreateDeathRegiserInput!){
+                createDeathRegister(createDeathRegiserInput:$createDeathRegiserInput){
                     id
                   }
                 }
               `,
-          //4
           veriables: {
-            createDeathRegisterInput: {
+            createDeathRegiserInput: {
               userId: Number(user.id),
               name: deathRegisterScheme.name,
               address: deathRegisterScheme.address,
@@ -307,7 +308,7 @@ const DeathRegister: React.FC = (): JSX.Element => {
               date_of_birth: deathRegisterScheme.date_of_birth,
               date_of_death: deathRegisterScheme.date_of_death,
               name_of_deceased: deathRegisterScheme.name_of_deceased,
-              deceased_uid:deathRegisterScheme.deceased_uid,
+              deceased_uid: deathRegisterScheme.deceased_uid,
               father_name: deathRegisterScheme.father_name,
               mother_name: deathRegisterScheme.mother_name,
               wife_name: deathRegisterScheme.wife_name,
@@ -329,18 +330,18 @@ const DeathRegister: React.FC = (): JSX.Element => {
               iagree: deathRegisterScheme.iagree,
               status: "ACTIVE",
               gender: deathRegisterScheme.gender,
-              religion_child: deathRegisterScheme.religion_child,
-              birth_place: deathRegisterScheme.birth_place,
+              religion_deceased: deathRegisterScheme.religion_deceased,
+              death_place: deathRegisterScheme.death_place,
               attender_type: deathRegisterScheme.attender_type,
-              
             },
           },
         });
+
         if (!data.status) {
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(
-            `/home/dmc/deathregisterview/${data.data.createDeathRegister.id}`
+            `/home/dmc/newdeathregisterview/${data.data.createDeathRegister.id}`
           );
         }
       } else {
@@ -526,7 +527,7 @@ const DeathRegister: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={dateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -618,12 +619,12 @@ const DeathRegister: React.FC = (): JSX.Element => {
                 key={index}
                 className="flex gap-2 items-center cursor-pointer"
                 onClick={() => {
-                  setBirthPlace(val);
+                  setDeathPlace(val);
                 }}
               >
                 <input
                   type="checkbox"
-                  checked={val == birthPlace}
+                  checked={val == deathPlace}
                   className="accent-blue-500 scale-125"
                 />
                 <p className="text-md text-black font-medium">{val}</p>
@@ -721,8 +722,6 @@ const DeathRegister: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-    
-
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.16</span> Deceased Occupation
@@ -736,7 +735,6 @@ const DeathRegister: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.18</span> Date of Death
@@ -745,7 +743,7 @@ const DeathRegister: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={dateOfDeathRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -910,8 +908,6 @@ const DeathRegister: React.FC = (): JSX.Element => {
             </div>
           </div>
         </div>
-
-        
 
         {/*--------------------- section 3 end here ------------------------- */}
 

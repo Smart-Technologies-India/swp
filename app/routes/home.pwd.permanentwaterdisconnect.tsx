@@ -148,6 +148,9 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
         village_id: z.number({
           invalid_type_error: "Select a valid village",
           required_error: "Select a village",
+        })
+        .refine((val) => val != 0, {
+          message: "Please select village",
         }),
         
 
@@ -567,7 +570,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <textarea
               ref={purposeRef}
-              placeholder="Diameter Required"
+              placeholder="Purpose"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             ></textarea>
           </div>
@@ -581,7 +584,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={toDateRef}
-              max={new Date().toISOString().split("T")[0]}
+              min={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>

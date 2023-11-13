@@ -127,7 +127,7 @@ const Services: React.FC = (): JSX.Element => {
               icons={6}
               title="Religious Applicaton"
               description="Users are required to fill out this online application form to avail of the Religious Event Permission service from the department."
-              apply="/home/religious"
+              apply="/home/est/religious"
             />
           </div>
         ) : null}

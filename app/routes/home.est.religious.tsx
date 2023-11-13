@@ -146,7 +146,9 @@ const Religious: React.FC = (): JSX.Element => {
                     .optional(),
                 village_id: z
                     .number({ invalid_type_error: "Select a valid village", required_error: "Select a village" })
-                    .optional(),
+                    .refine((val) => val != 0, {
+                        message: "Please select village",
+                      }),
                 from_date: z
                     .date({ required_error: "Enter From date", invalid_type_error: "Enter a valid from date" }),
                 to_date: z

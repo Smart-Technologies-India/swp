@@ -70,6 +70,7 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
   const meterNumberRef = useRef<HTMLInputElement>(null);
   const oldDiameterRef = useRef<HTMLInputElement>(null);
   const newDiameterRef = useRef<HTMLInputElement>(null);
+  const purposeRef = useRef<HTMLInputElement>(null);
   
   const remarkRef = useRef<HTMLInputElement>(null);
 
@@ -149,6 +150,9 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
         village_id: z.number({
           invalid_type_error: "Select a valid village",
           required_error: "Select a village",
+        })
+        .refine((val) => val != 0, {
+          message: "Please select village",
         }),
         
 
@@ -158,6 +162,7 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
         connection_type: z.string().nonempty("Select your Connection Type."),
 
         ward_number: z.string().nonempty("Enter Ward Number"),
+        purpose: z.string().nonempty("Enter Purpose"),
         meter_number: z.string().nonempty("Enter Meter Number"),
         old_diameter: z.string().nonempty("Enter Old Diameter of connection"),
         new_diameter: z.string().nonempty("Enter New Diameter of Connection"),
@@ -184,6 +189,7 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
       meter_number: meterNumberRef!.current!.value,
       old_diameter: oldDiameterRef!.current!.value,
       new_diameter: newDiameterRef!.current!.value,
+      purpose: purposeRef!.current!.value,
       
 
       iagree: isChecked ? "YES" : "NO",
@@ -250,6 +256,7 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
               meter_number: waterSizeChangeScheme.meter_number,
               old_diameter: waterSizeChangeScheme.old_diameter,
               new_diameter: waterSizeChangeScheme.new_diameter,
+              purpose: waterSizeChangeScheme.purpose,
               house_tax_url: house_tax_urlt.data,
               electric_bill_url: electric_bill_urlt.data,
               applicant_uid_url: applicant_uid_urlt.data,
@@ -271,7 +278,7 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(
-            `/home/pwd/watersizechange/${data.data.createWaterSizeChange.id}`
+            `/home/pwd/watersizechangeview/${data.data.createWaterSizeChange.id}`
           );
         }
       } else {
@@ -476,7 +483,7 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.1</span> House Muncipal Type
+            <span className="mr-2">3.1</span> DMC / Panachayat
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto flex gap-6 items-center">
             {MuncipalType.map((val: string, index: number) => (
@@ -566,7 +573,7 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               ref={oldDiameterRef}
-              placeholder="Diameter Required"
+              placeholder="Old Diameter Required"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -579,7 +586,20 @@ const WaterSizeChange: React.FC = (): JSX.Element => {
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               ref={newDiameterRef}
-              placeholder="Diameter Required"
+              placeholder="New Diameter Required"
+              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
+            />
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">3.7</span> Purpose
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto">
+            <input
+              ref={purposeRef}
+              placeholder="Purpose"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>

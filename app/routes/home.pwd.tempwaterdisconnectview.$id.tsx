@@ -23,6 +23,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               user_uid,
               userId,
               village_id,
+              from_date,
               to_date,
               ownership_type,
               ward_number,
@@ -73,7 +74,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       },
     },
   });
-  console.log(submit);
 
   const village = await ApiCall({
     query: `
@@ -88,7 +88,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(data.data.getTempWaterDisconnectById.village_id),
     },
   });
-  console.log(data.data.getTempWaterDisconnectById.village_id);
 
   return json({
     user: cookie,
@@ -720,6 +719,20 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.purpose}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">3.6</span> Start Date
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {new Date(from_data.from_date)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
 

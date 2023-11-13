@@ -31,6 +31,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               entity_type,
               connection_type,
               meter_number,
+              purpose,
               house_tax_url,
               electric_bill_url,
               applicant_uid_url,
@@ -73,7 +74,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       },
     },
   });
-  console.log(submit);
 
   const village = await ApiCall({
     query: `
@@ -88,7 +88,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(data.data.getWaterSizeChangeById.village_id),
     },
   });
-  console.log(data.data.getWaterSizeChangeById.village_id);
 
   return json({
     user: cookie,
@@ -689,22 +688,14 @@ const WaterSizeChangeView: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.2</span> Old Diameter Of connection
+            <span className="mr-2">3.2</span> Meter Number
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.old_diameter}
+            {from_data.meter_number}
           </div>
         </div>
 
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.2</span> New Diameter Of connection required
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.new_diameter}
-          </div>
-        </div>
-
+       
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.3</span> Entity Type.
@@ -716,7 +707,7 @@ const WaterSizeChangeView: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.4</span> Type of Water Connection
+            <span className="mr-2">3.4</span> Connection Type
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.connection_type}
@@ -725,10 +716,28 @@ const WaterSizeChangeView: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.5</span> Meter Number
+            <span className="mr-2">3.5</span> New Diameter Of connection
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.meter_number}
+            {from_data.new_diameter}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">3.6</span> Old Diameter Of connection
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.old_diameter}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">3.7</span> Purpose
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.purpose}
           </div>
         </div>
 

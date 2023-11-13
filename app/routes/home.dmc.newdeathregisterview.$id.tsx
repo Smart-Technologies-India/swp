@@ -24,6 +24,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               email,
               user_uid,
               userId,
+              village_id,
               date_of_birth,
               gender,
               name_of_deceased,
@@ -86,6 +87,20 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     },
   });
 
+  const village = await ApiCall({
+    query: `
+        query getAllVillageById($id:Int!){
+          getAllVillageById(id:$id){
+              id,
+              name
+            }
+          }
+      `,
+    veriables: {
+      id: parseInt(data.data.getDeathRegisterById.village_id),
+    },
+  });
+
   const searchpayment = await ApiCall({
     query: `
         query searchPayment($searchPaymentInput:SearchPaymentInput!){
@@ -120,6 +135,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     from_data: data.data.getDeathRegisterById,
     submit: submit.status,
     common: submit.data.searchCommon,
+    village: village.data.getAllVillageById,
     payment: searchpayment.status,
     paymentinfo: searchpayment.status
       ? searchpayment.data.searchPayment[0]
@@ -133,6 +149,7 @@ const DeathRegisterView = (): JSX.Element => {
   const user = loader.user;
   const isUser = user.role == "USER";
   const from_data = loader.from_data;
+  const villagedata = loader.village;
 
   const navigator = useNavigate();
 
@@ -165,7 +182,7 @@ const DeathRegisterView = (): JSX.Element => {
           focal_user_id: "51",
           intra_user_id: "51",
           inter_user_id: "0",
-          village: "Daman",
+          village: villagedata.name,
           name: from_data.name,
           number: from_data.mobile.toString(),
           form_status: 1,
@@ -538,7 +555,6 @@ const DeathRegisterView = (): JSX.Element => {
     }
   };
   useEffect(() => {
-    console.log(from_data);
     getNotings();
   }, []);
 
@@ -1136,7 +1152,7 @@ const DeathRegisterView = (): JSX.Element => {
       {/* forward box end here */}
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
         <h1 className="text-gray-800 text-3xl font-semibold text-center">
-        New Death Register Application
+          New Death Register Application
         </h1>
         <div className="w-full flex gap-4 my-4">
           <div className="grow bg-gray-700 h-[2px]"></div>
@@ -1161,7 +1177,7 @@ const DeathRegisterView = (): JSX.Element => {
             <span className="mr-2">1.1</span> Applicant village
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {common.village}
+            {villagedata.name}
           </div>
         </div>
 
@@ -1215,11 +1231,11 @@ const DeathRegisterView = (): JSX.Element => {
           </div>
         </div>
 
-         {/*--------------------- section 2 end here ------------------------- */}
+        {/*--------------------- section 2 end here ------------------------- */}
 
-          {/*--------------------- section 3 start here ------------------------- */}
+        {/*--------------------- section 3 start here ------------------------- */}
 
-          <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
           <p className="text-left font-semibold text-xl text-white">
             {" "}
             3. Deceased Detail(s){" "}
@@ -1240,7 +1256,12 @@ const DeathRegisterView = (): JSX.Element => {
             <span className="mr-2">3.2</span> Date of Birth of Deceased
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_birth}
+          {new Date(from_data.date_of_birth)
+            .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1353,7 +1374,12 @@ const DeathRegisterView = (): JSX.Element => {
             <span className="mr-2">3.16</span> Date of Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_death}
+          {new Date(from_data.date_of_death)
+            .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1369,7 +1395,7 @@ const DeathRegisterView = (): JSX.Element => {
             <span className="mr-2">3.18</span> Pregnancy Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.pregnancy_death}
+            {from_data.pregnancy_death ? "YES" : "NO"}
           </div>
         </div>
 
@@ -1378,7 +1404,7 @@ const DeathRegisterView = (): JSX.Element => {
             <span className="mr-2">3.19</span> Is Death Certified?
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.death_certified}
+            {from_data.death_certified ? "YES" : "NO"}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1386,7 +1412,7 @@ const DeathRegisterView = (): JSX.Element => {
             <span className="mr-2">3.20</span> Smoker Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.smoker_death}
+            {from_data.smoker_death ? "YES" : "NO"}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1394,11 +1420,9 @@ const DeathRegisterView = (): JSX.Element => {
             <span className="mr-2">3.21</span> Alcoholic Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.alcoholic_death}
+            {from_data.alcoholic_death ? "YES" : "NO"}
           </div>
         </div>
-       
-        
 
         {/*--------------------- section 3 end here ------------------------- */}
 

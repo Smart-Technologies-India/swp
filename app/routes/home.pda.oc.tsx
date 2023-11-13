@@ -235,7 +235,9 @@ const Oc: React.FC = (): JSX.Element => {
                     .optional(),
                 village_id: z
                     .number({ invalid_type_error: "Select a valid village", required_error: "Select a village" })
-                    .optional(),
+                    .refine((val) => val != 0, {
+                        message: "Please select village",
+                      }),
                 survey_no: z
                     .string()
                     .nonempty("Select survey numbers."),

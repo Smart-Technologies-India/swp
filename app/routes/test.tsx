@@ -224,7 +224,6 @@ function onChange(editorState: any) {
     const root = $getRoot();
     const selection = $getSelection();
 
-    console.log(root, selection);
   });
 }
 

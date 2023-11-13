@@ -577,7 +577,6 @@ const MarriageRegisterView = (): JSX.Element => {
     }
   };
   useEffect(() => {
-    console.log(from_data);
     getNotings();
   }, []);
 

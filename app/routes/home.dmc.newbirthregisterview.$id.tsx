@@ -25,6 +25,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               user_uid,
               userId,
               date_of_birth,
+              village_id,
               gender,
               name_of_child,
               father_name,
@@ -88,6 +89,22 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     },
   });
 
+  const village = await ApiCall({
+    query: `
+        query getAllVillageById($id:Int!){
+          getAllVillageById(id:$id){
+              id,
+              name
+            }
+          }
+      `,
+    veriables: {
+      id: parseInt(data.data.getBirthRegisterById.village_id),
+    },
+  });
+
+ 
+
   const searchpayment = await ApiCall({
     query: `
         query searchPayment($searchPaymentInput:SearchPaymentInput!){
@@ -120,6 +137,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     user: cookie,
     formid: id,
     from_data: data.data.getBirthRegisterById,
+    village: village.data.getAllVillageById,
     submit: submit.status,
     common: submit.data.searchCommon,
     payment: searchpayment.status,
@@ -135,6 +153,7 @@ const BirthRegisterView = (): JSX.Element => {
   const user = loader.user;
   const isUser = user.role == "USER";
   const from_data = loader.from_data;
+  const villagedata = loader.village;
 
   const navigator = useNavigate();
 
@@ -167,7 +186,7 @@ const BirthRegisterView = (): JSX.Element => {
           focal_user_id: "51",
           intra_user_id: "51",
           inter_user_id: "0",
-          village: "Daman",
+          village: villagedata.name,
           name: from_data.name,
           number: from_data.mobile.toString(),
           form_status: 1,
@@ -540,7 +559,6 @@ const BirthRegisterView = (): JSX.Element => {
     }
   };
   useEffect(() => {
-    console.log(from_data);
     getNotings();
   }, []);
 
@@ -1163,7 +1181,7 @@ const BirthRegisterView = (): JSX.Element => {
             <span className="mr-2">1.1</span> Applicant village
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {common.village}
+            {villagedata.name}
           </div>
         </div>
 
@@ -1242,7 +1260,11 @@ const BirthRegisterView = (): JSX.Element => {
             <span className="mr-2">3.2</span> Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_birth}
+            {new Date(from_data.date_of_birth) .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1363,7 +1385,11 @@ const BirthRegisterView = (): JSX.Element => {
             <span className="mr-2">2.14</span> Mother's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.mother_date_of_birth}
+            {new Date(from_data.mother_date_of_birth) .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
 
@@ -1372,7 +1398,11 @@ const BirthRegisterView = (): JSX.Element => {
             <span className="mr-2">3.4</span> Date of Marriage
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_marriage}
+            {new Date(from_data.date_of_marriage) .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">

@@ -52,25 +52,29 @@ const BirthRegister: React.FC = (): JSX.Element => {
   type Gender = (typeof Gender)[number];
   const [gender, setGender] = useState<Gender>("MALE");
 
-  const BirthPlace: string[] = ["HOME", "HOSPITAL","OTHER"];
+  const BirthPlace: string[] = ["HOME", "HOSPITAL", "OTHER"];
   type BirthPlace = (typeof BirthPlace)[number];
   const [birthPlace, setBirthPlace] = useState<BirthPlace>("HOSPITAL");
 
-  const AttendentType: string[] = ["DOCTOR", "NURSE", "DOMESTICEXPERT","OTHER"];
+  const AttendentType: string[] = [
+    "DOCTOR",
+    "NURSE",
+    "DOMESTICEXPERT",
+    "OTHER",
+  ];
   type AttendentType = (typeof AttendentType)[number];
   const [attendentType, setAttendentType] = useState<AttendentType>("DOCTOR");
 
-  const DeliveryMethod: string[] = ["NATURAL", "CSECTION","VACCUM","OTHER"];
+  const DeliveryMethod: string[] = ["NATURAL", "CSECTION", "VACCUM", "OTHER"];
   type DeliveryMethod = (typeof DeliveryMethod)[number];
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("NATURAL");
+  const [deliveryMethod, setDeliveryMethod] =
+    useState<DeliveryMethod>("NATURAL");
 
-  const Religion: string[] = ["HINDU", "MUSLIM","CHRISTIAN","OTHER"];
+  const Religion: string[] = ["HINDU", "MUSLIM", "CHRISTIAN", "OTHER"];
   type Religion = (typeof Religion)[number];
   const [religion, setReligion] = useState<Religion>("HINDU");
 
-
   const dateOfBirthRef = useRef<HTMLInputElement>(null);
-
 
   const nameOfChildRef = useRef<HTMLInputElement>(null);
   const fatherNameRef = useRef<HTMLInputElement>(null);
@@ -78,7 +82,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
   const grandFatherNameRef = useRef<HTMLInputElement>(null);
   const grandMotherNameRef = useRef<HTMLInputElement>(null);
   const birthPlaceNameRef = useRef<HTMLInputElement>(null);
- 
+
   const currentAddressRef = useRef<HTMLTextAreaElement>(null);
   const permanentAddressRef = useRef<HTMLTextAreaElement>(null);
 
@@ -92,7 +96,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
   const previousChildCountRef = useRef<HTMLInputElement>(null);
   const weightTimeOfBirthRef = useRef<HTMLInputElement>(null);
   const noOfWeeksPregnantRef = useRef<HTMLInputElement>(null);
-  
+
   const remarkRef = useRef<HTMLInputElement>(null);
 
   const father_uid_url_Ref = useRef<HTMLInputElement>(null);
@@ -168,11 +172,14 @@ const BirthRegister: React.FC = (): JSX.Element => {
             message: "Invalid UIDAI Number",
           })
           .optional(),
-        village_id: z.number({
-          invalid_type_error: "Select a valid village",
-          required_error: "Select a village",
-        }),
-        
+        village_id: z
+          .number({
+            invalid_type_error: "Select a valid village",
+            required_error: "Select a village",
+          })
+          .refine((val) => val != 0, {
+            message: "Please select village",
+          }),
 
         gender: z.string().nonempty("Select Gender of Child."),
         religion_child: z.string().nonempty("Select religion of Child"),
@@ -192,11 +199,14 @@ const BirthRegister: React.FC = (): JSX.Element => {
         mother_education: z.string().nonempty("Enter Mother Education"),
         father_occupation: z.string().nonempty("Enter Father Occupation"),
         mother_occupation: z.string().nonempty("Enter Mother Occupation"),
-        weight_of_child_at_birth: z.string().nonempty("Enter Child Weight at Birth"),
+        weight_of_child_at_birth: z
+          .string()
+          .nonempty("Enter Child Weight at Birth"),
         previous_child_count: z.string().nonempty("Enter Previous Child Count"),
-        number_of_week_of_pregnency: z.string().nonempty("Enter Number of weeks Pregnant"),
+        number_of_week_of_pregnency: z
+          .string()
+          .nonempty("Enter Number of weeks Pregnant"),
 
-        
         date_of_birth: z.date({
           required_error: "Enter Date of Birth",
           invalid_type_error: "Enter a valid Date of Birth",
@@ -206,10 +216,9 @@ const BirthRegister: React.FC = (): JSX.Element => {
           invalid_type_error: "Enter Mother's Date of Birth",
         }),
         date_of_marriage: z.date({
-            required_error: "Enter Date of Marriage",
-            invalid_type_error: "Enter Date of Marriage",
-          }),
-       
+          required_error: "Enter Date of Marriage",
+          invalid_type_error: "Enter Date of Marriage",
+        }),
 
         iagree: z.string().nonempty("I solemnly affirm & hereby."),
       })
@@ -242,7 +251,6 @@ const BirthRegister: React.FC = (): JSX.Element => {
       weight_of_child_at_birth: weightTimeOfBirthRef!.current!.value,
       previous_child_count: previousChildCountRef!.current!.value,
       number_of_week_of_pregnency: noOfWeeksPregnantRef!.current!.value,
-      
 
       iagree: isChecked ? "YES" : "NO",
       gender: gender,
@@ -250,7 +258,6 @@ const BirthRegister: React.FC = (): JSX.Element => {
       birth_place: birthPlace,
       attender_type: attendentType,
       delivery_method: deliveryMethod,
-      
     };
 
     const parsed = BirthRegisterScheme.safeParse(birthRegisterScheme);
@@ -320,9 +327,11 @@ const BirthRegister: React.FC = (): JSX.Element => {
               mother_education: birthRegisterScheme.mother_education,
               father_occupation: birthRegisterScheme.father_occupation,
               mother_occupation: birthRegisterScheme.mother_occupation,
-              weight_of_child_at_birth: birthRegisterScheme.weight_of_child_at_birth,
+              weight_of_child_at_birth:
+                birthRegisterScheme.weight_of_child_at_birth,
               previous_child_count: birthRegisterScheme.previous_child_count,
-              number_of_week_of_pregnency: birthRegisterScheme.number_of_week_of_pregnency,
+              number_of_week_of_pregnency:
+                birthRegisterScheme.number_of_week_of_pregnency,
               father_uid_url: father_uid_urlt.data,
               mother_uid_url: mother_uid_urlt.data,
               authority_letter_url: authority_letter_urlt.data,
@@ -335,7 +344,6 @@ const BirthRegister: React.FC = (): JSX.Element => {
               birth_place: birthRegisterScheme.birth_place,
               attender_type: birthRegisterScheme.attender_type,
               delivery_method: birthRegisterScheme.delivery_method,
-
             },
           },
         });
@@ -343,7 +351,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(
-            `/home/dmc/birthregisterview/${data.data.createBirthRegister.id}`
+            `/home/dmc/newbirthregisterview/${data.data.createBirthRegister.id}`
           );
         }
       } else {
@@ -497,7 +505,6 @@ const BirthRegister: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-
         {/*--------------------- section 2 end here ------------------------- */}
 
         {/*--------------------- section 3 start here ------------------------- */}
@@ -530,12 +537,12 @@ const BirthRegister: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={dateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
         </div>
-       
+
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.3</span> Gender of Child
@@ -546,7 +553,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
                 key={index}
                 className="flex gap-2 items-center cursor-pointer"
                 onClick={() => {
-                    setGender(val);
+                  setGender(val);
                 }}
               >
                 <input
@@ -611,7 +618,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
             />
           </div>
         </div>
-       
+
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.8</span> Birth Place
@@ -622,7 +629,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
                 key={index}
                 className="flex gap-2 items-center cursor-pointer"
                 onClick={() => {
-                    setBirthPlace(val);
+                  setBirthPlace(val);
                 }}
               >
                 <input
@@ -685,7 +692,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
                 key={index}
                 className="flex gap-2 items-center cursor-pointer"
                 onClick={() => {
-                    setReligion(val);
+                  setReligion(val);
                 }}
               >
                 <input
@@ -712,10 +719,9 @@ const BirthRegister: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.15</span>  Mother Education
+            <span className="mr-2">3.15</span> Mother Education
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
@@ -728,7 +734,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.16</span>  Father Occupation
+            <span className="mr-2">3.16</span> Father Occupation
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
@@ -738,7 +744,6 @@ const BirthRegister: React.FC = (): JSX.Element => {
             />
           </div>
         </div>
-
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
@@ -761,7 +766,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={motherDateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -775,7 +780,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={dateOfMarriageRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -804,7 +809,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
                 key={index}
                 className="flex gap-2 items-center cursor-pointer"
                 onClick={() => {
-                    setAttendentType(val);
+                  setAttendentType(val);
                 }}
               >
                 <input
@@ -828,7 +833,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
                 key={index}
                 className="flex gap-2 items-center cursor-pointer"
                 onClick={() => {
-                    setDeliveryMethod(val);
+                  setDeliveryMethod(val);
                 }}
               >
                 <input
@@ -868,8 +873,6 @@ const BirthRegister: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-
-       
         {/*--------------------- section 3 end here ------------------------- */}
 
         {/*--------------------- section 4 start here ------------------------- */}

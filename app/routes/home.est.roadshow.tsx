@@ -140,7 +140,9 @@ const Roadshow: React.FC = (): JSX.Element => {
             invalid_type_error: "Select a valid village",
             required_error: "Select a village",
           })
-          .optional(),
+          .refine((val) => val != 0, {
+            message: "Please select village",
+          }),
         from_date: z.date({
           required_error: "Enter From date",
           invalid_type_error: "Enter a valid from date",

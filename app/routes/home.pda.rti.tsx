@@ -32,17 +32,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   return json({ user: userdata.data.getUserById });
 };
 
-const GenderEnum = {
-  MALE: "pending",
-  FEMALE: "approved",
-  OTHER: "rejected",
-};
 
-enum Gender {
-  MALE,
-  FEMALE,
-  OTHER,
-}
 
 const RightToInformation: React.FC = (): JSX.Element => {
   const user = useLoaderData().user;
@@ -58,9 +48,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
   const applicationNameRef = useRef<HTMLTextAreaElement>(null);
   const applicationDescRef = useRef<HTMLTextAreaElement>(null);
 
-  const Gender: string[] = ["MALE", "FEMALE", "OTHER"];
-  type Gender = (typeof Gender)[number];
-  const [gender, setGender] = useState<Gender>("MALE");
+  
 
   const nakalRef = useRef<HTMLInputElement>(null);
   const [povertyLine, setPovertyLine] = useState(false);
@@ -114,7 +102,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
         description: z.string().optional(),
         information: z.string().optional(),
         iagree: z.string().nonempty("I solemnly affirm & hereby."),
-        gender: z.string().nonempty("Select your gender."),
+        
       })
       .strict();
 
@@ -132,7 +120,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
       description: applicationNameRef!.current!.value,
       information: applicationDescRef!.current!.value,
       iagree: isChecked ? "YES" : "NO",
-      gender: gender,
+     
     };
 
     const parsed = RTIScheme.safeParse(rtiScheme);
@@ -174,7 +162,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
                 status: "ACTIVE",
                 from_date: rtiScheme.from_date,
                 to_date: rtiScheme.to_date,
-                gender: rtiScheme.gender,
+                
               },
             },
           });
@@ -425,29 +413,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
             ></textarea>
           </div>
         </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.6</span> Gender
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto flex gap-6 items-center">
-            {Gender.map((val: string, index: number) => (
-              <div
-                key={index}
-                className="flex gap-2 items-center cursor-pointer"
-                onClick={() => {
-                  setGender(val);
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={val == gender}
-                  className="accent-blue-500 scale-125"
-                />
-                <p className="text-md text-black font-medium">{val}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+       
         {/*--------------------- section 2 end here ------------------------- */}
 
         {/*--------------------- section 3 start here ------------------------- */}

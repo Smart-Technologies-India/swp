@@ -145,6 +145,9 @@ const MarriageCertificate: React.FC = (): JSX.Element => {
         village_id: z.number({
           invalid_type_error: "Select a valid village",
           required_error: "Select a village",
+        })
+        .refine((val) => val != 0, {
+          message: "Please select village",
         }),
         
 

@@ -47,7 +47,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(id!),
     },
   });
-  console.log(data);
 
   const submit = await ApiCall({
     query: `
@@ -544,7 +543,6 @@ const DeathCertificateView = (): JSX.Element => {
     }
   };
   useEffect(() => {
-    console.log(from_data);
     getNotings();
   }, []);
 
