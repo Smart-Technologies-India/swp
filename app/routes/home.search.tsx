@@ -50,7 +50,6 @@ const Search: React.FC = (): JSX.Element => {
   const village = loader.village;
   // const user = loader.user;
   const userdata = loader.userdata;
-  console.log(userdata);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const numberRef = useRef<HTMLInputElement>(null);

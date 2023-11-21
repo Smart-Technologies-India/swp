@@ -146,16 +146,7 @@ const MarriageTeorView = (): JSX.Element => {
   const isSubmited = loader.submit;
   const common = isSubmited ? loader.common[0] : null;
   const submit = async () => {
-    const authuserid = await ApiCall({
-      query: `
-            query getuserid($filetype:String!){
-                getuserid(filetype:$filetype)
-              }
-            `,
-      veriables: {
-        filetype: "MARRIAGETEOR",
-      },
-    });
+   
     const data = await ApiCall({
       query: `
             mutation createCommon($createCommonInput:CreateCommonInput!){
@@ -168,9 +159,9 @@ const MarriageTeorView = (): JSX.Element => {
         createCommonInput: {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
-          auth_user_id: authuserid.data.getuserid.toString(),
-          focal_user_id: "53",
-          intra_user_id: "51",
+          auth_user_id: "53",
+          focal_user_id: "51",
+          intra_user_id: "51,53",
           inter_user_id: "0",
           village: villagedata.name,
           name: from_data.name,

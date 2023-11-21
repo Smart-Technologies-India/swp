@@ -160,16 +160,7 @@ const BirthRegisterView = (): JSX.Element => {
   const isSubmited = loader.submit;
   const common = isSubmited ? loader.common[0] : null;
   const submit = async () => {
-    const authuserid = await ApiCall({
-      query: `
-            query getuserid($filetype:String!){
-                getuserid(filetype:$filetype)
-              }
-            `,
-      veriables: {
-        filetype: "BIRTHREGISTER",
-      },
-    });
+    
     const data = await ApiCall({
       query: `
             mutation createCommon($createCommonInput:CreateCommonInput!){
@@ -182,9 +173,9 @@ const BirthRegisterView = (): JSX.Element => {
         createCommonInput: {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
-          auth_user_id: authuserid.data.getuserid.toString(),
-          focal_user_id: "43",
-          intra_user_id: "41",
+          auth_user_id: "43",
+          focal_user_id: "41",
+          intra_user_id: "43,41",
           inter_user_id: "0",
           village: villagedata.name,
           name: from_data.name,

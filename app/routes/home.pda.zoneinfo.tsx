@@ -40,7 +40,6 @@ const ZoneInofrmation: React.FC = (): JSX.Element => {
   const addressRef = useRef<HTMLTextAreaElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   // const uidRef = useRef<HTMLInputElement>(null);
-  // console.log(user);
 
   const villageRef = useRef<HTMLSelectElement>(null);
   const [village, setVillage] = useState<any[]>([]);

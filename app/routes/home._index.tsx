@@ -378,7 +378,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               }
             }
           }
-        }
       `,
       veriables: {
         department: userdata.data.getUserById.department,
@@ -406,7 +405,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               }
             }
           }
-        }
       `,
       veriables: {
         department: userdata.data.getUserById.department,
@@ -429,7 +427,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               }
             }
           }
-        }
       `,
       veriables: {
         department: userdata.data.getUserById.department,
@@ -451,10 +448,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       `,
     veriables: { department: userdata.data.getUserById.department },
   });
-
-  console.log(userdata);
-  console.log(filecount);
-  console.log(villagecount);
 
   return json({
     userdata: userdata.data.getUserById,
