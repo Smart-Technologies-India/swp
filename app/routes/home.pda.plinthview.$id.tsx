@@ -1,6 +1,6 @@
 import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import QueryTabs from "~/components/QueryTabs";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";

@@ -6,7 +6,6 @@ import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { userPrefs } from "~/cookies";
 import { ApiCall, UploadFile } from "~/services/api";
 import { z } from "zod";
-import { checkUID } from "~/utils";
 
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {

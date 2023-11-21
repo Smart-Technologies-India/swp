@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import { z } from "zod";
-import { checkUID } from "~/utils";
 import dayjs from "dayjs";
 import { DatePicker } from "antd";
 const { RangePicker } = DatePicker;
@@ -132,9 +131,7 @@ const Roadshow: React.FC = (): JSX.Element => {
         email: z.string().email("Enter a valid email.").optional(),
         user_uid: z
           .string()
-          .refine((value) => checkUID(value), {
-            message: "Invalid UIDAI Number",
-          })
+        
           .optional(),
         village_id: z
           .number({

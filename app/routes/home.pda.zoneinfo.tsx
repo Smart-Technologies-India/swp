@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import { z } from "zod";
-import { checkUID } from "~/utils";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
     const cookieHeader = props.request.headers.get("Cookie");

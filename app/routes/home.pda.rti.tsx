@@ -7,7 +7,6 @@ import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
-// import { checkUID } from "~/utils";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const cookieHeader = props.request.headers.get("Cookie");

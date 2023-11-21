@@ -6,7 +6,6 @@ import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { userPrefs } from "~/cookies";
 import { ApiCall, UploadFile } from "~/services/api";
 import { z } from "zod";
-import { checkUID } from "~/utils";
 
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
@@ -239,9 +238,6 @@ const CP: React.FC = (): JSX.Element => {
                     .optional(),
                 user_uid: z
                     .string()
-                    .refine(value => checkUID(value), {
-                        message: "Invalid UIDAI Number",
-                    })
                     .optional(),
                 village_id: z
                     .number({ invalid_type_error: "Select a valid village", required_error: "Select a village" })
