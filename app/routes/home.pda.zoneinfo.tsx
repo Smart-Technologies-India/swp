@@ -190,9 +190,6 @@ const ZoneInofrmation: React.FC = (): JSX.Element => {
                     .optional(),
                 user_uid: z
                     .string()
-                    .refine(value => checkUID(value), {
-                        message: "Invalid UIDAI Number",
-                    })
                     .optional(),
                 village_id: z
                     .number({ invalid_type_error: "Select a valid village", required_error: "Select a village" })
@@ -414,11 +411,10 @@ const ZoneInofrmation: React.FC = (): JSX.Element => {
                         <span className="mr-2">2.5</span> Applicant UID
                     </div>
                     <div className="flex-none lg:flex-1 w-full lg:w-auto">
-                        <input
-                            ref={uidRef}
-                            placeholder="Applicant UID"
-                            className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-                        />
+                    <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
                     </div>
                 </div>
                 {/*--------------------- section 2 end here ------------------------- */}

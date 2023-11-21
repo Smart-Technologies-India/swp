@@ -380,7 +380,7 @@ const BirthCertificate: React.FC = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.4</span> Applicant Email
+            <span className="mr-2">2.4</span>Applicant Email
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input

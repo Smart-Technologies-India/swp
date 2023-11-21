@@ -133,9 +133,6 @@ const BirthTeor: React.FC = (): JSX.Element => {
         email: z.string().email("Enter a valid email.").optional(),
         user_uid: z
           .string()
-          .refine((value) => checkUID(value), {
-            message: "Invalid UIDAI Number",
-          })
           .optional(),
         village_id: z.number({
           invalid_type_error: "Select a valid village",

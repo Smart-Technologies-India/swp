@@ -196,9 +196,6 @@ const OldCopy: React.FC = (): JSX.Element => {
                     .optional(),
                 user_uid: z
                     .string()
-                    .refine(value => checkUID(value), {
-                        message: "Invalid UIDAI Number",
-                    })
                     .optional(),
                 village_id: z
                     .number({ invalid_type_error: "Select a valid village", required_error: "Select a village" })

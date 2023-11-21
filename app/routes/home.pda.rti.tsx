@@ -83,9 +83,6 @@ const RightToInformation: React.FC = (): JSX.Element => {
         email: z.string().email("Enter a valid email.").optional(),
         user_uid: z
           .string()
-          // .refine((value) => checkUID(value), {
-          //   message: "Invalid UIDAI Number",
-          // })
           .optional(),
         subject_info: z.string().nonempty("Enter subject information."),
         from_date: z.date({
@@ -348,7 +345,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               ref={remarkRef}
-              placeholder="Additional Information Required"
+              placeholder="Subject matter of Information"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -389,7 +386,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <textarea
               ref={applicationNameRef}
-              placeholder="Information Needed"
+              placeholder="Description Of Information Needed"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2 h-28 resize-none"
             ></textarea>
           </div>
@@ -401,7 +398,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <textarea
               ref={applicationDescRef}
-              placeholder="Information Needed"
+              placeholder="Additional Information Needed"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2 h-28 resize-none"
             ></textarea>
           </div>
