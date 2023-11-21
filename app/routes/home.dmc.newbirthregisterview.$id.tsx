@@ -183,8 +183,8 @@ const BirthRegisterView = (): JSX.Element => {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
           auth_user_id: authuserid.data.getuserid.toString(),
-          focal_user_id: "51",
-          intra_user_id: "51",
+          focal_user_id: "43",
+          intra_user_id: "41",
           inter_user_id: "0",
           village: villagedata.name,
           name: from_data.name,
@@ -299,7 +299,7 @@ const BirthRegisterView = (): JSX.Element => {
       stage: "BIRTHREGISTER",
       form_id: from_data.id,
       from_user_id: Number(user.id),
-      to_user_id: 5,
+      to_user_id: 41,
       form_status: common.form_status,
       query_type: "PUBLIC",
       remark: replyQueryRef.current?.value,
@@ -1231,7 +1231,7 @@ const BirthRegisterView = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
 
@@ -1621,7 +1621,7 @@ const BirthRegisterView = (): JSX.Element => {
                 >
                   Query
                 </button>
-                {common.form_status == 1 && (user.id == 51 || user.id == 52) ? (
+                {common.form_status == 1 && (user.id == 41 || user.id == 42) ? (
                   <button
                     onClick={() => {
                       setRejectid((val) => common.id);
@@ -1633,7 +1633,7 @@ const BirthRegisterView = (): JSX.Element => {
                   </button>
                 ) : null}
                 {/* atp button */}
-                {common.form_status == 1 && user.id == common.auth_user_id ? (
+                {common.form_status == 1 && user.id == 43 ? (
                   <button
                     onClick={() => {
                       setForwardBox((val) => true);
@@ -1641,11 +1641,11 @@ const BirthRegisterView = (): JSX.Element => {
                         title: "Upload Document & Forward to Headclerk",
                         formstatus: 25,
                         querytype: "INTRA",
-                        authuserid: "53",
-                        foacaluserid: "51",
-                        intrauserid: "51,53",
+                        authuserid: "43",
+                        foacaluserid: "41",
+                        intrauserid: "41,43",
                         interuserid: "0",
-                        touserid: 52,
+                        touserid: 42,
                         querystatus: "PAYMENT",
                         status: "ACTIVE",
                       }));
@@ -1657,7 +1657,7 @@ const BirthRegisterView = (): JSX.Element => {
                 ) : null}
 
                 {/* jtp button */}
-                {common.form_status == 25 && user.id == 52 ? (
+                {common.form_status == 25 && user.id == 42 ? (
                   <button
                     onClick={() => {
                       setForwardBox((val) => true);
@@ -1665,11 +1665,11 @@ const BirthRegisterView = (): JSX.Element => {
                         title: "Forward to Suptd",
                         formstatus: 50,
                         querytype: "INTRA",
-                        authuserid: "51",
-                        foacaluserid: "51",
-                        intrauserid: "51,52",
+                        authuserid: "41",
+                        foacaluserid: "41",
+                        intrauserid: "41,42",
                         interuserid: "0",
-                        touserid: 51,
+                        touserid: 41,
                         querystatus: "INPROCESS",
                         status: "NONE",
                       }));
@@ -1679,7 +1679,7 @@ const BirthRegisterView = (): JSX.Element => {
                     Forward to Suptd
                   </button>
                 ) : null}
-                {common.form_status == 50 && user.id == 5 ? (
+                {common.form_status == 50 && user.id == 41 ? (
                   <button
                     onClick={() => {
                       forwardRef!.current!.value = `The Death Teor documents requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
@@ -1689,7 +1689,7 @@ const BirthRegisterView = (): JSX.Element => {
                         formstatus: 75,
                         querytype: "PUBLIC",
                         authuserid: "0",
-                        foacaluserid: "51",
+                        foacaluserid: "41",
                         intrauserid: "0",
                         interuserid: "0",
                         touserid: from_data.userId,
@@ -1900,11 +1900,11 @@ const BirthRegisterView = (): JSX.Element => {
 
 export default BirthRegisterView;
 
-interface QueryTabsProps {
-  isUser: boolean;
-  message: string;
-  date: string;
-  from_user: string;
-  to_user: string;
-  doc: null | undefined | string;
-}
+// interface QueryTabsProps {
+//   isUser: boolean;
+//   message: string;
+//   date: string;
+//   from_user: string;
+//   to_user: string;
+//   doc: null | undefined | string;
+// }

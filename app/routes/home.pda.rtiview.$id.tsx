@@ -1,10 +1,12 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { toast } from "react-toastify";
 
 import { ApiCall, UploadFile } from "~/services/api";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
 
@@ -1093,6 +1095,7 @@ const RightToInformationView = (): JSX.Element => {
             </button>
             {attachment != null ? (
               <a
+                rel="noreferrer"
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
@@ -1179,7 +1182,7 @@ const RightToInformationView = (): JSX.Element => {
             <span className="mr-2">1.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+            XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         {/*--------------------- section 1 end here ------------------------- */}
@@ -1205,7 +1208,8 @@ const RightToInformationView = (): JSX.Element => {
             <span className="mr-2">2.2</span> From Date
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {new Date(from_data.from_date) .toJSON()
+            {new Date(from_data.from_date)
+              .toJSON()
               .slice(0, 10)
               .split("-")
               .reverse()
@@ -1217,7 +1221,8 @@ const RightToInformationView = (): JSX.Element => {
             <span className="mr-2">2.3</span> To Date
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {new Date(from_data.to_date) .toJSON()
+            {new Date(from_data.to_date)
+              .toJSON()
               .slice(0, 10)
               .split("-")
               .reverse()
@@ -1641,14 +1646,14 @@ const RightToInformationView = (): JSX.Element => {
 
 export default RightToInformationView;
 
-interface QueryTabsProps {
-  isUser: boolean;
-  message: string;
-  date: string;
-  from_user: string;
-  to_user: string;
-  doc: null | undefined | string;
-}
+// interface QueryTabsProps {
+//   isUser: boolean;
+//   message: string;
+//   date: string;
+//   from_user: string;
+//   to_user: string;
+//   doc: null | undefined | string;
+// }
 
 // const QueryTabs: React.FC<QueryTabsProps> = (
 //   props: QueryTabsProps

@@ -1326,7 +1326,7 @@ const CPView: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         {/*--------------------- section 2 end here ------------------------- */}

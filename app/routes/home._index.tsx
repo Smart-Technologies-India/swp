@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 
 import {
   Chart as ChartJS,
@@ -6,24 +6,39 @@ import {
   Tooltip,
   Legend,
   CategoryScale,
-  LinearScaleOptions,
   LinearScale,
   registerables,
 } from "chart.js";
-import { Bar, Doughnut, Pie } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { LoaderArgs, LoaderFunction, json, redirect } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { ApiCall } from "~/services/api";
 import { userPrefs } from "~/cookies";
 import sideBarStore, { SideBarTabs } from "~/state/sidebar";
 import {
-  Fa6SolidHouse,
   Fa6SolidLandmark,
   LineMdConstruction,
   MdiFileLockOpen,
   MdiSelectionMultipleMarker,
   MingcuteGasStationFill,
   TablerMap2,
+  EmojioneMonotoneCoupleWithHeart,
+  HealthiconsICertificatePaper,
+  IcBaselineFileCopy,
+  MingcuteCertificate2Line,
+  PhCertificateBold,
+  PhNewspaperClippingLight,
+  TablerFileCertificate,
+  FluentPipelineArrowCurveDown20Filled,
+  MdiPipeLeak,
+  MdiPipeDisconnected,
+  IcBaselineTempleHindu,
+  Fa6SolidPeopleGroup,
+  IconParkTwotoneDiamondRing,
+  HealthiconsDeathAlt2,
+  PhBabyFill,
+  FluentPipelineAdd32Filled,
 } from "~/components/icons/icons";
 ChartJS.register(
   ArcElement,
@@ -38,19 +53,44 @@ ChartJS.register(
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const cookieHeader = props.request.headers.get("Cookie");
   const cookie: any = await userPrefs.parse(cookieHeader);
+
   if (cookie.role == "USER") {
     return redirect("/home/files/");
   }
 
-  const usersshow = ["COLLECTOR", "DYCOLLECTOR", "ATP", "JTP"];
+  const usersshow = [
+    "COLLECTOR",
+    "DYCOLLECTOR",
+    "ATP",
+    "JTP",
+    "SUPERINTENDENT",
+  ];
   if (!usersshow.includes(cookie.role)) {
     return redirect("/home/files");
   }
 
-  const filecount = await ApiCall({
+  const userdata = await ApiCall({
     query: `
-        query getFileCount{
-            getFileCount{
+        query getUserById($id:Int!){
+            getUserById(id:$id){
+                id,
+                role,
+                name,
+                department
+            }   
+        }
+        `,
+    veriables: {
+      id: parseInt(cookie.id!),
+    },
+  });
+
+  let filecount: any;
+  if (userdata.data.getUserById.department == "PDA") {
+    filecount = await ApiCall({
+      query: `
+        query getFileCount($department:String!){
+            getFileCount(department:$department){
               RTI,
               ZONE,
               OLDCOPY,
@@ -59,115 +99,365 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               LANDRECORDS,
               CP,
               OC,
-              PLINTH,
+              PLINTH
             }
           }
       `,
-    veriables: {},
-  });
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "DMC") {
+    filecount = await ApiCall({
+      query: `
+        query getFileCount($department:String!){
+            getFileCount(department:$department){
+              DEATHREGISTER,
+              BIRTHREGISTER
+            }
+          }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "CRSR") {
+    filecount = await ApiCall({
+      query: `
+        query getFileCount($department:String!){
+            getFileCount(department:$department){
+              BIRTHCERT,
+              BIRTHTEOR,
+              DEATHCERT,
+              DEATHTEOR,
+              MARRIAGECERT,
+              MARRIAGETEOR,
+              MARRIAGEREGISTER
+            }
+          }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "PWD") {
+    filecount = await ApiCall({
+      query: `
+        query getFileCount($department:String!){
+            getFileCount(department:$department){
+              TEMPWATERCONNECT,
+              TEMPWATERDISCONNECT,
+              WATERSIZECHANGE,
+              NEWWATERCONNECT,
+              WATERRECONNECT,
+              PERMANENTWATERDISCONNECT
+            }
+          }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "EST") {
+    filecount = await ApiCall({
+      query: `
+        query getFileCount($department:String!){
+            getFileCount(department:$department){
+              MARRIAGE,
+              RELIGIOUS,
+              ROADSHOW
+            }
+          }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  }
+
   const villagecount = await ApiCall({
     query: `
-        query villageFileCount{
-            villageFileCount{
+        query villageFileCount($department:String!){
+            villageFileCount(department:$department){
               count,
               village
             }
           }
       `,
-    veriables: {},
+    veriables: {
+      department: userdata.data.getUserById.department,
+    },
   });
+
   const officercount = await ApiCall({
     query: `
-        query officerFileCount{
-            officerFileCount{
+        query officerFileCount($department:String!){
+            officerFileCount(department:$department){
                 count,
                 auth_user_id
             }
           }
       `,
-    veriables: {},
+    veriables: {
+      department: userdata.data.getUserById.department,
+    },
   });
-  const processcount = await ApiCall({
-    query: `
-        query officerFileProgress{
-            officerFileProgress{
-            RTI{
-              pending,
-              completed,
-              rejected
-            },
-            ZONE{
-              pending,
-              completed,
-              rejected
-            },
-            OLDCOPY{
-              pending,
-              completed,
-              rejected
-            },
-            PETROLEUM{
-              pending,
-              completed,
-              rejected
-            },
-            UNAUTHORIZED{
-              pending,
-              completed,
-              rejected
-            },
-            LANDRECORDS{
-              pending,
-              completed,
-              rejected
-            },
-            MAMLATDAR{
-              pending,
-              completed,
-              rejected
-            },
-            DEMOLITION{
-              pending,
-              completed,
-              rejected
-            },
-            CP{
+
+  let processcount: any;
+
+  if (userdata.data.getUserById.department == "PDA") {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              RTI{
                 pending,
                 completed,
                 rejected
               },
-              OC{
+              ZONE{
                 pending,
                 completed,
                 rejected
               },
-              PLINTH{
+              OLDCOPY{
+                pending,
+                completed,
+                rejected
+              },
+              PETROLEUM{
+                pending,
+                completed,
+                rejected
+              },
+              UNAUTHORIZED{
+                pending,
+                completed,
+                rejected
+              },
+              LANDRECORDS{
+                pending,
+                completed,
+                rejected
+              },
+              MAMLATDAR{
+                pending,
+                completed,
+                rejected
+              },
+              DEMOLITION{
+                pending,
+                completed,
+                rejected
+              },
+              CP{
+                  pending,
+                  completed,
+                  rejected
+                },
+                OC{
+                  pending,
+                  completed,
+                  rejected
+                },
+                PLINTH{
+                  pending,
+                  completed,
+                  rejected
+                }
+          }
+          }
+        `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "DMC") {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              BIRTHREGISTER{
+                pending,
+                completed,
+                rejected
+              },
+              DEATHREGISTER{
                 pending,
                 completed,
                 rejected
               }
-        }
+          }
+          }
+        `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "CRSR") {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              BIRTHCERT{
+                pending,
+                completed,
+                rejected
+              },
+              BIRTHTEOR{
+                pending,
+                completed,
+                rejected
+              },
+              DEATHCERT{
+                pending,
+                completed,
+                rejected
+              },
+              DEATHTEOR{
+                pending,
+                completed,
+                rejected
+              },
+              MARRIAGECERT{
+                pending,
+                completed,
+                rejected
+              },
+              MARRIAGETEOR{
+                pending,
+                completed,
+                rejected
+              },
+              MARRIAGEREGISTER{
+                pending,
+                completed,
+                rejected
+              }
+            }
+          }
+        `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "PWD") {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              TEMPWATERCONNECT{
+                pending,
+                completed,
+                rejected
+              },
+              TEMPWATERDISCONNECT{
+                pending,
+                completed,
+                rejected
+              },
+              WATERSIZECHANGE{
+                pending,
+                completed,
+                rejected
+              },
+              NEWWATERCONNECT{
+                pending,
+                completed,
+                rejected
+              },
+              WATERRECONNECT{
+                pending,
+                completed,
+                rejected
+              },
+              PERMANENTWATERDISCONNECT{
+                pending,
+                completed,
+                rejected
+              }
+            }
+          }
         }
       `,
-    veriables: {},
-  });
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "EST") {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              MARRIAGE{
+                pending,
+                completed,
+                rejected
+              },
+              RELIGIOUS{
+                pending,
+                completed,
+                rejected
+              },
+              ROADSHOW{
+                pending,
+                completed,
+                rejected
+              }
+            }
+          }
+        }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (userdata.data.getUserById.department == "DMC") {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              BIRTHREGISTER{
+                pending,
+                completed,
+                rejected
+              },
+              DEATHREGISTER{
+                pending,
+                completed,
+                rejected
+              }
+            }
+          }
+        }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  }
 
   const villageprocess = await ApiCall({
     query: `
-        query villageFileProgress{
-            villageFileProgress{
+        query villageFileProgress($department:String!){
+            villageFileProgress(department:$department){
               village,
               fileCounts{
-                      formType,
+                formType,
                 count
               }
             }
           }
       `,
-    veriables: {},
+    veriables: { department: userdata.data.getUserById.department },
   });
 
+  console.log(userdata);
+  console.log(filecount);
+  console.log(villagecount);
+
   return json({
+    userdata: userdata.data.getUserById,
     filecount: filecount.data.getFileCount,
     villagecount: villagecount.data.villageFileCount,
     officercount: officercount.data.officerFileCount,
@@ -175,6 +465,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     villageprocess: villageprocess.data.villageFileProgress,
   });
 };
+
 const DashBoard = (): JSX.Element => {
   const loader = useLoaderData();
   const filecount = loader.filecount;
@@ -182,90 +473,92 @@ const DashBoard = (): JSX.Element => {
   const officercount = loader.officercount;
   const processcount = loader.processcount;
   const villageprocess = loader.villageprocess;
+  const userdata = loader.userdata;
 
   const achangeindex = sideBarStore((state) => state.changeTab);
 
   villagecount.sort((a: any, b: any) => b.count - a.count);
 
-  const topItems = villagecount.slice(0, 10);
-  const otherCount = villagecount
-    .slice(10)
-    .reduce((sum: any, item: any) => sum + item.count, 0);
+  // const topItems = villagecount.slice(0, 10);
+  // const otherCount = villagecount
+  //   .slice(10)
+  //   .reduce((sum: any, item: any) => sum + item.count, 0);
 
-  const otherDataset =
-    otherCount !== 0
-      ? {
-          label: "Other",
-          data: [otherCount],
-          backgroundColor: "rgba(192, 192, 192, 0.75)",
-          borderColor: "rgba(255, 255, 255, 1)",
-          borderWidth: 1,
-        }
-      : null;
+  // const otherDataset =
+  //   otherCount !== 0
+  //     ? {
+  //         label: "Other",
+  //         data: [otherCount],
+  //         backgroundColor: "rgba(192, 192, 192, 0.75)",
+  //         borderColor: "rgba(255, 255, 255, 1)",
+  //         borderWidth: 1,
+  //       }
+  //     : null;
 
-  const dynamicColors = (numColors: any) => {
-    const colors = [];
-    for (let i = 0; i < numColors; i++) {
-      const r = Math.floor(Math.random() * 256);
-      const g = Math.floor(Math.random() * 256);
-      const b = Math.floor(Math.random() * 256);
-      const color = `rgba(${r}, ${g}, ${b}, 0.75)`;
-      colors.push(color);
-    }
-    return colors;
-  };
+  // const dynamicColors = (numColors: any) => {
+  //   const colors = [];
+  //   for (let i = 0; i < numColors; i++) {
+  //     const r = Math.floor(Math.random() * 256);
+  //     const g = Math.floor(Math.random() * 256);
+  //     const b = Math.floor(Math.random() * 256);
+  //     const color = `rgba(${r}, ${g}, ${b}, 0.75)`;
+  //     colors.push(color);
+  //   }
+  //   return colors;
+  // };
 
-  const topItemColors = dynamicColors(topItems.length);
-  const villageData = {
-    labels: [
-      ...topItems.map((item: any) => item.village),
-      ...(otherDataset ? ["Other"] : []),
-    ],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [
-          ...topItems.map((item: any) => item.count),
-          ...(otherDataset ? [otherCount] : []),
-        ],
-        backgroundColor: [
-          ...topItemColors,
-          ...(otherDataset ? ["rgba(192, 192, 192, 0.75)"] : []),
-        ],
-        borderColor: [
-          ...topItemColors.map((color) => color.replace("0.2", "1")),
-          ...(otherDataset ? ["rgba(255, 255, 255, 1)"] : []),
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+  // const topItemColors = dynamicColors(topItems.length);
 
-  const villageOptions: any = {
-    responsive: true,
-    plugins: {
-      datalabels: {
-        anchor: "center",
-        align: "center",
-        color: "#1e293b",
-        font: {
-          size: 30,
-        },
-        formatter: function (value: any) {
-          return value;
-        },
-      },
-      legend: {
-        labels: {
-          font: {
-            size: 25,
-          },
-        },
-      },
-    },
-  };
+  // const villageData = {
+  //   labels: [
+  //     ...topItems.map((item: any) => item.village),
+  //     ...(otherDataset ? ["Other"] : []),
+  //   ],
+  //   datasets: [
+  //     {
+  //       label: "# of Votes",
+  //       data: [
+  //         ...topItems.map((item: any) => item.count),
+  //         ...(otherDataset ? [otherCount] : []),
+  //       ],
+  //       backgroundColor: [
+  //         ...topItemColors,
+  //         ...(otherDataset ? ["rgba(192, 192, 192, 0.75)"] : []),
+  //       ],
+  //       borderColor: [
+  //         ...topItemColors.map((color) => color.replace("0.2", "1")),
+  //         ...(otherDataset ? ["rgba(255, 255, 255, 1)"] : []),
+  //       ],
+  //       borderWidth: 1,
+  //     },
+  //   ],
+  // };
 
-  const officerDataColors = dynamicColors(officercount.length);
+  // const villageOptions: any = {
+  //   responsive: true,
+  //   plugins: {
+  //     datalabels: {
+  //       anchor: "center",
+  //       align: "center",
+  //       color: "#1e293b",
+  //       font: {
+  //         size: 30,
+  //       },
+  //       formatter: function (value: any) {
+  //         return value;
+  //       },
+  //     },
+  //     legend: {
+  //       labels: {
+  //         font: {
+  //           size: 25,
+  //         },
+  //       },
+  //     },
+  //   },
+  // };
+
+  // const officerDataColors = dynamicColors(officercount.length);
 
   const officerData = {
     labels: officercount.map((val: any) => val.auth_user_id),
@@ -365,17 +658,49 @@ const DashBoard = (): JSX.Element => {
     },
   };
 
-  const labels = [
-    "RTI",
-    "Old Copy",
-    "Zone",
-    "Petroleum",
-    "Unauthorized",
-    "Land Section",
-    // "CP",
-    // "OC",
-    // "PLINTH",
-  ];
+  let labels = [];
+  if (userdata.department == "PDA") {
+    labels = [
+      "RTI",
+      "Old Copy",
+      "Zone",
+      "Petroleum",
+      "Unauthorized",
+      "Land Section",
+      // "CP",
+      // "OC",
+      // "PLINTH",
+    ];
+  } else if (userdata.department == "CRSR") {
+    labels = [
+      "Birth Cert",
+      "Birth Teor",
+      "Death Cert",
+      "Death Teor",
+      "Marriage Cert",
+      "Marriage Teor",
+      "New Marriage Register",
+    ];
+  } else if (userdata.department == "PWD") {
+    labels = [
+      "New Water Connection",
+      "Temp Water Connection",
+      "Temp Water Disconnection",
+      "Size Change",
+      "Water Reconnection",
+      "Permanent Disconnection",
+    ];
+  } else if (userdata.department == "DMC") {
+    labels = ["New Birth Register", "Death Register"];
+  } else if (userdata.department == "EST") {
+    labels = [
+      "Marriage Permission",
+      "Roadshow Permission",
+      "Religious Permission",
+    ];
+  } else {
+    labels = ["NONE"];
+  }
 
   const pendingData: number[] = [];
   const completedData: number[] = [];
@@ -472,34 +797,36 @@ const DashBoard = (): JSX.Element => {
   return (
     <>
       <div className="my-4 grid grid-cols-3 gap-4">
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.ZoneInfo)}
-          title="Zone Info"
-          color="bg-gradient-to-r from-rose-400 to-rose-600"
-          textcolor="text-rose-500"
-          link="/home/vzoneinfo"
-          value={filecount.ZONE}
-          icon={1}
-        />
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.OldCopy)}
-          title="Old Copy"
-          color="bg-gradient-to-r from-cyan-400 to-cyan-600"
-          textcolor="text-cyan-500"
-          link="/home/voldcopy"
-          value={filecount.OLDCOPY}
-          icon={2}
-        />
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.Rti)}
-          title="RTI"
-          color="bg-gradient-to-r from-blue-400 to-blue-600"
-          textcolor="text-blue-500"
-          link="/home/vrti"
-          value={filecount.RTI}
-          icon={3}
-        />
-        {/* <DashboradCard
+        {userdata.department == "PDA" ? (
+          <>
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.ZoneInfo)}
+              title="Zone Info"
+              color="bg-gradient-to-r from-rose-400 to-rose-600"
+              textcolor="text-rose-500"
+              link="/home/vzoneinfo"
+              value={filecount.ZONE}
+              icon={MdiSelectionMultipleMarker}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.OldCopy)}
+              title="Old Copy"
+              color="bg-gradient-to-r from-cyan-400 to-cyan-600"
+              textcolor="text-cyan-500"
+              link="/home/voldcopy"
+              value={filecount.OLDCOPY}
+              icon={TablerMap2}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Rti)}
+              title="RTI"
+              color="bg-gradient-to-r from-blue-400 to-blue-600"
+              textcolor="text-blue-500"
+              link="/home/vrti"
+              value={filecount.RTI}
+              icon={MdiFileLockOpen}
+            />
+            {/* <DashboradCard
           onclick={() => achangeindex(SideBarTabs.Cp)}
           title="CP"
           color="bg-gradient-to-r from-blue-400 to-blue-600"
@@ -523,33 +850,215 @@ const DashBoard = (): JSX.Element => {
           link="/home/vplinth"
           value={filecount.PLINTH}
         /> */}
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.Petroleum)}
-          title="Petroleum"
-          color="bg-gradient-to-r from-green-400 to-green-600"
-          textcolor="text-green-500"
-          link="/home/vpetroleum"
-          value={filecount.PETROLEUM}
-          icon={4}
-        />
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.Unauthorisd)}
-          title="Unauthorized"
-          color="bg-gradient-to-r from-slate-400 to-slate-600"
-          textcolor="text-slate-500"
-          link="/home/vunauthorised"
-          value={filecount.UNAUTHORIZED}
-          icon={5}
-        />
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.landSection)}
-          title="Land Section"
-          color="bg-gradient-to-r from-indigo-400 to-indigo-600"
-          textcolor="text-[#0984e3]"
-          link="/home/vlandsection"
-          value={filecount.LANDRECORDS}
-          icon={6}
-        />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Petroleum)}
+              title="Petroleum"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vpetroleum"
+              value={filecount.PETROLEUM}
+              icon={MingcuteGasStationFill}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Unauthorisd)}
+              title="Unauthorized"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vunauthorised"
+              value={filecount.UNAUTHORIZED}
+              icon={LineMdConstruction}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.landSection)}
+              title="Land Section"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vlandsection"
+              value={filecount.LANDRECORDS}
+              icon={Fa6SolidLandmark}
+            />
+          </>
+        ) : null}
+
+        {userdata.department == "CRSR" ? (
+          <>
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.BirthCert)}
+              title="Birth Cert"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vbirthcert"
+              value={filecount.BIRTHCERT}
+              icon={MingcuteCertificate2Line}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.BirthTeor)}
+              title="Birth Teor"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vbirthteor"
+              value={filecount.BIRTHTEOR}
+              icon={IcBaselineFileCopy}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.DeathCert)}
+              title="Death Cert"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vdeathcert"
+              value={filecount.DEATHCERT}
+              icon={TablerFileCertificate}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.DeathTeor)}
+              title="Death Teor"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vdeathteor"
+              value={filecount.DEATHTEOR}
+              icon={HealthiconsICertificatePaper}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.MarriageCert)}
+              title="Marriage Cert"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vmarriagecert"
+              value={filecount.MARRIAGECERT}
+              icon={PhCertificateBold}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.MarriageTeor)}
+              title="Marriage Teor"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vmarriageteor"
+              value={filecount.MARRIAGETEOR}
+              icon={PhNewspaperClippingLight}
+            />
+
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.NewMarriage)}
+              title="New Marriage Register"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vmarriageregister"
+              value={filecount.MARRIAGEREGISTER}
+              icon={EmojioneMonotoneCoupleWithHeart}
+            />
+          </>
+        ) : null}
+        {userdata.department == "PWD" ? (
+          <>
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.NewWaterConnect)}
+              title="New Water Connection"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vnewwaterconnect"
+              value={filecount.NEWWATERCONNECT}
+              icon={FluentPipelineAdd32Filled}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.TempConnect)}
+              title="Temp Water Connection"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vtempwaterconnect"
+              value={filecount.TEMPWATERCONNECT}
+              icon={FluentPipelineAdd32Filled}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.TempDisconnect)}
+              title="Temp Water Disconnection"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vtempwaterdisconnect"
+              value={filecount.TEMPWATERDISCONNECT}
+              icon={MdiPipeDisconnected}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.SizeChange)}
+              title="Size Change"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vwatersizechange"
+              value={filecount.WATERSIZECHANGE}
+              icon={FluentPipelineArrowCurveDown20Filled}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.WaterReconnect)}
+              title="Water Reconnection"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vwaterreconnect"
+              value={filecount.WATERRECONNECT}
+              icon={MdiPipeLeak}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.PermanentDisconnect)}
+              title="Permanent Disconnection"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vpermanentwaterdisconnect"
+              value={filecount.PERMANENTWATERDISCONNECT}
+              icon={MdiPipeDisconnected}
+            />
+          </>
+        ) : null}
+        {userdata.department == "DMC" ? (
+          <>
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.NewBirthRegister)}
+              title="New Birth Register"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vnewbirthregister"
+              value={filecount.BIRTHREGISTER}
+              icon={PhBabyFill}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.NewDeathRegister)}
+              title="Death Register"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vnewdeathregister"
+              value={filecount.DEATHREGISTER}
+              icon={HealthiconsDeathAlt2}
+            />
+          </>
+        ) : null}
+        {userdata.department == "EST" ? (
+          <>
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Marriage)}
+              title="Marriage Permission"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vmarriage"
+              value={filecount.MARRIAGE}
+              icon={IconParkTwotoneDiamondRing}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.RoadShow)}
+              title="Roadshow Permission"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vroadshow"
+              value={filecount.ROADSHOW}
+              icon={Fa6SolidPeopleGroup}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Religious)}
+              title="Religious Permission"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vreligious"
+              value={filecount.RELIGIOUS}
+              icon={IcBaselineTempleHindu}
+            />
+          </>
+        ) : null}
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -562,10 +1071,12 @@ const DashBoard = (): JSX.Element => {
           </div>
         </div>
         <div className="h-full bg-white gird place-items-center">
-          <div className="p-4 h-96">
+          <div className="p-4 flex flex-col h-full">
             <h1 className="text-gray-800 text-sm font-semibold">File status</h1>
-            <div className="h-4"></div>
-            <Bar className="" options={options} data={data} />
+            <div className="grow"></div>
+            <div className="w-full h-96">
+              <Bar className="" options={options} data={data} />
+            </div>
           </div>
         </div>
       </div>
@@ -588,7 +1099,7 @@ interface DashboradCardProps {
   color: string;
   textcolor: string;
   onclick: () => void;
-  icon: number;
+  icon: React.FC<{ className?: string }>;
 }
 
 const DashboradCard: React.FC<DashboradCardProps> = (
@@ -606,42 +1117,9 @@ const DashboradCard: React.FC<DashboradCardProps> = (
           {props.title}
         </p>
         <p className={`grow text-2xl text-black font-medium`}>{props.value}</p>
-        {/* <Link
-          to={props.link}
-          className={`w-full ${props.color} text-white font-semibold text-lg inline-block text-center`}
-        >
-          VIEW
-        </Link> */}
       </div>
       <div>
-        {props.icon == 1 ? (
-          <MdiSelectionMultipleMarker
-            className={`text-3xl ${props.textcolor}`}
-          ></MdiSelectionMultipleMarker>
-        ) : null}
-        {props.icon == 2 ? (
-          <TablerMap2 className={`text-3xl ${props.textcolor}`}></TablerMap2>
-        ) : null}
-        {props.icon == 3 ? (
-          <MdiFileLockOpen
-            className={`text-3xl ${props.textcolor}`}
-          ></MdiFileLockOpen>
-        ) : null}
-        {props.icon == 4 ? (
-          <MingcuteGasStationFill
-            className={`text-3xl ${props.textcolor}`}
-          ></MingcuteGasStationFill>
-        ) : null}
-        {props.icon == 5 ? (
-          <LineMdConstruction
-            className={`text-3xl ${props.textcolor}`}
-          ></LineMdConstruction>
-        ) : null}
-        {props.icon == 6 ? (
-          <Fa6SolidLandmark
-            className={`text-3xl ${props.textcolor}`}
-          ></Fa6SolidLandmark>
-        ) : null}
+        <props.icon className={`text-3xl ${props.textcolor}`}></props.icon>
       </div>
     </div>
   );

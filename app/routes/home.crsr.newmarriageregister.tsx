@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import { ApiCall, UploadFile } from "~/services/api";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import { checkUID } from "~/utils";
 
@@ -25,7 +26,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 address,
                 contact,
                 email,
-                user_uid
+                user_uid,
+                user_uid_four,
             }   
         }
         `,
@@ -43,7 +45,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
   const mobileRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const uidRef = useRef<HTMLInputElement>(null);
+  // const uidRef = useRef<HTMLInputElement>(null);
 
   const villageRef = useRef<HTMLSelectElement>(null);
   const [village, setVillage] = useState<any[]>([]);
@@ -56,7 +58,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
   const [brideReligion, setBrideReligion] = useState<Religion>("HINDU");
   // const [religion, setReligion] = useState<Religion>("HINDU");
 
-  const groomNameRef = useRef<HTMLInputElement>(null);
+  // const groomNameRef = useRef<HTMLInputElement>(null);
   const brideNameRef = useRef<HTMLInputElement>(null);
 
   const groomDateOfBirthRef = useRef<HTMLInputElement>(null);
@@ -75,7 +77,6 @@ const MarriageRegister: React.FC = (): JSX.Element => {
   const witnessTwoRef = useRef<HTMLInputElement>(null);
   const witnessThreeRef = useRef<HTMLInputElement>(null);
 
-  const remarkRef = useRef<HTMLInputElement>(null);
 
   const joint_bride_groom_photo_url_Ref = useRef<HTMLInputElement>(null);
   const [joint_bride_groom_photo_url, setJoint_bride_groom_photo_url] =
@@ -139,7 +140,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleLogoChange = (
@@ -172,18 +173,18 @@ const MarriageRegister: React.FC = (): JSX.Element => {
             message: "Invalid UIDAI Number",
           })
           .optional(),
-        village_id: z.number({
-          invalid_type_error: "Select a valid village",
-          required_error: "Select a village",
-        })
-        .refine((val) => val != 0, {
-          message: "Please select village",
-        }),
+        village_id: z
+          .number({
+            invalid_type_error: "Select a valid village",
+            required_error: "Select a village",
+          })
+          .refine((val) => val != 0, {
+            message: "Please select village",
+          }),
 
         religion_bride: z.string().nonempty("Select religion of Bride"),
         religion_groom: z.string().nonempty("Select religion of Groom"),
 
-        groom_name: z.string().nonempty("Enter Name of Groom"),
         groom_father_name: z.string().nonempty("Enter Groom's Father Name"),
         groom_mother_name: z.string().nonempty("Enter Groom's Mother Name"),
         bride_name: z.string().nonempty("Enter Bride's Name"),
@@ -220,13 +221,13 @@ const MarriageRegister: React.FC = (): JSX.Element => {
       address: addressRef!.current!.value,
       mobile: mobileRef!.current!.value,
       email: emailRef!.current!.value,
-      user_uid: uidRef!.current!.value,
+      user_uid: user.user_uid_four,
       village_id: parseInt(villageRef!.current!.value),
 
       groom_date_of_birth: new Date(groomDateOfBirthRef!.current!.value),
       bride_date_of_birth: new Date(brideDateOfBirthRef!.current!.value),
       date_of_marriage: new Date(dateOfMarriageRef!.current!.value),
-      groom_name: groomNameRef!.current!.value,
+
       groom_father_name: groomFatherNameRef!.current!.value,
       groom_mother_name: groomMotherNameRef!.current!.value,
       bride_name: brideNameRef!.current!.value,
@@ -349,7 +350,6 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               bride_date_of_birth: marriageRegisterScheme.bride_date_of_birth,
               date_of_marriage: marriageRegisterScheme.date_of_marriage,
 
-              name_of_child: marriageRegisterScheme.groom_name,
               groom_father_name: marriageRegisterScheme.groom_father_name,
               groom_mother_name: marriageRegisterScheme.groom_mother_name,
               bride_name: marriageRegisterScheme.bride_name,
@@ -402,7 +402,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleNumberChange = () => {
@@ -518,11 +518,10 @@ const MarriageRegister: React.FC = (): JSX.Element => {
             <span className="mr-2">2.4</span> Applicant Email
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={emailRef}
-              placeholder="Applicant Email"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
+          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -551,26 +550,13 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.1</span> Name of Groom
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={groomNameRef}
-              placeholder="Name of Groom"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
-          </div>
-        </div>
-
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.2</span> Date of Birth of Groom
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               type="date"
               ref={groomDateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -756,13 +742,13 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.18</span> Groom's Date of Birth
+            <span className="mr-2">3.17</span> Groom's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               type="date"
               ref={groomDateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -776,7 +762,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={brideDateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>

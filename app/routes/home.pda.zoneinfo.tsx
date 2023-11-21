@@ -269,7 +269,7 @@ const ZoneInofrmation: React.FC = (): JSX.Element => {
                 }
             }
             else {
-                toast.error("Something want wrong unable to upload images.", { theme: "light" });
+                toast.error("Something went wrong unable to upload images.", { theme: "light" });
             }
         } else { toast.error(parsed.error.errors[0].message, { theme: "light" }); }
     }

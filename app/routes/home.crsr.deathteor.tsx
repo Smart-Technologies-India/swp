@@ -25,7 +25,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 address,
                 contact,
                 email,
-                user_uid
+                user_uid,
+                user_uid_four,
             }   
         }
         `,
@@ -43,7 +44,7 @@ const DeathTeor: React.FC = (): JSX.Element => {
   const mobileRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const uidRef = useRef<HTMLInputElement>(null);
+  // const uidRef = useRef<HTMLInputElement>(null);
 
   const villageRef = useRef<HTMLSelectElement>(null);
   const [village, setVillage] = useState<any[]>([]);
@@ -65,7 +66,7 @@ const DeathTeor: React.FC = (): JSX.Element => {
 
   const registrationDateRef = useRef<HTMLInputElement>(null);
 
-  const remarkRef = useRef<HTMLInputElement>(null);
+  // const remarkRef = useRef<HTMLInputElement>(null);
 
   const applicant_uid_url_Ref = useRef<HTMLInputElement>(null);
   const [applicant_uid_url, setApplicant_uid_url] = useState<File>();
@@ -107,7 +108,7 @@ const DeathTeor: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleLogoChange = (
@@ -179,7 +180,7 @@ const DeathTeor: React.FC = (): JSX.Element => {
       address: addressRef!.current!.value,
       mobile: mobileRef!.current!.value,
       email: emailRef!.current!.value,
-      user_uid: uidRef!.current!.value,
+      user_uid: user.user_uid_four,
       village_id: parseInt(villageRef!.current!.value),
       date_of_death: new Date(dateOfDeathRef!.current!.value),
       date_of_birth: new Date(dateOfBirthRef!.current!.value),
@@ -259,6 +260,7 @@ const DeathTeor: React.FC = (): JSX.Element => {
               iagree: deathTeorScheme.iagree,
               status: "ACTIVE",
               date_of_death: deathTeorScheme.date_of_death,
+              date_of_birth: deathTeorScheme.date_of_birth,
               date_of_registration: deathTeorScheme.date_of_registration,
               gender: deathTeorScheme.gender,
             },
@@ -286,7 +288,7 @@ const DeathTeor: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleNumberChange = () => {
@@ -414,16 +416,15 @@ const DeathTeor: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={uidRef}
-              placeholder="Applicant UID"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
+          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.6</span> Applicant Gender
+            <span className="mr-2">2.6</span> Deceased Gender
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto flex gap-6 items-center">
             {Gender.map((val: string, index: number) => (
@@ -446,74 +447,74 @@ const DeathTeor: React.FC = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.7</span> Applicant Date of Birth
+            <span className="mr-2">2.7</span> Deceased Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               type="date"
               ref={dateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.8</span> Applicant Date of Death
+            <span className="mr-2">2.8</span> Deceased Date of Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               type="date"
               ref={dateOfDeathRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.9</span> Applicant Place of Death
+            <span className="mr-2">2.9</span> Deceased Place of Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               ref={placeOfDeathRef}
-              placeholder="Applicant Place of Death"
+              placeholder="Deceased Place of Death"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.10</span> Applicant Father Name
+            <span className="mr-2">2.10</span> Deceased Father Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               ref={fatherNameRef}
-              placeholder="Applicant Father Name"
+              placeholder="Deceased Father Name"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.11</span> Applicant Mother Name
+            <span className="mr-2">2.11</span> Deceased Mother Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               ref={motherNameRef}
-              placeholder="Applicant Mother Name"
+              placeholder="Deceased Mother Name"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.12</span> Applicant Husband/Wife Name
+            <span className="mr-2">2.12</span> Deceased Husband/Wife Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
               ref={husbandNameRef}
-              placeholder="Applicant Husband/Wife Name"
+              placeholder="Deceased Husband/Wife Name"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -538,7 +539,7 @@ const DeathTeor: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={registrationDateRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>

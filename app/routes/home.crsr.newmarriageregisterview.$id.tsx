@@ -187,7 +187,7 @@ const MarriageRegisterView = (): JSX.Element => {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
           auth_user_id: authuserid.data.getuserid.toString(),
-          focal_user_id: "51",
+          focal_user_id: "53",
           intra_user_id: "51",
           inter_user_id: "0",
           village: villagedata.name,
@@ -1249,7 +1249,7 @@ const MarriageRegisterView = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
 
@@ -1264,14 +1264,7 @@ const MarriageRegisterView = (): JSX.Element => {
           </p>
         </div>
 
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.1</span> Name of Groom
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.groom_name}
-          </div>
-        </div>
+       
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
@@ -1383,7 +1376,12 @@ const MarriageRegisterView = (): JSX.Element => {
             <span className="mr-2">2.12</span> Groom's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.groom_date_of_birth}
+            {new Date(from_data.groom_date_of_birth)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1391,7 +1389,12 @@ const MarriageRegisterView = (): JSX.Element => {
             <span className="mr-2">2.13</span> Bride's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.bride_date_of_birth}
+            {new Date(from_data.bride_date_of_birth)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1399,7 +1402,12 @@ const MarriageRegisterView = (): JSX.Element => {
             <span className="mr-2">2.14</span> Date of Marriage
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_marriage}
+            {new Date(from_data.date_of_marriage)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
 
@@ -1707,7 +1715,7 @@ const MarriageRegisterView = (): JSX.Element => {
                   </button>
                 ) : null}
                 {/* atp button */}
-                {common.form_status == 1 && user.id == common.auth_user_id ? (
+                {common.form_status == 1 && user.id == 53 ? (
                   <button
                     onClick={() => {
                       setForwardBox((val) => true);
@@ -1974,11 +1982,11 @@ const MarriageRegisterView = (): JSX.Element => {
 
 export default MarriageRegisterView;
 
-interface QueryTabsProps {
-  isUser: boolean;
-  message: string;
-  date: string;
-  from_user: string;
-  to_user: string;
-  doc: null | undefined | string;
-}
+// interface QueryTabsProps {
+//   isUser: boolean;
+//   message: string;
+//   date: string;
+//   from_user: string;
+//   to_user: string;
+//   doc: null | undefined | string;
+// }

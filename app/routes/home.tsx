@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, json, redirect } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import { useRef } from "react";
 import {
@@ -20,11 +21,26 @@ import {
   MaterialSymbolsOralDisease,
   MdiDesktopMacDashboard,
   StreamlineInterfaceUserEditActionsCloseEditGeometricHumanPencilPersonSingleUpUserWrite,
+  EmojioneMonotoneCoupleWithHeart,
+  Fa6SolidPeopleGroup,
+  FluentPipelineAdd32Filled,
+  FluentPipelineArrowCurveDown20Filled,
+  HealthiconsDeathAlt2,
+  HealthiconsICertificatePaper,
+  IcBaselineFileCopy,
+  IcBaselineTempleHindu,
+  IconParkTwotoneDiamondRing,
+  MdiPipeDisconnected,
+  MdiPipeLeak,
+  MingcuteCertificate2Line,
+  PhBabyFill,
+  PhCertificateBold,
+  PhNewspaperClippingLight,
+  TablerFileCertificate,
 } from "~/components/icons/icons";
 import { userPrefs } from "~/cookies";
 import { ApiCall } from "~/services/api";
 import sideBarStore, { SideBarTabs } from "~/state/sidebar";
-import { toast } from "react-toastify";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const cookieHeader = props.request.headers.get("Cookie");
@@ -42,10 +58,9 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
         query getUserById($id:Int!){
             getUserById(id:$id){
                 id,
-                access_kay,
-                design_point_id,
                 role,
-                name
+                name,
+                department
             }   
         }
         `,
@@ -53,7 +68,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(cookie.id!),
     },
   });
-
   return json({
     user: userdata.data.getUserById,
     isAdmin: cookie.role == "ADMIN" ? true : false,
@@ -80,80 +94,22 @@ const Home: React.FC = (): JSX.Element => {
   const accesskeyRef = useRef<HTMLInputElement>(null);
   const designpointRef = useRef<HTMLInputElement>(null);
 
-  const switchtodesignpoint = async () => {
-    if (
-      user.design_point_id == "" ||
-      user.design_point_id == undefined ||
-      user.design_point_id == null
-    ) {
-      toast.error("This user does not exist", { theme: "light" });
-    } else if (
-      user.access_kay == "" ||
-      user.access_kay == undefined ||
-      user.access_kay == null
-    ) {
-      toast.error("Something whent wrong, Try again!", { theme: "light" });
-    } else {
-      accesskeyRef!.current!.value = user.access_kay;
-      designpointRef!.current!.value = user.design_point_id;
-      achangeindex(SideBarTabs.DesignPoint);
-      submitRef!.current!.click();
-    }
-  };
-
-  // useEffect(() => {
-  //     if (isUser) {
-  //         navigator("/home/files/");
-  //     } else {
-  //         navigator("/home/");
-  //     }
-  // }, []);
-
   return (
     <>
       <section className="h-screen w-full relative bg-[#eeeeee]">
-        {/* <TopNavBar
-                    name={username}
-                ></TopNavBar> */}
-
         <div className="flex relative flex-nowrap w-full">
-          {/* <div
-                        className={`z-40 w-full md:w-60 shrink-0 bg-[#182330] md:flex flex-col md:relative fixed top-0 left-0 min-h-screen md:min-h-full md:h-auto shadow-xl ${isMobile ? "grid place-items-center" : "hidden"
-                            }`}
-                    > */}
           <div
             className={`z-40 w-60 shrink-0 bg-[#182330] md:flex flex-col md:relative fixed top-0 left-0 min-h-screen md:min-h-full md:h-auto shadow-xl transition-all duration-700 md:translate-x-0 ${
               isMobile ? "" : "-translate-x-60"
             }`}
           >
             <div className="md:flex flex-col md:h-full">
-              {/* <div className="text-white text-center mb-4">
-                                <img
-                                    src="/images/banner.jpg"
-                                    alt="logo"
-                                    className="w-full h-40 object-cover object-top inline-block"
-                                />
-                            </div> */}
-
               <div className="flex text-xl gap-2 items-center w-full pl-4 mt-6 text-gray-200">
                 <Fa6SolidCalendarDays></Fa6SolidCalendarDays>
                 <p className="mallanna">{new Date().toDateString()}</p>
               </div>
               <div className="w-[2px] bg-gray-800 h-6"></div>
               <div className="flex flex-col grow">
-                {/* <Link
-                                    to={"/home/"}
-                                    onClick={() => {
-                                        achangeindex(SideBarTabs.Dashborad);
-                                        changeMobile(false);
-                                    }}
-                                >
-                                    <SidebarTab
-                                        icon={Fa6SolidObjectUngroup}
-                                        title="Dashboard"
-                                        active={asideindex === SideBarTabs.Dashborad}
-                                    ></SidebarTab>
-                                </Link> */}
                 {isUser ? (
                   <>
                     <Link
@@ -185,9 +141,13 @@ const Home: React.FC = (): JSX.Element => {
                   </>
                 ) : (
                   <>
-                    {["COLLECTOR", "DYCOLLECTOR", "ATP", "JTP"].includes(
-                      user.role
-                    ) ? (
+                    {[
+                      "COLLECTOR",
+                      "DYCOLLECTOR",
+                      "ATP",
+                      "JTP",
+                      "SUPERINTENDENT",
+                    ].includes(user.role) ? (
                       <Link
                         to={"/home/"}
                         onClick={() => {
@@ -216,115 +176,325 @@ const Home: React.FC = (): JSX.Element => {
                       ></SidebarTab>
                     </Link>
                     <div className="w-full h-[2px] bg-gray-800 my-3"></div>
-                    <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
-                      Citizen Files
-                    </p>
-                    <Link
-                      to={"/home/vzoneinfo"}
-                      onClick={() => achangeindex(SideBarTabs.ZoneInfo)}
-                    >
-                      <SidebarTab
-                        icon={MaterialSymbolsActivityZone}
-                        title="Zone Info"
-                        active={asideindex === SideBarTabs.ZoneInfo}
-                      ></SidebarTab>
-                    </Link>
-                    <Link
-                      to={"/home/vrti"}
-                      onClick={() => achangeindex(SideBarTabs.Rti)}
-                    >
-                      <SidebarTab
-                        icon={MaterialSymbolsAlignHorizontalRight}
-                        title="RTI"
-                        active={asideindex === SideBarTabs.Rti}
-                      ></SidebarTab>
-                    </Link>
-                    <Link
-                      to={"/home/voldcopy"}
-                      onClick={() => achangeindex(SideBarTabs.OldCopy)}
-                    >
-                      <SidebarTab
-                        icon={MaterialSymbolsOralDisease}
-                        title="Old Copy"
-                        active={asideindex === SideBarTabs.OldCopy}
-                      ></SidebarTab>
-                    </Link>
-                    {/* <Link
-                                            to={"/home/voc"}
-                                            onClick={() => achangeindex(SideBarTabs.Oc)}
-                                        >
-                                            <SidebarTab
-                                                icon={MaterialSymbolsOralDisease}
-                                                title="OC"
-                                                active={asideindex === SideBarTabs.Oc}
-                                            ></SidebarTab>
-                                        </Link>
-                                        <Link
-                                            to={"/home/vcp"}
-                                            onClick={() => achangeindex(SideBarTabs.Cp)}
-                                        >
-                                            <SidebarTab
-                                                icon={MaterialSymbolsOralDisease}
-                                                title="CP"
-                                                active={asideindex === SideBarTabs.Cp}
-                                            ></SidebarTab>
-                                        </Link>
-                                        <Link
-                                            to={"/home/vplinth"}
-                                            onClick={() => achangeindex(SideBarTabs.Plinth)}
-                                        >
-                                            <SidebarTab
-                                                icon={MaterialSymbolsOralDisease}
-                                                title="Plinth"
-                                                active={asideindex === SideBarTabs.Plinth}
-                                            ></SidebarTab>
-                                        </Link> */}
-                    <div className="w-full h-[2px] bg-gray-800 my-3"></div>
-                    <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
-                      Department Files
-                    </p>
-                    <Link
-                      to={"/home/vpetroleum"}
-                      onClick={() => achangeindex(SideBarTabs.Petroleum)}
-                    >
-                      <SidebarTab
-                        icon={Fa6SolidPersonMilitaryPointing}
-                        title="Petroleum"
-                        active={asideindex === SideBarTabs.Petroleum}
-                      ></SidebarTab>
-                    </Link>
-                    <Link
-                      to={"/home/vunauthorised"}
-                      onClick={() => achangeindex(SideBarTabs.Unauthorisd)}
-                    >
-                      <SidebarTab
-                        icon={Fa6SolidArrowsUpDownLeftRight}
-                        title="Unauthorised"
-                        active={asideindex === SideBarTabs.Unauthorisd}
-                      ></SidebarTab>
-                    </Link>
-                    <div className="w-full h-[2px] bg-gray-800 my-3"></div>
-                    <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
-                      Intra Department Files
-                    </p>
-                    <Link
-                      to={"/home/vlandsection"}
-                      onClick={() => achangeindex(SideBarTabs.landSection)}
-                    >
-                      <SidebarTab
-                        icon={Fa6SolidMapLocationDot}
-                        title="Land Section"
-                        active={asideindex === SideBarTabs.landSection}
-                      ></SidebarTab>
-                    </Link>
+                    {["COLLECTOR", "DYCOLLECTOR", "PDA"].includes(
+                      user.department
+                    ) ? (
+                      <>
+                        <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
+                          Citizen Files
+                        </p>
+                        <Link
+                          to={"/home/pda/vzoneinfo"}
+                          onClick={() => achangeindex(SideBarTabs.ZoneInfo)}
+                        >
+                          <SidebarTab
+                            icon={MaterialSymbolsActivityZone}
+                            title="Zone Info"
+                            active={asideindex === SideBarTabs.ZoneInfo}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pda/vrti"}
+                          onClick={() => achangeindex(SideBarTabs.Rti)}
+                        >
+                          <SidebarTab
+                            icon={MaterialSymbolsAlignHorizontalRight}
+                            title="RTI"
+                            active={asideindex === SideBarTabs.Rti}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pda/voldcopy"}
+                          onClick={() => achangeindex(SideBarTabs.OldCopy)}
+                        >
+                          <SidebarTab
+                            icon={MaterialSymbolsOralDisease}
+                            title="Old Copy"
+                            active={asideindex === SideBarTabs.OldCopy}
+                          ></SidebarTab>
+                        </Link>
+                        <div className="w-full h-[2px] bg-gray-800 my-3"></div>
+                        <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
+                          Department Files
+                        </p>
+                        <Link
+                          to={"/home/pda/vpetroleum"}
+                          onClick={() => achangeindex(SideBarTabs.Petroleum)}
+                        >
+                          <SidebarTab
+                            icon={Fa6SolidPersonMilitaryPointing}
+                            title="Petroleum"
+                            active={asideindex === SideBarTabs.Petroleum}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pda/vunauthorised"}
+                          onClick={() => achangeindex(SideBarTabs.Unauthorisd)}
+                        >
+                          <SidebarTab
+                            icon={Fa6SolidArrowsUpDownLeftRight}
+                            title="Unauthorised"
+                            active={asideindex === SideBarTabs.Unauthorisd}
+                          ></SidebarTab>
+                        </Link>
+                        <div className="w-full h-[2px] bg-gray-800 my-3"></div>
+                        <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
+                          Intra Department Files
+                        </p>
+                        <Link
+                          to={"/home/pda/vlandsection"}
+                          onClick={() => achangeindex(SideBarTabs.landSection)}
+                        >
+                          <SidebarTab
+                            icon={Fa6SolidMapLocationDot}
+                            title="Land Section"
+                            active={asideindex === SideBarTabs.landSection}
+                          ></SidebarTab>
+                        </Link>
+                      </>
+                    ) : null}
+
+                    {/* crsr start here */}
+
+                    {["COLLECTOR", "DYCOLLECTOR", "CRSR"].includes(
+                      user.department
+                    ) ? (
+                      <>
+                        <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
+                          CRSR
+                        </p>
+                        <Link
+                          to={"/home/crsr/vbirthcert"}
+                          onClick={() => achangeindex(SideBarTabs.BirthCert)}
+                        >
+                          <SidebarTab
+                            icon={MingcuteCertificate2Line}
+                            title="Birth Cert"
+                            active={asideindex === SideBarTabs.BirthCert}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/crsr/vbirthteor"}
+                          onClick={() => achangeindex(SideBarTabs.BirthTeor)}
+                        >
+                          <SidebarTab
+                            icon={IcBaselineFileCopy}
+                            title="Birth Teor"
+                            active={asideindex === SideBarTabs.BirthTeor}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/crsr/vdeathcert"}
+                          onClick={() => achangeindex(SideBarTabs.DeathCert)}
+                        >
+                          <SidebarTab
+                            icon={TablerFileCertificate}
+                            title="Death Cert"
+                            active={asideindex === SideBarTabs.DeathCert}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/crsr/vdeathteor"}
+                          onClick={() => achangeindex(SideBarTabs.DeathTeor)}
+                        >
+                          <SidebarTab
+                            icon={HealthiconsICertificatePaper}
+                            title="Death Teor"
+                            active={asideindex === SideBarTabs.DeathTeor}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/crsr/vmarriagecert"}
+                          onClick={() => achangeindex(SideBarTabs.MarriageCert)}
+                        >
+                          <SidebarTab
+                            icon={PhCertificateBold}
+                            title="Marriage Cert"
+                            active={asideindex === SideBarTabs.MarriageCert}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/crsr/vmarriageteor"}
+                          onClick={() => achangeindex(SideBarTabs.MarriageTeor)}
+                        >
+                          <SidebarTab
+                            icon={PhNewspaperClippingLight}
+                            title="Marriage Teor"
+                            active={asideindex === SideBarTabs.MarriageTeor}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/crsr/vmarriageregister"}
+                          onClick={() => achangeindex(SideBarTabs.NewMarriage)}
+                        >
+                          <SidebarTab
+                            icon={EmojioneMonotoneCoupleWithHeart}
+                            title="New Marriage Register"
+                            active={asideindex === SideBarTabs.NewMarriage}
+                          ></SidebarTab>
+                        </Link>
+                      </>
+                    ) : null}
+
+                    {/* crsr end here */}
+
+                    {/* pwd start here */}
+                    {["PWD"].includes(user.department) ? (
+                      <>
+                        <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
+                          PWD
+                        </p>
+                        <Link
+                          to={"/home/pwd/vnewwaterconnect"}
+                          onClick={() =>
+                            achangeindex(SideBarTabs.NewWaterConnect)
+                          }
+                        >
+                          <SidebarTab
+                            icon={FluentPipelineAdd32Filled}
+                            title="New Water Connection"
+                            active={asideindex === SideBarTabs.NewWaterConnect}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pwd/vtempwaterconnect"}
+                          onClick={() => achangeindex(SideBarTabs.TempConnect)}
+                        >
+                          <SidebarTab
+                            icon={FluentPipelineAdd32Filled}
+                            title="Temp Water Connection"
+                            active={asideindex === SideBarTabs.TempConnect}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pwd/vtempwaterdisconnect"}
+                          onClick={() =>
+                            achangeindex(SideBarTabs.TempDisconnect)
+                          }
+                        >
+                          <SidebarTab
+                            icon={MdiPipeDisconnected}
+                            title="Temp Water Disconnection"
+                            active={asideindex === SideBarTabs.TempDisconnect}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pwd/vwatersizechange"}
+                          onClick={() => achangeindex(SideBarTabs.SizeChange)}
+                        >
+                          <SidebarTab
+                            icon={FluentPipelineArrowCurveDown20Filled}
+                            title="Size Change"
+                            active={asideindex === SideBarTabs.SizeChange}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pwd/vwaterreconnect"}
+                          onClick={() =>
+                            achangeindex(SideBarTabs.WaterReconnect)
+                          }
+                        >
+                          <SidebarTab
+                            icon={MdiPipeLeak}
+                            title="Water Reconnection"
+                            active={asideindex === SideBarTabs.WaterReconnect}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/pwd/vpermanentwaterdisconnect"}
+                          onClick={() =>
+                            achangeindex(SideBarTabs.PermanentDisconnect)
+                          }
+                        >
+                          <SidebarTab
+                            icon={MdiPipeDisconnected}
+                            title="Permanent Disconnection"
+                            active={
+                              asideindex === SideBarTabs.PermanentDisconnect
+                            }
+                          ></SidebarTab>
+                        </Link>
+                      </>
+                    ) : null}
+                    {/* pwd end here */}
+
+                    {/* dmc start here */}
+                    {["DMC"].includes(user.department) ? (
+                      <>
+                        <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
+                          DMC
+                        </p>
+                        <Link
+                          to={"/home/dmc/vnewbirthregister"}
+                          onClick={() =>
+                            achangeindex(SideBarTabs.NewBirthRegister)
+                          }
+                        >
+                          <SidebarTab
+                            icon={PhBabyFill}
+                            title="New Birth Register"
+                            active={asideindex === SideBarTabs.NewBirthRegister}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/dmc/vnewdeathregister"}
+                          onClick={() =>
+                            achangeindex(SideBarTabs.NewDeathRegister)
+                          }
+                        >
+                          <SidebarTab
+                            icon={HealthiconsDeathAlt2}
+                            title="Death Register"
+                            active={asideindex === SideBarTabs.NewDeathRegister}
+                          ></SidebarTab>
+                        </Link>
+                      </>
+                    ) : null}
+                    {/* dmc end here */}
+
+                    {/* EST start here */}
+                    {["COLLECTOR", "DYCOLLECTOR", "EST"].includes(
+                      user.department
+                    ) ? (
+                      <>
+                        <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
+                          EST
+                        </p>
+                        <Link
+                          to={"/home/est/vmarriage"}
+                          onClick={() => achangeindex(SideBarTabs.Marriage)}
+                        >
+                          <SidebarTab
+                            icon={IconParkTwotoneDiamondRing}
+                            title="Marriage Permission"
+                            active={asideindex === SideBarTabs.Marriage}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/est/vroadshow"}
+                          onClick={() => achangeindex(SideBarTabs.RoadShow)}
+                        >
+                          <SidebarTab
+                            icon={Fa6SolidPeopleGroup}
+                            title="Roadshow Permission"
+                            active={asideindex === SideBarTabs.RoadShow}
+                          ></SidebarTab>
+                        </Link>
+                        <Link
+                          to={"/home/est/vreligious"}
+                          onClick={() => achangeindex(SideBarTabs.Religious)}
+                        >
+                          <SidebarTab
+                            icon={IcBaselineTempleHindu}
+                            title="Religious Permission"
+                            active={asideindex === SideBarTabs.Religious}
+                          ></SidebarTab>
+                        </Link>
+                      </>
+                    ) : null}
+                    {/* EST end here */}
+
                     <div className="w-full h-[2px] bg-gray-800 my-4"></div>
-                    <button onClick={switchtodesignpoint}>
-                      <SidebarTab
-                        icon={Fa6SolidCodeBranch}
-                        title="CP/PL/OC Auto Approval System"
-                        active={asideindex === SideBarTabs.DesignPoint}
-                      ></SidebarTab>
-                    </button>
                   </>
                 )}
                 {user.role == "USER" ? (
@@ -359,22 +529,21 @@ const Home: React.FC = (): JSX.Element => {
                         active={asideindex === SideBarTabs.DealingHand}
                       ></SidebarTab>
                     </Link>
-
-                    <Link
-                      to={"/home/search"}
-                      onClick={() => {
-                        achangeindex(SideBarTabs.Search);
-                        changeMobile(false);
-                      }}
-                    >
-                      <SidebarTab
-                        icon={Fa6SolidMagnifyingGlass}
-                        title="Search"
-                        active={asideindex === SideBarTabs.Search}
-                      ></SidebarTab>
-                    </Link>
                   </>
                 ) : null}
+                <Link
+                  to={"/home/search"}
+                  onClick={() => {
+                    achangeindex(SideBarTabs.Search);
+                    changeMobile(false);
+                  }}
+                >
+                  <SidebarTab
+                    icon={Fa6SolidMagnifyingGlass}
+                    title="Search"
+                    active={asideindex === SideBarTabs.Search}
+                  ></SidebarTab>
+                </Link>
                 <button onClick={logoutHandle}>
                   <SidebarTab
                     icon={MaterialSymbolsLogoutRounded}

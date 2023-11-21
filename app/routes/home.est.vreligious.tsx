@@ -72,19 +72,22 @@ const Religious: React.FC = (): JSX.Element => {
             "APPROVED",
         ];
 
-        loader.department.sort((a: any, b: any) => {
-            const statusA = customOrder.indexOf(a.query_status);
-            const statusB = customOrder.indexOf(b.query_status);
+        if(!(loader.department == null || loader.department == undefined)){
+            loader.department.sort((a: any, b: any) => {
+                const statusA = customOrder.indexOf(a.query_status);
+                const statusB = customOrder.indexOf(b.query_status);
+    
+                if (statusA !== statusB) {
+                    return statusA - statusB;
+                } else {
+                    const dateA = new Date(a.event_date.split('/').reverse().join('-'));
+                    const dateB = new Date(b.event_date.split('/').reverse().join('-'));
+    
+                    return dateA.getTime() - dateB.getTime();
+                }
+            });
+        }
 
-            if (statusA !== statusB) {
-                return statusA - statusB;
-            } else {
-                const dateA = new Date(a.event_date.split('/').reverse().join('-'));
-                const dateB = new Date(b.event_date.split('/').reverse().join('-'));
-
-                return dateA.getTime() - dateB.getTime();
-            }
-        });
         setDepartment(loader.department);
     }
     useEffect(() => {

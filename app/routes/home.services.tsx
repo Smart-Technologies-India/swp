@@ -1,13 +1,11 @@
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import gsap from "gsap";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
-  CibLinuxFoundation,
   EmojioneMonotoneCoupleWithHeart,
   Fa6SolidPeopleGroup,
-  FluentBuildingPeople20Filled,
   FluentCloudArchive24Filled,
-  FluentEmojiHighContrastBuildingConstruction,
   FluentPipelineAdd32Filled,
   FluentPipelineArrowCurveDown20Filled,
   HealthiconsDeathAlt2,
@@ -25,6 +23,44 @@ import {
   PhNewspaperClippingLight,
   TablerFileCertificate,
 } from "~/components/icons/icons";
+import { userPrefs } from "~/cookies";
+import { ApiCall } from "~/services/api";
+
+export const loader: LoaderFunction = async (props: LoaderArgs) => {
+  
+  const cookieHeader = props.request.headers.get("Cookie");
+  const cookie: any = await userPrefs.parse(cookieHeader);
+
+  const userdata = await ApiCall({
+    query: `
+      query getUserById($id:Int!){
+          getUserById(id:$id){
+              id,
+              role,
+              name,
+              address,
+              contact,
+              email,
+              user_uid,
+              user_uid_four
+          }   
+      }
+      `,
+    veriables: {
+      id: parseInt(cookie.id!),
+    },
+  });
+
+  if (
+    userdata.data.getUserById.user_uid == null ||
+    userdata.data.getUserById.user_uid == undefined ||
+    userdata.data.getUserById.user_uid == ""
+  ) {
+    return redirect("/home/editprofile");
+  }
+
+  return null;
+};
 
 const Services: React.FC = (): JSX.Element => {
   const title = useRef<HTMLHeadingElement | null>(null);
@@ -157,7 +193,7 @@ const Services: React.FC = (): JSX.Element => {
               icons={9}
               title="New Marriage Register"
               description="Users are required to fill out this online application form to Register your marriage with your partner."
-              apply="/home/crsr/marriageregister"
+              apply="/home/crsr/newmarriageregister"
             />
             <ServiceCard
               icons={10}
@@ -324,7 +360,9 @@ const ServiceCard: React.FC<ServiceCardProps> = (
             <MdiPipeDisconnected className="text-3xl text-[#0984e3]"></MdiPipeDisconnected>
           ) : null}
 
-          <h1 className="text-lg font-medium lato text-center">{props.title}</h1>
+          <h1 className="text-lg font-medium lato text-center">
+            {props.title}
+          </h1>
           <p className="text-center text-sm mallanna">{props.description}</p>
           <Link
             to={props.apply}

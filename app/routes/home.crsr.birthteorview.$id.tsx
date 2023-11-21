@@ -72,7 +72,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     },
   });
 
-  
   const village = await ApiCall({
     query: `
         query getAllVillageById($id:Int!){
@@ -137,21 +136,13 @@ const BirthTeorView = (): JSX.Element => {
   const villagedata = loader.village;
   const from_data = loader.from_data;
 
+
   const navigator = useNavigate();
 
   const isSubmited = loader.submit;
   const common = isSubmited ? loader.common[0] : null;
   const submit = async () => {
-    const authuserid = await ApiCall({
-      query: `
-            query getuserid($filetype:String!){
-                getuserid(filetype:$filetype)
-              }
-            `,
-      veriables: {
-        filetype: "BIRTHTEOR",
-      },
-    });
+    
     const data = await ApiCall({
       query: `
             mutation createCommon($createCommonInput:CreateCommonInput!){
@@ -164,7 +155,7 @@ const BirthTeorView = (): JSX.Element => {
         createCommonInput: {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
-          auth_user_id: authuserid.data.getuserid.toString(),
+          auth_user_id: "53",
           focal_user_id: "51",
           intra_user_id: "51",
           inter_user_id: "0",
@@ -1209,7 +1200,7 @@ const BirthTeorView = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1225,7 +1216,12 @@ const BirthTeorView = (): JSX.Element => {
             <span className="mr-2">2.7</span> Applicant Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_birth}
+            {new Date(from_data.date_of_birth)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1257,7 +1253,12 @@ const BirthTeorView = (): JSX.Element => {
             <span className="mr-2">2.11</span> Date of Registration
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_registration}
+            {new Date(from_data.date_of_registration)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
 
@@ -1447,7 +1448,7 @@ const BirthTeorView = (): JSX.Element => {
                   </button>
                 ) : null}
                 {/* atp button */}
-                {common.form_status == 1 && user.id == common.auth_user_id ? (
+                {common.form_status == 1 && user.id == 53 ? (
                   <button
                     onClick={() => {
                       setForwardBox((val) => true);
@@ -1493,7 +1494,7 @@ const BirthTeorView = (): JSX.Element => {
                     Forward to Suptd
                   </button>
                 ) : null}
-                {common.form_status == 50 && user.id == 5 ? (
+                {common.form_status == 50 && user.id == 51 ? (
                   <button
                     onClick={() => {
                       forwardRef!.current!.value = `The Birth Teor documents requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
@@ -1714,11 +1715,11 @@ const BirthTeorView = (): JSX.Element => {
 
 export default BirthTeorView;
 
-interface QueryTabsProps {
-  isUser: boolean;
-  message: string;
-  date: string;
-  from_user: string;
-  to_user: string;
-  doc: null | undefined | string;
-}
+// interface QueryTabsProps {
+//   isUser: boolean;
+//   message: string;
+//   date: string;
+//   from_user: string;
+//   to_user: string;
+//   doc: null | undefined | string;
+// }

@@ -25,7 +25,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 address,
                 contact,
                 email,
-                user_uid
+                user_uid,
+                user_uid_four,
             }   
         }
         `,
@@ -43,7 +44,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
   const mobileRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const uidRef = useRef<HTMLInputElement>(null);
+  // const uidRef = useRef<HTMLInputElement>(null);
 
   const villageRef = useRef<HTMLSelectElement>(null);
   const [village, setVillage] = useState<any[]>([]);
@@ -97,7 +98,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
   const weightTimeOfBirthRef = useRef<HTMLInputElement>(null);
   const noOfWeeksPregnantRef = useRef<HTMLInputElement>(null);
 
-  const remarkRef = useRef<HTMLInputElement>(null);
+  // const remarkRef = useRef<HTMLInputElement>(null);
 
   const father_uid_url_Ref = useRef<HTMLInputElement>(null);
   const [father_uid_url, setFather_uid_url] = useState<File>();
@@ -139,7 +140,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleLogoChange = (
@@ -231,7 +232,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
       address: addressRef!.current!.value,
       mobile: mobileRef!.current!.value,
       email: emailRef!.current!.value,
-      user_uid: uidRef!.current!.value,
+      user_uid: user.user_uid_four,
       village_id: parseInt(villageRef!.current!.value),
       date_of_birth: new Date(dateOfBirthRef!.current!.value),
       mother_date_of_birth: new Date(motherDateOfBirthRef!.current!.value),
@@ -369,7 +370,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleNumberChange = () => {
@@ -485,11 +486,10 @@ const BirthRegister: React.FC = (): JSX.Element => {
             <span className="mr-2">2.4</span> Applicant Email
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={emailRef}
-              placeholder="Applicant Email"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
+          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">

@@ -1,8 +1,8 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { boolean } from "zod";
 import { userPrefs } from "~/cookies";
 import { ApiCall } from "~/services/api";
 
@@ -20,16 +20,37 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       `,
     veriables: {},
   });
+
+  const userdata = await ApiCall({
+    query: `
+        query getUserById($id:Int!){
+            getUserById(id:$id){
+                id,
+                role,
+                name,
+                department
+            }   
+        }
+        `,
+    veriables: {
+      id: parseInt(cookie.id!),
+    },
+  });
+
   return json({
     user: cookie,
+    userdata: userdata.data.getUserById,
     village: village.data.getAllVillage,
   });
 };
 
-const search = () => {
+const Search: React.FC = (): JSX.Element => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const loader = useLoaderData();
   const village = loader.village;
-  const user = loader.user;
+  // const user = loader.user;
+  const userdata = loader.userdata;
+  console.log(userdata);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const numberRef = useRef<HTMLInputElement>(null);
@@ -41,7 +62,7 @@ const search = () => {
   const [searchItems, setSearchItems] = useState<any[]>([]);
 
   const search = async () => {
-    let res: { [key: string]: any } = {};
+    let res: { [key: string]: any } = { department: userdata.department };
 
     if (
       casetypeRef.current?.value != null &&
@@ -181,7 +202,6 @@ const search = () => {
     }
   };
 
-
   return (
     <>
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
@@ -206,94 +226,165 @@ const search = () => {
               <option value="0" className="bg-white text-blakc text-lg">
                 Select Case Type
               </option>
-              {}
-              <option value="PETROLEUM" className="bg-white text-blakc text-lg">
-                Petroleum
-              </option>
-              <option value="RTI" className="bg-white text-blakc text-lg">
-                RTI
-              </option>
-              <option value="ZONE" className="bg-white text-blakc text-lg">
-                ZONE
-              </option>
-              <option value="OC" className="bg-white text-blakc text-lg">
-                OC
-              </option>
-              <option value="CP" className="bg-white text-blakc text-lg">
-                CP
-              </option>
-              <option value="PLINTH" className="bg-white text-blakc text-lg">
-                PLINTH
-              </option>
-              <option
-                value="DEMOLITION"
-                className="bg-white text-blakc text-lg"
-              >
-                DEMOLITION
-              </option>
-              <option value="OLDCOPY" className="bg-white text-blakc text-lg">
-                OLDCOPY
-              </option>
-              <option
-                value="LANDRECORDS"
-                className="bg-white text-blakc text-lg"
-              >
-                LAND RECORDS
-              </option>
-              <option
-                value="UNAUTHORISED"
-                className="bg-white text-blakc text-lg"
-              >
-                UNAUTHORISED
-              </option>
 
-              <option value="BIRTHREGISTER" className="bg-white text-blakc text-lg">
-              Birth Register
-              </option>
-              <option value="DEATHREGISTER" className="bg-white text-blakc text-lg">
-              Death Register
-              </option>
-              <option value="TEMPWATERCONNECT" className="bg-white text-blakc text-lg">
-              Temporary Water Connection
-              </option>
-              <option value="TEMPWATERDISCONNECT" className="bg-white text-blakc text-lg">
-              Temporary Water Disconnection
-              </option>
-              <option value="WATERSIZECHANGE" className="bg-white text-blakc text-lg">
-              Water Size Change
-              </option>
-              <option value="NEWWATERCONNECT" className="bg-white text-blakc text-lg">
-              New Water Connection
-              </option>
+              {userdata.department == "PDA" ? (
+                <>
+                  <option
+                    value="PETROLEUM"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Petroleum
+                  </option>
+                  <option value="RTI" className="bg-white text-blakc text-lg">
+                    RTI
+                  </option>
+                  <option value="ZONE" className="bg-white text-blakc text-lg">
+                    ZONE
+                  </option>
+                  <option value="OC" className="bg-white text-blakc text-lg">
+                    OC
+                  </option>
+                  <option value="CP" className="bg-white text-blakc text-lg">
+                    CP
+                  </option>
+                  <option
+                    value="PLINTH"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    PLINTH
+                  </option>
+                  <option
+                    value="DEMOLITION"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    DEMOLITION
+                  </option>
+                  <option
+                    value="OLDCOPY"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    OLDCOPY
+                  </option>
+                  <option
+                    value="LANDRECORDS"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    LAND RECORDS
+                  </option>
+                  <option
+                    value="UNAUTHORISED"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    UNAUTHORISED
+                  </option>
+                </>
+              ) : null}
 
-              <option value="WATERRECONNECT" className="bg-white text-blakc text-lg">
-              Water Reconnect
-              </option>
-              <option value="PERMANENTWATERDISCONNECT" className="bg-white text-blakc text-lg">
-              Permanent Water Disconnect
-              </option>
-              <option value="BIRTHCERT" className="bg-white text-blakc text-lg">
-              Birth Cert
-              </option>
-              <option value="BIRTHTEOR" className="bg-white text-blakc text-lg">
-              Birth Teor
-              </option>
-              <option value="DEATHCERT" className="bg-white text-blakc text-lg">
-              Death Cert
-              </option>
-              <option value="DEATHTEOR" className="bg-white text-blakc text-lg">
-              Death Teor
-              </option>
+              {userdata.department == "PWD" ? (
+                <>
+                  <option
+                    value="TEMPWATERCONNECT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Temporary Water Connection
+                  </option>
+                  <option
+                    value="TEMPWATERDISCONNECT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Temporary Water Disconnection
+                  </option>
+                  <option
+                    value="WATERSIZECHANGE"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Water Size Change
+                  </option>
+                  <option
+                    value="NEWWATERCONNECT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    New Water Connection
+                  </option>
 
-              <option value="MARRIAGECERT" className="bg-white text-blakc text-lg">
-              Marriage Cert
-              </option>
-              <option value="MARRIAGETEOR" className="bg-white text-blakc text-lg">
-              Marriage Teor              </option>
-              <option value="MARRIAGEREGISTER" className="bg-white text-blakc text-lg">
-              Marriage Register
-              </option>
-             
+                  <option
+                    value="WATERRECONNECT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Water Reconnect
+                  </option>
+                  <option
+                    value="PERMANENTWATERDISCONNECT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Permanent Water Disconnect
+                  </option>
+                </>
+              ) : null}
+
+              {userdata.department == "CRSR" ? (
+                <>
+                  <option
+                    value="BIRTHCERT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Birth Cert
+                  </option>
+                  <option
+                    value="BIRTHTEOR"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Birth Teor
+                  </option>
+                  <option
+                    value="DEATHCERT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Death Cert
+                  </option>
+                  <option
+                    value="DEATHTEOR"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Death Teor
+                  </option>
+
+                  <option
+                    value="MARRIAGECERT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage Cert
+                  </option>
+                  <option
+                    value="MARRIAGETEOR"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage Teor{" "}
+                  </option>
+                  <option
+                    value="MARRIAGEREGISTER"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage Register
+                  </option>
+                </>
+              ) : null}
+              {userdata.department == "DMC" ? (
+                <>
+                  <option
+                    value="BIRTHREGISTER"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Birth Register
+                  </option>
+                  <option
+                    value="DEATHREGISTER"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Death Register
+                  </option>
+                </>
+              ) : null}
             </select>
           </div>
           <div className="bg-gray-300 w-full h-[1px] my-3"></div>
@@ -462,4 +553,4 @@ const search = () => {
     </>
   );
 };
-export default search;
+export default Search;

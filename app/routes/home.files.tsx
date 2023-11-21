@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,10 +16,26 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const cookieHeader = props.request.headers.get("Cookie");
   const cookie: any = await userPrefs.parse(cookieHeader);
 
+  const userdata = await ApiCall({
+    query: `
+        query getUserById($id:Int!){
+            getUserById(id:$id){
+                id,
+                role,
+                name,
+                department
+            }   
+        }
+        `,
+    veriables: {
+      id: parseInt(cookie.id!),
+    },
+  });
+
   const department = await ApiCall({
     query: `
-        query filterCommon($filterCommonInput:FilterCommonInput!){
-            filterCommon(filterCommonInput:$filterCommonInput){
+        query filterCommonDepartment($filterDepartmentCommonInput:FilterDepartmentCommonInput!){
+          filterCommonDepartment(filterDepartmentCommonInput:$filterDepartmentCommonInput){
                 id,
                 village,
                 name,
@@ -36,16 +53,18 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
           }
       `,
     veriables: {
-      filterCommonInput: {
+      filterDepartmentCommonInput: {
         user_type: cookie.role == "USER" ? "USER" : "DEPARTMENT",
         user_id: parseInt(cookie.id!),
+        department: userdata.data.getUserById.department,
       },
     },
   });
 
   return json({
     user: cookie,
-    department: department.data.filterCommon,
+    userdata: userdata.data.getUserById,
+    department: department.data.filterCommonDepartment,
   });
 };
 
@@ -207,7 +226,6 @@ const Dashboard: React.FC = (): JSX.Element => {
     init();
   };
 
-  
   const getViewLink = (value: string, id: number): string => {
     if (value == "MARRIAGE") {
       return `/home/est/marriageview/${id}`;
@@ -366,6 +384,40 @@ const Dashboard: React.FC = (): JSX.Element => {
                 </thead>
                 <tbody>
                   {pagination.paginatedItems.map((val: any, index: number) => {
+                    // if (
+                    //   userdata.department == "CRSR" &&
+                    //   (val.form_type == "PETROLEUM" ||
+                    //     val.form_type == "RTI" ||
+                    //     val.form_type == "ZONE" ||
+                    //     val.form_type == "DEMOLITION" ||
+                    //     val.form_type == "OLDCOPY" ||
+                    //     val.form_type == "LANDRECORDS" ||
+                    //     val.form_type == "UNAUTHORISED" ||
+                    //     val.form_type == "CP" ||
+                    //     val.form_type == "OC" ||
+                    //     val.form_type == "PLINTH" ||
+                    //     val.form_type == "MARRIAGE" ||
+                    //     val.form_type == "RELIGIOUS" ||
+                    //     val.form_type == "ROADSHOW" ||
+                    //     val.form_type == "GENERIC" ||
+                    //     val.form_type == "BIRTHCERT" ||
+                    //     val.form_type == "BIRTHTEOR" ||
+                    //     val.form_type == "DEATHCERT" ||
+                    //     val.form_type == "DEATHTEOR" ||
+                    //     val.form_type == "MARRIAGECERT" ||
+                    //     val.form_type == "MARRIAGETEOR" ||
+                    //     val.form_type == "MARRIAGEREGISTER" ||
+                    //     val.form_type == "TEMPWATERCONNECT" ||
+                    //     val.form_type == "TEMPWATERDISCONNECT" ||
+                    //     val.form_type == "WATERSIZECHANGE" ||
+                    //     val.form_type == "NEWWATERCONNECT" ||
+                    //     val.form_type == "WATERRECONNECT" ||
+                    //     val.form_type == "PERMANENTWATERDISCONNECT" ||
+                    //     val.form_type == "DEATHREGISTER" ||
+                    //     val.form_type == "BIRTHREGISTER")
+                    // )
+                    //   return null;
+
                     return (
                       <tr
                         key={index}

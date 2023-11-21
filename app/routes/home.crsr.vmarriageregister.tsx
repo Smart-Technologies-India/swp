@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -29,7 +30,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 intra_user_id,
                 inter_user_id,
                 number,
-				event_date,
                 form_status,
                 query_status,
                 form_id
@@ -40,7 +40,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       filterCommonInput: {
         user_type: "DEPARTMENT",
         user_id: parseInt(cookie.id!),
-        form_type: "ROADSHOW",
+        form_type: "MARRIAGEREGISTER",
       },
     },
   });
@@ -50,9 +50,12 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     department: departmentdata.data.filterCommon,
   });
 };
-const Roadshow: React.FC = (): JSX.Element => {
+
+const MarriageRegister: React.FC = (): JSX.Element => {
   const loader = useLoaderData();
+
   const [department, setDepartment] = useState<unknown[]>([]);
+
   const pagination = usePagination(department);
 
   const searchRef = useRef<HTMLInputElement>(null);
@@ -60,34 +63,7 @@ const Roadshow: React.FC = (): JSX.Element => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   const init = () => {
-    const customOrder = [
-      "NONE",
-      "QUERYRAISED",
-      "INPROCESS",
-      "SUBMIT",
-      "REJECTED",
-      "COMPLETED",
-      "CERTIFICATEGRANT",
-      "APPROVED",
-    ];
-
-    if(!(loader.department == null || loader.department == undefined)){
-      loader.department.sort((a: any, b: any) => {
-          const statusA = customOrder.indexOf(a.query_status);
-          const statusB = customOrder.indexOf(b.query_status);
-
-          if (statusA !== statusB) {
-              return statusA - statusB;
-          } else {
-              const dateA = new Date(a.event_date.split('/').reverse().join('-'));
-              const dateB = new Date(b.event_date.split('/').reverse().join('-'));
-
-              return dateA.getTime() - dateB.getTime();
-          }
-      });
-  }
-
-    setDepartment(loader.department);
+    setDepartment((val) => loader.department);
   };
   useEffect(() => {
     init();
@@ -118,7 +94,6 @@ const Roadshow: React.FC = (): JSX.Element => {
                     intra_user_id,
                     inter_user_id,
                     number,
-                    event_date,
                     form_status,
                     query_status,
                     form_id
@@ -127,7 +102,6 @@ const Roadshow: React.FC = (): JSX.Element => {
             `,
       veriables: {
         searchCommonInput: {
-          form_type: "ROADSHOW",
           name: searchRef.current?.value,
         },
       },
@@ -143,7 +117,7 @@ const Roadshow: React.FC = (): JSX.Element => {
     setIsSearching((val) => false);
   };
 
-  const clearsearch = () => {
+  const clearsearch = async () => {
     setIsSearch((val) => false);
     init();
   };
@@ -153,7 +127,7 @@ const Roadshow: React.FC = (): JSX.Element => {
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
         <div className="flex items-center gap-2">
           <h1 className="text-gray-800 text-3xl font-semibold text-center">
-            Roadshow Forms
+            Marriage Register
           </h1>
           <div className="grow"></div>
           {isSearch ? (
@@ -201,7 +175,7 @@ const Roadshow: React.FC = (): JSX.Element => {
         {pagination.paginatedItems == undefined ||
         pagination.paginatedItems.length == 0 ||
         pagination.paginatedItems == null ? (
-          <h3 className="text-lg md:text-xl font-semibold text-center bg-rose-500 bg-opacity-25 rounded-md border-l-4 border-rose-500 py-2  text-rose-500">
+          <h3 className="text-2xl font-semibold text-center bg-rose-500 bg-opacity-25 rounded-md border-l-4 border-rose-500 py-2  text-rose-500">
             You do not have any pending forms.
           </h3>
         ) : (
@@ -219,9 +193,6 @@ const Roadshow: React.FC = (): JSX.Element => {
                     </th>
                     <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
                       Applicant
-                    </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
-                      Event Date
                     </th>
                     <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
                       Village
@@ -242,10 +213,7 @@ const Roadshow: React.FC = (): JSX.Element => {
                         className="bg-white border-b border-t transition duration-300 ease-in-out hover:bg-gray-100"
                       >
                         <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                          EST-RD-
-                          {`0000${val.form_id}`.substring(
-                            `0000${val.form_id}`.length - 4
-                          )}
+                          {val.form_id}
                         </td>
                         <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                           {val.form_type}
@@ -254,18 +222,10 @@ const Roadshow: React.FC = (): JSX.Element => {
                           {val.name}
                         </td>
                         <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                          {new Date(val.event_date)
-                            .toJSON()
-                            .slice(0, 10)
-                            .split("-")
-                            .reverse()
-                            .join("/")}
-                        </td>
-                        <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                           {val.village}
                         </td>
                         <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                          {val.query_status == "REJECTED" ? (
+                          {val.query_status == "REJCTED" ? (
                             <div className="py-1 text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium">
                               {val.query_status}
                             </div>
@@ -285,7 +245,7 @@ const Roadshow: React.FC = (): JSX.Element => {
                         </td>
                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                           <Link
-                            to={`/home/est/roadshowview/${val.form_id}`}
+                            to={`/home/crsr/newmarriageregisterview/${val.form_id}`}
                             className="py-1 w-full sm:w-auto block text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
                           >
                             VIEW
@@ -319,4 +279,4 @@ const Roadshow: React.FC = (): JSX.Element => {
     </>
   );
 };
-export default Roadshow;
+export default MarriageRegister;

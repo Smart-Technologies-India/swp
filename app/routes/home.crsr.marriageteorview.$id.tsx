@@ -26,15 +26,15 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               userId,
               registration_number,
               date_of_registration,
-              father_name,
+              groom_father_name,
               village_id,
-              mother_name,
+              groom_mother_name,
               bride_name,
               bride_father_name,
               bride_mother_name,
               applicant_uid_url,
-              father_uid_url,
-              mother_uid_url,
+              groom_father_uid_url,
+              groom_mother_uid_url,
               bride_uid_url,
               bride_father_uid_url,
               bride_mother_uid_url,
@@ -48,6 +48,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(id!),
     },
   });
+
 
   const submit = await ApiCall({
     query: `
@@ -168,7 +169,7 @@ const MarriageTeorView = (): JSX.Element => {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
           auth_user_id: authuserid.data.getuserid.toString(),
-          focal_user_id: "51",
+          focal_user_id: "53",
           intra_user_id: "51",
           inter_user_id: "0",
           village: villagedata.name,
@@ -1212,16 +1213,16 @@ const MarriageTeorView = (): JSX.Element => {
             <span className="mr-2">2.5</span> Bridegroom UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
-        
+
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">2.6</span> Bridegroom Father Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.father_name}
+            {from_data.groom_father_name}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1229,7 +1230,7 @@ const MarriageTeorView = (): JSX.Element => {
             <span className="mr-2">2.7</span> Bridegroom Mother Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.mother_name}
+            {from_data.groom_mother_name}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1269,7 +1270,12 @@ const MarriageTeorView = (): JSX.Element => {
             <span className="mr-2">2.12</span> Date of Registration
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_registration}
+            {new Date(from_data.date_of_registration)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
 
@@ -1314,7 +1320,7 @@ const MarriageTeorView = (): JSX.Element => {
             <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
               <a
                 target="_blank"
-                href={from_data.father_uid_url}
+                href={from_data.groom_father_uid_url}
                 className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
               >
                 <div className="flex items-center gap-2">
@@ -1333,7 +1339,7 @@ const MarriageTeorView = (): JSX.Element => {
             <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
               <a
                 target="_blank"
-                href={from_data.mother_uid_url}
+                href={from_data.groom_mother_uid_url}
                 className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
               >
                 <div className="flex items-center gap-2">
@@ -1517,7 +1523,7 @@ const MarriageTeorView = (): JSX.Element => {
                   </button>
                 ) : null}
                 {/* atp button */}
-                {common.form_status == 1 && user.id == common.auth_user_id ? (
+                {common.form_status == 1 && user.id == 53 ? (
                   <button
                     onClick={() => {
                       setForwardBox((val) => true);
@@ -1784,11 +1790,11 @@ const MarriageTeorView = (): JSX.Element => {
 
 export default MarriageTeorView;
 
-interface QueryTabsProps {
-  isUser: boolean;
-  message: string;
-  date: string;
-  from_user: string;
-  to_user: string;
-  doc: null | undefined | string;
-}
+// interface QueryTabsProps {
+//   isUser: boolean;
+//   message: string;
+//   date: string;
+//   from_user: string;
+//   to_user: string;
+//   doc: null | undefined | string;
+// }

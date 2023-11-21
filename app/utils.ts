@@ -107,3 +107,24 @@ export const checkUID = (uid: string): boolean => {
     return true;
   }
 };
+
+export const encrypt = (text: string, key: string): string => {
+  let encryptedText = "";
+  for (let i = 0; i < text.length; i++) {
+    let charCode = text.charCodeAt(i);
+    encryptedText += (charCode ^ key.charCodeAt(i % key.length)).toString(16);
+  }
+  return encryptedText.slice(0, 32);
+};
+
+// Function to decrypt text encrypted with the substitution cipher
+export const decrypt = (encryptedText: string, key: string): string => {
+  let decryptedText = "";
+  for (let i = 0; i < encryptedText.length; i += 2) {
+    let hexChar = encryptedText.substr(i, 2);
+    decryptedText += String.fromCharCode(
+      parseInt(hexChar, 16) ^ key.charCodeAt((i / 2) % key.length)
+    );
+  }
+  return decryptedText;
+};

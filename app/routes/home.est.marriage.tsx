@@ -28,7 +28,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 address,
                 contact,
                 email,
-                user_uid
+                user_uid,
+                user_uid_four,
             }   
         }
         `,
@@ -50,13 +51,13 @@ const Marriage: React.FC = (): JSX.Element => {
     const mobileRef = useRef<HTMLInputElement>(null);
     const addressRef = useRef<HTMLTextAreaElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
-    const uidRef = useRef<HTMLInputElement>(null);
+    // const uidRef = useRef<HTMLInputElement>(null);
 
     const villageRef = useRef<HTMLSelectElement>(null);
     const [village, setVillage] = useState<any[]>([]);
 
-    const from_dateRef = useRef<HTMLInputElement>(null);
-    const to_dateRef = useRef<HTMLInputElement>(null);
+    // const from_dateRef = useRef<HTMLInputElement>(null);
+    // const to_dateRef = useRef<HTMLInputElement>(null);
 
     const [dates, setDates] = useState<string[]>([]);
 
@@ -111,7 +112,7 @@ const Marriage: React.FC = (): JSX.Element => {
         mobileRef!.current!.value = user.contact ?? "";
         emailRef!.current!.value = user.email ?? "";
         addressRef!.current!.value = user.address ?? "";
-        uidRef!.current!.value = user.user_uid ?? "";
+        // uidRef!.current!.value = user.user_uid ?? "";
     }, []);
 
 
@@ -190,7 +191,7 @@ const Marriage: React.FC = (): JSX.Element => {
             address: addressRef!.current!.value,
             mobile: mobileRef!.current!.value,
             email: emailRef!.current!.value,
-            user_uid: uidRef!.current!.value,
+            user_uid: user.user_uid_four,
             village_id: parseInt(villageRef!.current!.value),
             from_date: parseDateString(dates[0]),
             to_date: parseDateString(dates[1]),
@@ -267,7 +268,7 @@ const Marriage: React.FC = (): JSX.Element => {
                 }
             }
             else {
-                toast.error("Something want wrong unable to upload images.", { theme: "light" });
+                toast.error("Something went wrong unable to upload images.", { theme: "light" });
             }
         } else { toast.error(parsed.error.errors[0].message, { theme: "light" }); }
     }
@@ -394,11 +395,10 @@ const Marriage: React.FC = (): JSX.Element => {
                         <span className="mr-2">2.5</span> Applicant Aadhar Number
                     </div>
                     <div className="flex-none lg:flex-1 w-full lg:w-auto">
-                        <input
-                            ref={uidRef}
-                            placeholder="Please type Aadhar number"
-                            className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-                        />
+                    <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
                     </div>
                 </div>
                 {/*--------------------- section 2 end here ------------------------- */}

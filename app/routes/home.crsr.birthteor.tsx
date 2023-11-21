@@ -25,7 +25,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 address,
                 contact,
                 email,
-                user_uid
+                user_uid,
+                user_uid_four,
             }   
         }
         `,
@@ -43,7 +44,7 @@ const BirthTeor: React.FC = (): JSX.Element => {
   const mobileRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const uidRef = useRef<HTMLInputElement>(null);
+  // const uidRef = useRef<HTMLInputElement>(null);
 
   const villageRef = useRef<HTMLSelectElement>(null);
   const [village, setVillage] = useState<any[]>([]);
@@ -61,7 +62,7 @@ const BirthTeor: React.FC = (): JSX.Element => {
 
   const registrationDateRef = useRef<HTMLInputElement>(null);
 
-  const remarkRef = useRef<HTMLInputElement>(null);
+  // const remarkRef = useRef<HTMLInputElement>(null);
 
   const applicant_uid_url_Ref = useRef<HTMLInputElement>(null);
   const [applicant_uid_url, setApplicant_uid_url] = useState<File>();
@@ -103,7 +104,7 @@ const BirthTeor: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleLogoChange = (
@@ -168,7 +169,7 @@ const BirthTeor: React.FC = (): JSX.Element => {
       address: addressRef!.current!.value,
       mobile: mobileRef!.current!.value,
       email: emailRef!.current!.value,
-      user_uid: uidRef!.current!.value,
+      user_uid: user.user_uid_four,
       village_id: parseInt(villageRef!.current!.value),
       date_of_birth: new Date(dateOfBirthRef!.current!.value),
       date_of_registration: new Date(registrationDateRef!.current!.value),
@@ -252,11 +253,11 @@ const BirthTeor: React.FC = (): JSX.Element => {
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(
-            `/home/crsr/birthcertview/${data.data.createBirthTeor.id}`
+            `/home/crsr/birthteorview/${data.data.createBirthTeor.id}`
           );
         }
       } else {
-        toast.error("Something want wrong unable to upload images.", {
+        toast.error("Something went wrong unable to upload images.", {
           theme: "light",
         });
       }
@@ -270,7 +271,7 @@ const BirthTeor: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleNumberChange = () => {
@@ -398,11 +399,10 @@ const BirthTeor: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={uidRef}
-              placeholder="Applicant UID"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
+          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -436,7 +436,7 @@ const BirthTeor: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={dateOfBirthRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -485,7 +485,7 @@ const BirthTeor: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={registrationDateRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>

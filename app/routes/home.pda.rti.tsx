@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import { ApiCall, UploadFile } from "~/services/api";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
-import { checkUID } from "~/utils";
+// import { checkUID } from "~/utils";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const cookieHeader = props.request.headers.get("Cookie");
@@ -21,7 +22,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 address,
                 contact,
                 email,
-                user_uid
+                user_uid,
+                user_uid_four,
             }   
         }
         `,
@@ -32,23 +34,19 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   return json({ user: userdata.data.getUserById });
 };
 
-
-
 const RightToInformation: React.FC = (): JSX.Element => {
   const user = useLoaderData().user;
   const nameRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLTextAreaElement>(null);
   const mobileRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
-  const uidRef = useRef<HTMLInputElement>(null);
+  // const uidRef = useRef<HTMLInputElement>(null);
 
   const remarkRef = useRef<HTMLInputElement>(null);
   const applicationDateRef = useRef<HTMLInputElement>(null);
   const applicationDateToRef = useRef<HTMLInputElement>(null);
   const applicationNameRef = useRef<HTMLTextAreaElement>(null);
   const applicationDescRef = useRef<HTMLTextAreaElement>(null);
-
-  
 
   const nakalRef = useRef<HTMLInputElement>(null);
   const [povertyLine, setPovertyLine] = useState(false);
@@ -86,9 +84,9 @@ const RightToInformation: React.FC = (): JSX.Element => {
         email: z.string().email("Enter a valid email.").optional(),
         user_uid: z
           .string()
-          .refine((value) => checkUID(value), {
-            message: "Invalid UIDAI Number",
-          })
+          // .refine((value) => checkUID(value), {
+          //   message: "Invalid UIDAI Number",
+          // })
           .optional(),
         subject_info: z.string().nonempty("Enter subject information."),
         from_date: z.date({
@@ -102,7 +100,6 @@ const RightToInformation: React.FC = (): JSX.Element => {
         description: z.string().optional(),
         information: z.string().optional(),
         iagree: z.string().nonempty("I solemnly affirm & hereby."),
-        
       })
       .strict();
 
@@ -113,14 +110,13 @@ const RightToInformation: React.FC = (): JSX.Element => {
       address: addressRef!.current!.value,
       mobile: mobileRef!.current!.value,
       email: emailRef!.current!.value,
-      user_uid: uidRef!.current!.value,
+      user_uid: user.user_uid_four,
       subject_info: remarkRef!.current!.value,
       from_date: new Date(applicationDateRef!.current!.value),
       to_date: new Date(applicationDateToRef!.current!.value),
       description: applicationNameRef!.current!.value,
       information: applicationDescRef!.current!.value,
       iagree: isChecked ? "YES" : "NO",
-     
     };
 
     const parsed = RTIScheme.safeParse(rtiScheme);
@@ -162,7 +158,6 @@ const RightToInformation: React.FC = (): JSX.Element => {
                 status: "ACTIVE",
                 from_date: rtiScheme.from_date,
                 to_date: rtiScheme.to_date,
-                
               },
             },
           });
@@ -172,7 +167,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
             navigator(`/home/pda/rtiview/${data.data.createRti.id}`);
           }
         } else {
-          toast.error("Something want wrong unable to upload images.", {
+          toast.error("Something went wrong unable to upload images.", {
             theme: "light",
           });
         }
@@ -216,7 +211,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
             navigator(`/home/pda/rtiview/${data.data.createRti.id}`);
           }
         } else {
-          toast.error("Something want wrong unable to upload images.", {
+          toast.error("Something went wrong unable to upload images.", {
             theme: "light",
           });
         }
@@ -240,7 +235,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid_four ?? "";
   }, []);
 
   const handleNumberChange = () => {
@@ -331,11 +326,10 @@ const RightToInformation: React.FC = (): JSX.Element => {
             <span className="mr-2">1.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={uidRef}
-              placeholder="Applicant UID"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
+            <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
           </div>
         </div>
         {/*--------------------- section 1 end here ------------------------- */}
@@ -413,7 +407,7 @@ const RightToInformation: React.FC = (): JSX.Element => {
             ></textarea>
           </div>
         </div>
-       
+
         {/*--------------------- section 2 end here ------------------------- */}
 
         {/*--------------------- section 3 start here ------------------------- */}

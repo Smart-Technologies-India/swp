@@ -121,9 +121,9 @@ const MarriageView: React.FC = (): JSX.Element => {
         createCommonInput: {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
-          auth_user_id: "5",
-          focal_user_id: "5",
-          intra_user_id: "5,6",
+          auth_user_id: "23",
+          focal_user_id: "21",
+          intra_user_id: "21,23",
           inter_user_id: "0",
           village: villagedata.name,
           name: from_data.event_name,
@@ -643,7 +643,7 @@ const MarriageView: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant Aadhar Number
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         {/*--------------------- section 2 end here ------------------------- */}
@@ -887,7 +887,7 @@ const MarriageView: React.FC = (): JSX.Element => {
                     </button>
 
                     {common.form_status == 1 &&
-                    user.id == common.auth_user_id ? (
+                    user.id == 23 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -895,11 +895,11 @@ const MarriageView: React.FC = (): JSX.Element => {
                             title: "Forward to LDC",
                             formstatus: 25,
                             querytype: "INTRA",
-                            authuserid: "6",
-                            foacaluserid: "5",
-                            intrauserid: "5,6",
+                            authuserid: "23",
+                            foacaluserid: "21",
+                            intrauserid: "21,23",
                             interuserid: "0",
-                            touserid: 6,
+                            touserid: 22,
                             querystatus: "INPROCESS",
                           }));
                         }}
@@ -909,7 +909,7 @@ const MarriageView: React.FC = (): JSX.Element => {
                       </button>
                     ) : null}
                     {/* LDC button */}
-                    {common.form_status == 25 && user.id == 6 ? (
+                    {common.form_status == 25 && user.id == 22 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -917,11 +917,11 @@ const MarriageView: React.FC = (): JSX.Element => {
                             title: "Forward to SUPTD",
                             formstatus: 50,
                             querytype: "INTRA",
-                            authuserid: "5",
-                            foacaluserid: "5",
-                            intrauserid: "5,6",
+                            authuserid: "22",
+                            foacaluserid: "21",
+                            intrauserid: "21,22",
                             interuserid: "0",
-                            touserid: 5,
+                            touserid: 21,
                             querystatus: "INPROCESS",
                           }));
                         }}
@@ -932,7 +932,7 @@ const MarriageView: React.FC = (): JSX.Element => {
                     ) : null}
 
                     {/* SUPTD button */}
-                    {common.form_status == 50 && user.id == 5 ? (
+                    {common.form_status == 50 && user.id == 21 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -941,8 +941,8 @@ const MarriageView: React.FC = (): JSX.Element => {
                             formstatus: 75,
                             querytype: "INTRA",
                             authuserid: "4",
-                            foacaluserid: "5",
-                            intrauserid: "5,4",
+                            foacaluserid: "21",
+                            intrauserid: "21,4",
                             interuserid: "0",
                             touserid: 4,
                             querystatus: "INPROCESS",
@@ -964,8 +964,8 @@ const MarriageView: React.FC = (): JSX.Element => {
                             formstatus: 100,
                             querytype: "INTRA",
                             authuserid: "3",
-                            foacaluserid: "5",
-                            intrauserid: "5,4,3",
+                            foacaluserid: "21",
+                            intrauserid: "21,4,3",
                             interuserid: "0",
                             touserid: 3,
                             querystatus: "INPROCESS",
@@ -988,8 +988,8 @@ const MarriageView: React.FC = (): JSX.Element => {
                             formstatus: 125,
                             querytype: "INTRA",
                             authuserid: "4",
-                            foacaluserid: "5",
-                            intrauserid: "5,4",
+                            foacaluserid: "21",
+                            intrauserid: "21,4",
                             interuserid: "0",
                             touserid: 4,
                             querystatus: "INPROCESS",
@@ -1010,11 +1010,11 @@ const MarriageView: React.FC = (): JSX.Element => {
                             title: "Forward to SUPTD",
                             formstatus: 150,
                             querytype: "INTRA",
-                            authuserid: "5",
-                            foacaluserid: "5",
-                            intrauserid: "5,4",
+                            authuserid: "21",
+                            foacaluserid: "21",
+                            intrauserid: "21,4",
                             interuserid: "0",
-                            touserid: 5,
+                            touserid: 21,
                             querystatus: "INPROCESS",
                           }));
                         }}
@@ -1025,7 +1025,7 @@ const MarriageView: React.FC = (): JSX.Element => {
                     ) : null}
 
                     {/* Suptd button */}
-                    {common.form_status == 150 && user.id == 5 ? (
+                    {common.form_status == 150 && user.id == 21 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -1034,7 +1034,7 @@ const MarriageView: React.FC = (): JSX.Element => {
                             formstatus: 175,
                             querytype: "PUBLIC",
                             authuserid: "0",
-                            foacaluserid: "5",
+                            foacaluserid: "21",
                             intrauserid: "0",
                             interuserid: "0",
                             touserid: from_data.userId,
@@ -1047,7 +1047,7 @@ const MarriageView: React.FC = (): JSX.Element => {
                       </button>
                     ) : null}
 
-                    {common.form_status == 175 && user.id == 5 ? (
+                    {common.form_status == 175 && user.id == 21 ? (
                       <Link
                         to={`/marriagepdf/${from_data.id}`}
                         className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"

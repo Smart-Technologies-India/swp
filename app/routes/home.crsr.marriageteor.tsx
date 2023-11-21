@@ -25,7 +25,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 address,
                 contact,
                 email,
-                user_uid
+                user_uid,
+                user_uid_four,
             }   
         }
         `,
@@ -43,13 +44,13 @@ const MarriageTeor: React.FC = (): JSX.Element => {
   const mobileRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const uidRef = useRef<HTMLInputElement>(null);
+  // const uidRef = useRef<HTMLInputElement>(null);
 
   const villageRef = useRef<HTMLSelectElement>(null);
   const [village, setVillage] = useState<any[]>([]);
 
-  const fatherNameRef = useRef<HTMLInputElement>(null);
-  const motherNameRef = useRef<HTMLInputElement>(null);
+  const groomFatherNameRef = useRef<HTMLInputElement>(null);
+  const groomMotherNameRef = useRef<HTMLInputElement>(null);
   const brideNameRef = useRef<HTMLInputElement>(null);
   const brideFatherNameRef = useRef<HTMLInputElement>(null);
   const brideMotherNameRef = useRef<HTMLInputElement>(null);
@@ -59,16 +60,16 @@ const MarriageTeor: React.FC = (): JSX.Element => {
 
   const registrationDateRef = useRef<HTMLInputElement>(null);
 
-  const remarkRef = useRef<HTMLInputElement>(null);
+  // const remarkRef = useRef<HTMLInputElement>(null);
 
   const applicant_uid_url_Ref = useRef<HTMLInputElement>(null);
   const [applicant_uid_url, setApplicant_uid_url] = useState<File>();
 
-  const father_uid_url_Ref = useRef<HTMLInputElement>(null);
-  const [father_uid_url, setFather_uid_url] = useState<File>();
+  const groom_father_uid_url_Ref = useRef<HTMLInputElement>(null);
+  const [groom_father_uid_url, setGroomFather_uid_url] = useState<File>();
 
-  const mother_uid_url_Ref = useRef<HTMLInputElement>(null);
-  const [mother_uid_url, setMother_uid_url] = useState<File>();
+  const groom_mother_uid_url_Ref = useRef<HTMLInputElement>(null);
+  const [groom_mother_uid_url, setGroomMother_uid_url] = useState<File>();
   const bride_uid_url_Ref = useRef<HTMLInputElement>(null);
   const [bride_uid_url, setBride_uid_url] = useState<File>();
 
@@ -109,7 +110,7 @@ const MarriageTeor: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleLogoChange = (
@@ -151,8 +152,8 @@ const MarriageTeor: React.FC = (): JSX.Element => {
         }),
         
 
-        father_name: z.string().nonempty("Enter Father Name"),
-        mother_name: z.string().nonempty("Enter Mother Name"),
+        groom_father_name: z.string().nonempty("Enter Groom Father Name"),
+        groom_mother_name: z.string().nonempty("Enter Groom Mother Name"),
         bride_name: z.string().nonempty("Enter Bride Name"),
         bride_father_name: z.string().nonempty("Enter Bride Father Name"),
         bride_mother_name: z.string().nonempty("Enter Bride Mother Name"),
@@ -175,12 +176,12 @@ const MarriageTeor: React.FC = (): JSX.Element => {
       address: addressRef!.current!.value,
       mobile: mobileRef!.current!.value,
       email: emailRef!.current!.value,
-      user_uid: uidRef!.current!.value,
+      user_uid: user.user_uid_four,
       village_id: parseInt(villageRef!.current!.value),
       
       date_of_registration: new Date(registrationDateRef!.current!.value),
-      father_name: fatherNameRef!.current!.value,
-      mother_name: motherNameRef!.current!.value,
+      groom_father_name: groomFatherNameRef!.current!.value,
+      groom_mother_name: groomMotherNameRef!.current!.value,
       bride_name: brideNameRef!.current!.value,
       bride_father_name: brideFatherNameRef!.current!.value,
       bride_mother_name: brideMotherNameRef!.current!.value,
@@ -199,15 +200,15 @@ const MarriageTeor: React.FC = (): JSX.Element => {
       }
       const sign_url = await UploadFile(sigimg!);
 
-      if (father_uid_url == null || father_uid_url == undefined) {
+      if (groom_father_uid_url == null || groom_father_uid_url == undefined) {
         toast.error("Upload Father UID.", { theme: "light" });
       }
-      const father_uid_urlt = await UploadFile(sigimg!);
+      const groom_father_uid_urlt = await UploadFile(sigimg!);
 
-      if (mother_uid_url == null || mother_uid_url == undefined) {
+      if (groom_mother_uid_url == null || groom_mother_uid_url == undefined) {
         toast.error("Upload Mother UID.", { theme: "light" });
       }
-      const mother_uid_urlt = await UploadFile(sigimg!);
+      const groom_mother_uid_urlt = await UploadFile(sigimg!);
 
       if (applicant_uid_url == null || applicant_uid_url == undefined) {
         toast.error("Upload Applicant UID.", { theme: "light" });
@@ -235,12 +236,12 @@ const MarriageTeor: React.FC = (): JSX.Element => {
       const undertaking_urlt = await UploadFile(sigimg!);
 
       if (
-        father_uid_urlt.status &&
+        groom_father_uid_urlt.status &&
         bride_father_uid_urlt.status &&
         sign_url.status &&
-        mother_uid_url &&
-        bride_mother_uid_url &&
-        bride_uid_url &&
+        groom_mother_uid_urlt.status &&
+        bride_mother_uid_urlt.status &&
+        bride_uid_urlt.status &&
         applicant_uid_urlt.status &&
         undertaking_urlt.status
       ) {
@@ -261,14 +262,14 @@ const MarriageTeor: React.FC = (): JSX.Element => {
               mobile: marriageTeorScheme.mobile,
               user_uid: marriageTeorScheme.user_uid,
               village_id: marriageTeorScheme.village_id,
-              father_name: marriageTeorScheme.father_name,
-              mother_name: marriageTeorScheme.mother_name,
+              groom_father_name: marriageTeorScheme.groom_father_name,
+              groom_mother_name: marriageTeorScheme.groom_mother_name,
               bride_father_name: marriageTeorScheme.bride_father_name,
               bride_mother_name: marriageTeorScheme.bride_mother_name,
               bride_name: marriageTeorScheme.bride_name,
               registration_number: marriageTeorScheme.registration_number,
-              father_uid_url: father_uid_urlt.data,
-              mother_uid_url: mother_uid_urlt.data,
+              groom_father_uid_url: groom_father_uid_urlt.data,
+              groom_mother_uid_url: groom_mother_uid_urlt.data,
               applicant_uid_url: applicant_uid_urlt.data,
               bride_father_uid_url: bride_father_uid_urlt.data,
               bride_mother_uid_url: bride_mother_uid_urlt.data,
@@ -286,7 +287,7 @@ const MarriageTeor: React.FC = (): JSX.Element => {
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(
-            `/home/crsr/marriagecertview/${data.data.createMarriageTeor.id}`
+            `/home/crsr/marriageteorview/${data.data.createMarriageTeor.id}`
           );
         }
       } else {
@@ -304,7 +305,7 @@ const MarriageTeor: React.FC = (): JSX.Element => {
     mobileRef!.current!.value = user.contact ?? "";
     emailRef!.current!.value = user.email ?? "";
     addressRef!.current!.value = user.address ?? "";
-    uidRef!.current!.value = user.user_uid ?? "";
+    // uidRef!.current!.value = user.user_uid ?? "";
   }, []);
 
   const handleNumberChange = () => {
@@ -432,11 +433,10 @@ const MarriageTeor: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={uidRef}
-              placeholder="Applicant UID"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
+          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -445,7 +445,7 @@ const MarriageTeor: React.FC = (): JSX.Element => {
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
-              ref={fatherNameRef}
+              ref={groomFatherNameRef}
               placeholder="Bridegroom Father Name"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
@@ -457,7 +457,7 @@ const MarriageTeor: React.FC = (): JSX.Element => {
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
-              ref={motherNameRef}
+              ref={groomMotherNameRef}
               placeholder="Bridegroom Mother Name"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
@@ -519,7 +519,7 @@ const MarriageTeor: React.FC = (): JSX.Element => {
             <input
               type="date"
               ref={registrationDateRef}
-              min={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split("T")[0]}
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
             />
           </div>
@@ -583,23 +583,23 @@ const MarriageTeor: React.FC = (): JSX.Element => {
             <div className="hidden">
               <input
                 type="file"
-                ref={father_uid_url_Ref}
-                onChange={(e) => handleLogoChange(e, setFather_uid_url)}
+                ref={groom_father_uid_url_Ref}
+                onChange={(e) => handleLogoChange(e, setGroomFather_uid_url)}
               />
             </div>
             <button
-              onClick={() => father_uid_url_Ref.current?.click()}
+              onClick={() => groom_father_uid_url_Ref.current?.click()}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink>{" "}
-                {father_uid_url == null ? "Attach Doc." : "Update Doc."}
+                {groom_father_uid_url == null ? "Attach Doc." : "Update Doc."}
               </div>
             </button>
-            {father_uid_url != null ? (
+            {groom_father_uid_url != null ? (
               <a
                 target="_blank"
-                href={URL.createObjectURL(father_uid_url)}
+                href={URL.createObjectURL(groom_father_uid_url)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
@@ -620,23 +620,23 @@ const MarriageTeor: React.FC = (): JSX.Element => {
             <div className="hidden">
               <input
                 type="file"
-                ref={mother_uid_url_Ref}
-                onChange={(e) => handleLogoChange(e, setMother_uid_url)}
+                ref={groom_mother_uid_url_Ref}
+                onChange={(e) => handleLogoChange(e, setGroomMother_uid_url)}
               />
             </div>
             <button
-              onClick={() => mother_uid_url_Ref.current?.click()}
+              onClick={() => groom_mother_uid_url_Ref.current?.click()}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink>{" "}
-                {mother_uid_url == null ? "Attach Doc." : "Update Doc."}
+                {groom_mother_uid_url == null ? "Attach Doc." : "Update Doc."}
               </div>
             </button>
-            {mother_uid_url != null ? (
+            {groom_mother_uid_url != null ? (
               <a
                 target="_blank"
-                href={URL.createObjectURL(mother_uid_url)}
+                href={URL.createObjectURL(groom_mother_uid_url)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>

@@ -1,5 +1,5 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { ApiCall, UploadFile } from "~/services/api";
 import { toast } from "react-toastify";
@@ -125,9 +125,9 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
         createCommonInput: {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
-          auth_user_id: "41",
-          focal_user_id: "41",
-          intra_user_id: "41,42",
+          auth_user_id: "63",
+          focal_user_id: "61",
+          intra_user_id: "61,63",
           inter_user_id: "0",
           village: villagedata.name,
           name: from_data.name,
@@ -647,7 +647,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant Aadhar Number
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -932,7 +932,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                     </button>
 
                     {common.form_status == 1 &&
-                    user.id == common.auth_user_id ? (
+                    user.id == 63 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -940,11 +940,11 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                             title: "Forward to Headclerk",
                             formstatus: 25,
                             querytype: "INTRA",
-                            authuserid: "42",
-                            foacaluserid: "41",
-                            intrauserid: "41,42",
+                            authuserid: "63",
+                            foacaluserid: "61",
+                            intrauserid: "61,62",
                             interuserid: "0",
-                            touserid: 42,
+                            touserid: 62,
                             querystatus: "INPROCESS",
                           }));
                         }}
@@ -954,7 +954,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                       </button>
                     ) : null}
                     {/* LDC button */}
-                    {common.form_status == 25 && user.id == 42 ? (
+                    {common.form_status == 25 && user.id == 62 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -962,11 +962,11 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                             title: "Forward to SUPTD",
                             formstatus: 50,
                             querytype: "INTRA",
-                            authuserid: "41",
-                            foacaluserid: "41",
-                            intrauserid: "41,42",
+                            authuserid: "62",
+                            foacaluserid: "61",
+                            intrauserid: "61,62",
                             interuserid: "0",
-                            touserid: 41,
+                            touserid: 61,
                             querystatus: "INPROCESS",
                           }));
                         }}
@@ -979,7 +979,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                    
 
                     {/* Suptd button */}
-                    {common.form_status == 50 && user.id == 41 ? (
+                    {common.form_status == 50 && user.id == 61 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -988,7 +988,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                             formstatus: 75,
                             querytype: "PUBLIC",
                             authuserid: "0",
-                            foacaluserid: "41",
+                            foacaluserid: "61",
                             intrauserid: "0",
                             interuserid: "0",
                             touserid: from_data.userId,
@@ -1001,7 +1001,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                       </button>
                     ) : null}
 
-                    {common.form_status == 75 && user.id == 41 ? (
+                    {common.form_status == 75 && user.id == 61 ? (
                       <Link
                         to={`/tempwaterdisconnectpdf/${from_data.id}`}
                         className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"

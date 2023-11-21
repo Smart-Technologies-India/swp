@@ -47,7 +47,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(id!),
     },
   });
-
   const submit = await ApiCall({
     query: `
         query searchCommon($searchCommonInput:SearchCommonInput!){
@@ -144,16 +143,7 @@ const DeathCertificateView = (): JSX.Element => {
   const isSubmited = loader.submit;
   const common = isSubmited ? loader.common[0] : null;
   const submit = async () => {
-    const authuserid = await ApiCall({
-      query: `
-            query getuserid($filetype:String!){
-                getuserid(filetype:$filetype)
-              }
-            `,
-      veriables: {
-        filetype: "DEATHCERT",
-      },
-    });
+    
     const data = await ApiCall({
       query: `
             mutation createCommon($createCommonInput:CreateCommonInput!){
@@ -166,7 +156,7 @@ const DeathCertificateView = (): JSX.Element => {
         createCommonInput: {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
-          auth_user_id: authuserid.data.getuserid.toString(),
+          auth_user_id: "53",
           focal_user_id: "51",
           intra_user_id: "51",
           inter_user_id: "0",
@@ -1211,12 +1201,12 @@ const DeathCertificateView = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.user_uid}
+          XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.6</span> Applicant Gender
+            <span className="mr-2">2.6</span> Deceased Gender
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.gender}
@@ -1224,18 +1214,28 @@ const DeathCertificateView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.7</span> Applicant Date of Birth
+            <span className="mr-2">2.7</span> Deceased Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_birth}
+            {new Date(from_data.date_of_birth)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.8</span> Applicant Date of Death
+            <span className="mr-2">2.8</span> Deceased Date of Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_death}
+            {new Date(from_data.date_of_death)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1248,7 +1248,7 @@ const DeathCertificateView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.10</span> Applicant Father Name
+            <span className="mr-2">2.10</span> Deceased Father Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.father_name}
@@ -1256,7 +1256,7 @@ const DeathCertificateView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.11</span> Applicant Mother Name
+            <span className="mr-2">2.11</span> Deceased Mother Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.mother_name}
@@ -1264,7 +1264,7 @@ const DeathCertificateView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.12</span> Applicant Husband/Wife Name
+            <span className="mr-2">2.12</span> Deceased Husband/Wife Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.husband_name}
@@ -1283,7 +1283,12 @@ const DeathCertificateView = (): JSX.Element => {
             <span className="mr-2">2.14</span> Date of Registration
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.date_of_registration}
+            {new Date(from_data.date_of_registration)
+              .toJSON()
+              .slice(0, 10)
+              .split("-")
+              .reverse()
+              .join("/")}
           </div>
         </div>
 
@@ -1301,7 +1306,7 @@ const DeathCertificateView = (): JSX.Element => {
 
           <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
             <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-              <span className="mr-2">3.1</span> Applicant UIDAI Aadhaar Upload
+              <span className="mr-2">3.1</span> Deceased UIDAI Aadhaar Upload
               <p className="text-rose-500 text-sm">
                 ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
               </p>
@@ -1320,7 +1325,7 @@ const DeathCertificateView = (): JSX.Element => {
           </div>
           <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
             <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-              <span className="mr-2">3.2</span> Applicant Father UIDAI Upload
+              <span className="mr-2">3.2</span> Deceased Father UIDAI Upload
               <p className="text-rose-500 text-sm">
                 ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
               </p>
@@ -1339,7 +1344,7 @@ const DeathCertificateView = (): JSX.Element => {
           </div>
           <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
             <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-              <span className="mr-2">3.3</span> Applicant Mother UIDAI Upload
+              <span className="mr-2">3.3</span> Deceased Mother UIDAI Upload
               <p className="text-rose-500 text-sm">
                 ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
               </p>
@@ -1473,7 +1478,7 @@ const DeathCertificateView = (): JSX.Element => {
                   </button>
                 ) : null}
                 {/* atp button */}
-                {common.form_status == 1 && user.id == common.auth_user_id ? (
+                {common.form_status == 1 && 53 ? (
                   <button
                     onClick={() => {
                       setForwardBox((val) => true);
@@ -1519,7 +1524,7 @@ const DeathCertificateView = (): JSX.Element => {
                     Forward to Suptd
                   </button>
                 ) : null}
-                {common.form_status == 50 && user.id == 5 ? (
+                {common.form_status == 50 && user.id == 51 ? (
                   <button
                     onClick={() => {
                       forwardRef!.current!.value = `The Death Certificate documents requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
@@ -1740,11 +1745,11 @@ const DeathCertificateView = (): JSX.Element => {
 
 export default DeathCertificateView;
 
-interface QueryTabsProps {
-  isUser: boolean;
-  message: string;
-  date: string;
-  from_user: string;
-  to_user: string;
-  doc: null | undefined | string;
-}
+// interface QueryTabsProps {
+//   isUser: boolean;
+//   message: string;
+//   date: string;
+//   from_user: string;
+//   to_user: string;
+//   doc: null | undefined | string;
+// }

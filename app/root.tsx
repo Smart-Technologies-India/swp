@@ -1,4 +1,3 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
 import {
   Link,
@@ -10,6 +9,9 @@ import {
   ScrollRestoration,
   useRouteError,
 } from "@remix-run/react";
+
+import stylesheet from "~/tailwind.css";
+import styles from 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from "react-toastify";
 
@@ -23,14 +25,12 @@ export const meta: V2_MetaFunction = () => {
 };
 
 
-import stylesheet from "~/tailwind.css";
-import styles from 'react-toastify/dist/ReactToastify.css';
 
 
 export const links: LinksFunction = () => [
   // ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: stylesheet },
-  { rel: "icon", type: "image/jpg", href: "/logo.jpg" },
+  { rel: "icon", type: "image/jpg", href: "/logo.png" },
   { rel: "stylesheet", href: styles }
 ];
 
