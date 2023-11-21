@@ -473,11 +473,11 @@ const DeathRegister: React.FC = (): JSX.Element => {
             <span className="mr-2">2.4</span> Applicant Email
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            {/* <input
+          <input
               ref={emailRef}
               placeholder="Applicant Email"
               className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            /> */}
+            />
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -485,11 +485,10 @@ const DeathRegister: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <input
-              ref={uidRef}
-              placeholder="Applicant UID"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            />
+          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+              {" "}
+              XXXX-XXXX-{user.user_uid_four.toString()}
+            </div>
           </div>
         </div>
 
