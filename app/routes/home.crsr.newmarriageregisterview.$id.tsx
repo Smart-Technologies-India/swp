@@ -1249,7 +1249,7 @@ const MarriageRegisterView = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-          XXXX-XXXX-{from_data.user_uid}
+            XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
 
@@ -1264,11 +1264,9 @@ const MarriageRegisterView = (): JSX.Element => {
           </p>
         </div>
 
-       
-
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.2</span> Date of Birth of Groom
+            <span className="mr-2">3.1</span> Date of Birth of Groom
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.groom_date_of_birth}
@@ -1276,7 +1274,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.3</span> Name of Groom's Father
+            <span className="mr-2">3.2</span> Name of Groom's Father
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.groom_father_name}
@@ -1284,7 +1282,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.4</span> Groom's Mother Name
+            <span className="mr-2">3.3</span> Groom's Mother Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.groom_mother_name}
@@ -1292,7 +1290,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.5</span> Bride's Name
+            <span className="mr-2">3.4</span> Bride's Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.bride_name}
@@ -1300,7 +1298,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.10</span> Bride's Father Name
+            <span className="mr-2">3.5</span> Bride's Father Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.bride_father_name}
@@ -1308,7 +1306,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.11</span> Bride's Mother Name
+            <span className="mr-2">3.6</span> Bride's Mother Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.bride_mother_name}
@@ -1316,15 +1314,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.12</span> Groom's Address
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.groom_address}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.13</span> Bride's Address
+            <span className="mr-2">3.7</span> Bride's Address
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.bride_address}
@@ -1332,7 +1322,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.14</span> Groom's Religion
+            <span className="mr-2">3.8</span> Groom's Religion
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.religion_groom}
@@ -1341,7 +1331,7 @@ const MarriageRegisterView = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.4</span> Bride's Religion
+            <span className="mr-2">3.9</span> Bride's Religion
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.religion_bride}
@@ -1349,7 +1339,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.5</span> Witness 1 Details
+            <span className="mr-2">3.10</span> Witness 1 Details
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.witness_one_signature_url}
@@ -1357,7 +1347,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.10</span> Witness 2 Details
+            <span className="mr-2">3.11</span> Witness 2 Details
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.witness_two_signature_url}
@@ -1365,7 +1355,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.11</span> Witness 3 Details
+            <span className="mr-2">3.12</span> Witness 3 Details
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.witness_three_signature_url}
@@ -1373,7 +1363,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.12</span> Groom's Date of Birth
+            <span className="mr-2">3.13</span> Groom's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {new Date(from_data.groom_date_of_birth)
@@ -1386,7 +1376,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.13</span> Bride's Date of Birth
+            <span className="mr-2">3.14</span> Bride's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {new Date(from_data.bride_date_of_birth)
@@ -1399,7 +1389,7 @@ const MarriageRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.14</span> Date of Marriage
+            <span className="mr-2">3.15</span> Date of Marriage
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {new Date(from_data.date_of_marriage)

@@ -384,40 +384,6 @@ const Dashboard: React.FC = (): JSX.Element => {
                 </thead>
                 <tbody>
                   {pagination.paginatedItems.map((val: any, index: number) => {
-                    // if (
-                    //   userdata.department == "CRSR" &&
-                    //   (val.form_type == "PETROLEUM" ||
-                    //     val.form_type == "RTI" ||
-                    //     val.form_type == "ZONE" ||
-                    //     val.form_type == "DEMOLITION" ||
-                    //     val.form_type == "OLDCOPY" ||
-                    //     val.form_type == "LANDRECORDS" ||
-                    //     val.form_type == "UNAUTHORISED" ||
-                    //     val.form_type == "CP" ||
-                    //     val.form_type == "OC" ||
-                    //     val.form_type == "PLINTH" ||
-                    //     val.form_type == "MARRIAGE" ||
-                    //     val.form_type == "RELIGIOUS" ||
-                    //     val.form_type == "ROADSHOW" ||
-                    //     val.form_type == "GENERIC" ||
-                    //     val.form_type == "BIRTHCERT" ||
-                    //     val.form_type == "BIRTHTEOR" ||
-                    //     val.form_type == "DEATHCERT" ||
-                    //     val.form_type == "DEATHTEOR" ||
-                    //     val.form_type == "MARRIAGECERT" ||
-                    //     val.form_type == "MARRIAGETEOR" ||
-                    //     val.form_type == "MARRIAGEREGISTER" ||
-                    //     val.form_type == "TEMPWATERCONNECT" ||
-                    //     val.form_type == "TEMPWATERDISCONNECT" ||
-                    //     val.form_type == "WATERSIZECHANGE" ||
-                    //     val.form_type == "NEWWATERCONNECT" ||
-                    //     val.form_type == "WATERRECONNECT" ||
-                    //     val.form_type == "PERMANENTWATERDISCONNECT" ||
-                    //     val.form_type == "DEATHREGISTER" ||
-                    //     val.form_type == "BIRTHREGISTER")
-                    // )
-                    //   return null;
-
                     return (
                       <tr
                         key={index}

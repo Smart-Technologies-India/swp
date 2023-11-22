@@ -3,9 +3,12 @@ import { redirect } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useRef, useState } from "react";
 import {
+  CibLinuxFoundation,
   EmojioneMonotoneCoupleWithHeart,
   Fa6SolidPeopleGroup,
+  FluentBuildingPeople20Filled,
   FluentCloudArchive24Filled,
+  FluentEmojiHighContrastBuildingConstruction,
   FluentPipelineAdd32Filled,
   FluentPipelineArrowCurveDown20Filled,
   HealthiconsDeathAlt2,
@@ -27,7 +30,6 @@ import { userPrefs } from "~/cookies";
 import { ApiCall } from "~/services/api";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
-  
   const cookieHeader = props.request.headers.get("Cookie");
   const cookie: any = await userPrefs.parse(cookieHeader);
 
@@ -140,6 +142,24 @@ const Services: React.FC = (): JSX.Element => {
               description="Obtain online a copy of any document with the Planning and Development Authority of the daman goverment through this platform."
               apply="/home/pda/oldcopy"
               icons={3}
+            />
+            <ServiceCard
+              title="Occupancy certificate"
+              description="Obtain your occupancy certificate online. Ensure your property is compliant with regulations for safe and legal occupation."
+              apply="/home/oc/"
+              icons={22}
+            />
+            <ServiceCard
+              title="Construction permission"
+              description="Secure legal authorization swiftly for your projects through our portal. Hassle-free"
+              apply="/home/cp/"
+              icons={23}
+            />
+            <ServiceCard
+              title="Plinth Inspection"
+              description="Apply for plinth inspections online. Ensure your project's foundation is stable and secure."
+              apply="/home/plinth"
+              icons={24}
             />
           </div>
         ) : null}
@@ -358,6 +378,15 @@ const ServiceCard: React.FC<ServiceCardProps> = (
           ) : null}
           {props.icons == 21 ? (
             <MdiPipeDisconnected className="text-3xl text-[#0984e3]"></MdiPipeDisconnected>
+          ) : null}
+          {props.icons == 22 ? (
+            <FluentBuildingPeople20Filled className="text-5xl text-[#0984e3]"></FluentBuildingPeople20Filled>
+          ) : null}
+          {props.icons == 23 ? (
+            <FluentEmojiHighContrastBuildingConstruction className="text-5xl text-[#0984e3]"></FluentEmojiHighContrastBuildingConstruction>
+          ) : null}
+          {props.icons == 24 ? (
+            <CibLinuxFoundation className="text-5xl text-[#0984e3]"></CibLinuxFoundation>
           ) : null}
 
           <h1 className="text-lg font-medium lato text-center">

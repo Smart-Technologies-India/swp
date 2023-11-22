@@ -226,14 +226,43 @@ const Search: React.FC = (): JSX.Element => {
                 Select Case Type
               </option>
 
-              {userdata.department == "PDA" ? (
+              {userdata.department == "EST" ? (
                 <>
                   <option
+                    value="MARRIAGE"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage
+                  </option>
+                  <option
+                    value="ROADSHOW"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Roadshow
+                  </option>
+                  <option
+                    value="RELIGIOUS"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Religious
+                  </option>
+                  <option
+                    value="GENERIC"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Generic
+                  </option>
+                </>
+              ) : null}
+
+              {userdata.department == "PDA" ? (
+                <>
+                  {/* <option
                     value="PETROLEUM"
                     className="bg-white text-blakc text-lg"
                   >
                     Petroleum
-                  </option>
+                  </option> */}
                   <option value="RTI" className="bg-white text-blakc text-lg">
                     RTI
                   </option>
@@ -252,19 +281,19 @@ const Search: React.FC = (): JSX.Element => {
                   >
                     PLINTH
                   </option>
-                  <option
+                  {/* <option
                     value="DEMOLITION"
                     className="bg-white text-blakc text-lg"
                   >
                     DEMOLITION
-                  </option>
+                  </option> */}
                   <option
                     value="OLDCOPY"
                     className="bg-white text-blakc text-lg"
                   >
                     OLDCOPY
                   </option>
-                  <option
+                  {/* <option
                     value="LANDRECORDS"
                     className="bg-white text-blakc text-lg"
                   >
@@ -275,7 +304,7 @@ const Search: React.FC = (): JSX.Element => {
                     className="bg-white text-blakc text-lg"
                   >
                     UNAUTHORISED
-                  </option>
+                  </option> */}
                 </>
               ) : null}
 
@@ -381,6 +410,127 @@ const Search: React.FC = (): JSX.Element => {
                     className="bg-white text-blakc text-lg"
                   >
                     Death Register
+                  </option>
+                </>
+              ) : null}
+
+              {userdata.department == "COLLECTOR" ||
+              userdata.department == "DYCOLLECTOR" ? (
+                <>
+                  <option
+                    value="MARRIAGE"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage
+                  </option>
+                  <option
+                    value="ROADSHOW"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Roadshow
+                  </option>
+                  <option
+                    value="RELIGIOUS"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Religious
+                  </option>
+                  <option
+                    value="GENERIC"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Generic
+                  </option>
+                  {/* <option
+                    value="PETROLEUM"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Petroleum
+                  </option> */}
+                  <option value="RTI" className="bg-white text-blakc text-lg">
+                    RTI
+                  </option>
+                  <option value="ZONE" className="bg-white text-blakc text-lg">
+                    ZONE
+                  </option>
+                  <option value="OC" className="bg-white text-blakc text-lg">
+                    OC
+                  </option>
+                  <option value="CP" className="bg-white text-blakc text-lg">
+                    CP
+                  </option>
+                  <option
+                    value="PLINTH"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    PLINTH
+                  </option>
+                  {/* <option
+                    value="DEMOLITION"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    DEMOLITION
+                  </option> */}
+                  <option
+                    value="OLDCOPY"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    OLDCOPY
+                  </option>
+                  <option
+                    value="LANDRECORDS"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    LAND RECORDS
+                  </option>
+                  {/* <option
+                    value="UNAUTHORISED"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    UNAUTHORISED
+                  </option> */}
+                  <option
+                    value="BIRTHCERT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Birth Cert
+                  </option>
+                  <option
+                    value="BIRTHTEOR"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Birth Teor
+                  </option>
+                  <option
+                    value="DEATHCERT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Death Cert
+                  </option>
+                  <option
+                    value="DEATHTEOR"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Death Teor
+                  </option>
+
+                  <option
+                    value="MARRIAGECERT"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage Cert
+                  </option>
+                  <option
+                    value="MARRIAGETEOR"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage Teor{" "}
+                  </option>
+                  <option
+                    value="MARRIAGEREGISTER"
+                    className="bg-white text-blakc text-lg"
+                  >
+                    Marriage Register
                   </option>
                 </>
               ) : null}

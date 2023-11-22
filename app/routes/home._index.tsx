@@ -17,11 +17,8 @@ import { ApiCall } from "~/services/api";
 import { userPrefs } from "~/cookies";
 import sideBarStore, { SideBarTabs } from "~/state/sidebar";
 import {
-  Fa6SolidLandmark,
-  LineMdConstruction,
   MdiFileLockOpen,
   MdiSelectionMultipleMarker,
-  MingcuteGasStationFill,
   TablerMap2,
   EmojioneMonotoneCoupleWithHeart,
   HealthiconsICertificatePaper,
@@ -39,6 +36,9 @@ import {
   HealthiconsDeathAlt2,
   PhBabyFill,
   FluentPipelineAdd32Filled,
+  FluentEmojiHighContrastBuildingConstruction,
+  FluentBuildingPeople20Filled,
+  CibLinuxFoundation,
 } from "~/components/icons/icons";
 ChartJS.register(
   ArcElement,
@@ -86,6 +86,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   });
 
   let filecount: any;
+
   if (userdata.data.getUserById.department == "PDA") {
     filecount = await ApiCall({
       query: `
@@ -94,9 +95,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               RTI,
               ZONE,
               OLDCOPY,
-              PETROLEUM,
-              UNAUTHORIZED,
-              LANDRECORDS,
               CP,
               OC,
               PLINTH
@@ -173,6 +171,37 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
         department: userdata.data.getUserById.department,
       },
     });
+  } else if (
+    userdata.data.getUserById.department == "COLLECTOR" ||
+    userdata.data.getUserById.department == "DYCOLLECTOR"
+  ) {
+    filecount = await ApiCall({
+      query: `
+        query getFileCount($department:String!){
+            getFileCount(department:$department){
+              MARRIAGE,
+              RELIGIOUS,
+              ROADSHOW,
+              BIRTHCERT,
+              BIRTHTEOR,
+              DEATHCERT,
+              DEATHTEOR,
+              MARRIAGECERT,
+              MARRIAGETEOR,
+              MARRIAGEREGISTER,
+              RTI,
+              ZONE,
+              OLDCOPY,
+              CP,
+              OC,
+              PLINTH
+            }
+          }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
   }
 
   const villagecount = await ApiCall({
@@ -221,31 +250,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 rejected
               },
               OLDCOPY{
-                pending,
-                completed,
-                rejected
-              },
-              PETROLEUM{
-                pending,
-                completed,
-                rejected
-              },
-              UNAUTHORIZED{
-                pending,
-                completed,
-                rejected
-              },
-              LANDRECORDS{
-                pending,
-                completed,
-                rejected
-              },
-              MAMLATDAR{
-                pending,
-                completed,
-                rejected
-              },
-              DEMOLITION{
                 pending,
                 completed,
                 rejected
@@ -428,6 +432,101 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
             }
           }
       `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
+  } else if (
+    userdata.data.getUserById.department == "COLLECTOR" ||
+    userdata.data.getUserById.department == "DYCOLLECTOR"
+  ) {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              RTI{
+                pending,
+                completed,
+                rejected
+              },
+              ZONE{
+                pending,
+                completed,
+                rejected
+              },
+              OLDCOPY{
+                pending,
+                completed,
+                rejected
+              },
+              CP{
+                  pending,
+                  completed,
+                  rejected
+                },
+                OC{
+                  pending,
+                  completed,
+                  rejected
+                },
+                PLINTH{
+                  pending,
+                  completed,
+                  rejected
+                },
+                BIRTHCERT{
+                  pending,
+                  completed,
+                  rejected
+                },
+                BIRTHTEOR{
+                  pending,
+                  completed,
+                  rejected
+                },
+                DEATHCERT{
+                  pending,
+                  completed,
+                  rejected
+                },
+                DEATHTEOR{
+                  pending,
+                  completed,
+                  rejected
+                },
+                MARRIAGECERT{
+                  pending,
+                  completed,
+                  rejected
+                },
+                MARRIAGETEOR{
+                  pending,
+                  completed,
+                  rejected
+                },
+                MARRIAGEREGISTER{
+                  pending,
+                  completed,
+                  rejected
+                },
+                MARRIAGE{
+                  pending,
+                  completed,
+                  rejected
+                },
+                RELIGIOUS{
+                  pending,
+                  completed,
+                  rejected
+                },
+                ROADSHOW{
+                  pending,
+                  completed,
+                  rejected
+                },
+            }
+          }
+        `,
       veriables: {
         department: userdata.data.getUserById.department,
       },
@@ -653,17 +752,7 @@ const DashBoard = (): JSX.Element => {
 
   let labels = [];
   if (userdata.department == "PDA") {
-    labels = [
-      "RTI",
-      "Old Copy",
-      "Zone",
-      "Petroleum",
-      "Unauthorized",
-      "Land Section",
-      // "CP",
-      // "OC",
-      // "PLINTH",
-    ];
+    labels = ["RTI", "Old Copy", "Zone", "CP", "OC", "PLINTH"];
   } else if (userdata.department == "CRSR") {
     labels = [
       "Birth Cert",
@@ -687,6 +776,30 @@ const DashBoard = (): JSX.Element => {
     labels = ["New Birth Register", "Death Register"];
   } else if (userdata.department == "EST") {
     labels = [
+      "Marriage Permission",
+      "Roadshow Permission",
+      "Religious Permission",
+    ];
+  } else if (
+    userdata.department == "COLLECTOR" ||
+    userdata.department == "DYCOLLECTOR"
+  ) {
+    labels = [
+      "RTI",
+      "Old Copy",
+      "Zone",
+      "CP",
+      "OC",
+      "PLINTH",
+      "Birth Cert",
+      "Birth Teor",
+      "Death Cert",
+      "Death Teor",
+      "Marriage Cert",
+      "Marriage Teor",
+      "New Marriage Register",
+      "New Birth Register",
+      "Death Register",
       "Marriage Permission",
       "Roadshow Permission",
       "Religious Permission",
@@ -819,31 +932,34 @@ const DashBoard = (): JSX.Element => {
               value={filecount.RTI}
               icon={MdiFileLockOpen}
             />
-            {/* <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.Cp)}
-          title="CP"
-          color="bg-gradient-to-r from-blue-400 to-blue-600"
-          textcolor="text-blue-500"
-          link="/home/vcp"
-          value={filecount.CP}
-        />
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.Oc)}
-          title="OC"
-          color="bg-gradient-to-r from-blue-400 to-blue-600"
-          textcolor="text-blue-500"
-          link="/home/voc"
-          value={filecount.OC}
-        />
-        <DashboradCard
-          onclick={() => achangeindex(SideBarTabs.Plinth)}
-          title="PLINTH"
-          color="bg-gradient-to-r from-blue-400 to-blue-600"
-          textcolor="text-blue-500"
-          link="/home/vplinth"
-          value={filecount.PLINTH}
-        /> */}
             <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Cp)}
+              title="CP"
+              color="bg-gradient-to-r from-blue-400 to-blue-600"
+              textcolor="text-blue-500"
+              link="/home/vcp"
+              value={filecount.CP}
+              icon={FluentEmojiHighContrastBuildingConstruction}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Oc)}
+              title="OC"
+              color="bg-gradient-to-r from-blue-400 to-blue-600"
+              textcolor="text-blue-500"
+              link="/home/voc"
+              value={filecount.OC}
+              icon={FluentBuildingPeople20Filled}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Plinth)}
+              title="PLINTH"
+              color="bg-gradient-to-r from-blue-400 to-blue-600"
+              textcolor="text-blue-500"
+              link="/home/vplinth"
+              value={filecount.PLINTH}
+              icon={CibLinuxFoundation}
+            />
+            {/* <DashboradCard
               onclick={() => achangeindex(SideBarTabs.Petroleum)}
               title="Petroleum"
               color="bg-gradient-to-r from-green-400 to-green-600"
@@ -869,7 +985,7 @@ const DashBoard = (): JSX.Element => {
               link="/home/vlandsection"
               value={filecount.LANDRECORDS}
               icon={Fa6SolidLandmark}
-            />
+            /> */}
           </>
         ) : null}
 
@@ -1023,6 +1139,173 @@ const DashBoard = (): JSX.Element => {
         ) : null}
         {userdata.department == "EST" ? (
           <>
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Marriage)}
+              title="Marriage Permission"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vmarriage"
+              value={filecount.MARRIAGE}
+              icon={IconParkTwotoneDiamondRing}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.RoadShow)}
+              title="Roadshow Permission"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vroadshow"
+              value={filecount.ROADSHOW}
+              icon={Fa6SolidPeopleGroup}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Religious)}
+              title="Religious Permission"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vreligious"
+              value={filecount.RELIGIOUS}
+              icon={IcBaselineTempleHindu}
+            />
+          </>
+        ) : null}
+        {userdata.department == "COLLECTOR" ||
+        userdata.department == "DYCOLLECTOR" ? (
+          <>
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.ZoneInfo)}
+              title="Zone Info"
+              color="bg-gradient-to-r from-rose-400 to-rose-600"
+              textcolor="text-rose-500"
+              link="/home/vzoneinfo"
+              value={filecount.ZONE}
+              icon={MdiSelectionMultipleMarker}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.OldCopy)}
+              title="Old Copy"
+              color="bg-gradient-to-r from-cyan-400 to-cyan-600"
+              textcolor="text-cyan-500"
+              link="/home/voldcopy"
+              value={filecount.OLDCOPY}
+              icon={TablerMap2}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Rti)}
+              title="RTI"
+              color="bg-gradient-to-r from-blue-400 to-blue-600"
+              textcolor="text-blue-500"
+              link="/home/vrti"
+              value={filecount.RTI}
+              icon={MdiFileLockOpen}
+            />
+            {/* <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Petroleum)}
+              title="Petroleum"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vpetroleum"
+              value={filecount.PETROLEUM}
+              icon={MingcuteGasStationFill}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.Unauthorisd)}
+              title="Unauthorized"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vunauthorised"
+              value={filecount.UNAUTHORIZED}
+              icon={LineMdConstruction}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.landSection)}
+              title="Land Section"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vlandsection"
+              value={filecount.LANDRECORDS}
+              icon={Fa6SolidLandmark}
+            /> */}
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.BirthCert)}
+              title="Birth Cert"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vbirthcert"
+              value={filecount.BIRTHCERT}
+              icon={MingcuteCertificate2Line}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.BirthTeor)}
+              title="Birth Teor"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vbirthteor"
+              value={filecount.BIRTHTEOR}
+              icon={IcBaselineFileCopy}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.DeathCert)}
+              title="Death Cert"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vdeathcert"
+              value={filecount.DEATHCERT}
+              icon={TablerFileCertificate}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.DeathTeor)}
+              title="Death Teor"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vdeathteor"
+              value={filecount.DEATHTEOR}
+              icon={HealthiconsICertificatePaper}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.MarriageCert)}
+              title="Marriage Cert"
+              color="bg-gradient-to-r from-green-400 to-green-600"
+              textcolor="text-green-500"
+              link="/home/vmarriagecert"
+              value={filecount.MARRIAGECERT}
+              icon={PhCertificateBold}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.MarriageTeor)}
+              title="Marriage Teor"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vmarriageteor"
+              value={filecount.MARRIAGETEOR}
+              icon={PhNewspaperClippingLight}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.NewMarriage)}
+              title="New Marriage Register"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vmarriageregister"
+              value={filecount.MARRIAGEREGISTER}
+              icon={EmojioneMonotoneCoupleWithHeart}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.NewBirthRegister)}
+              title="New Birth Register"
+              color="bg-gradient-to-r from-slate-400 to-slate-600"
+              textcolor="text-slate-500"
+              link="/home/vnewbirthregister"
+              value={filecount.BIRTHREGISTER}
+              icon={PhBabyFill}
+            />
+            <DashboradCard
+              onclick={() => achangeindex(SideBarTabs.NewDeathRegister)}
+              title="Death Register"
+              color="bg-gradient-to-r from-indigo-400 to-indigo-600"
+              textcolor="text-[#0984e3]"
+              link="/home/vnewdeathregister"
+              value={filecount.DEATHREGISTER}
+              icon={HealthiconsDeathAlt2}
+            />
             <DashboradCard
               onclick={() => achangeindex(SideBarTabs.Marriage)}
               title="Marriage Permission"

@@ -69,13 +69,12 @@ const MarriageRegister: React.FC = (): JSX.Element => {
   const brideFatherNameRef = useRef<HTMLInputElement>(null);
   const brideMotherNameRef = useRef<HTMLInputElement>(null);
 
-  const groomAddressRef = useRef<HTMLTextAreaElement>(null);
+  // const groomAddressRef = useRef<HTMLTextAreaElement>(null);
   const brideAddressRef = useRef<HTMLTextAreaElement>(null);
 
   const witnessOneRef = useRef<HTMLInputElement>(null);
   const witnessTwoRef = useRef<HTMLInputElement>(null);
   const witnessThreeRef = useRef<HTMLInputElement>(null);
-
 
   const joint_bride_groom_photo_url_Ref = useRef<HTMLInputElement>(null);
   const [joint_bride_groom_photo_url, setJoint_bride_groom_photo_url] =
@@ -168,7 +167,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
         email: z.string().email("Enter a valid email.").optional(),
         user_uid: z
           .string()
-         
+
           .optional(),
         village_id: z
           .number({
@@ -191,7 +190,6 @@ const MarriageRegister: React.FC = (): JSX.Element => {
         witness_two_details: z.string().nonempty("Enter Name of Witness 2"),
         witness_three_details: z.string().nonempty("Enter Name of Witness 3"),
 
-        groom_address: z.string().nonempty("Enter Groom's Address"),
         bride_address: z.string().nonempty("Enter Bride's Address"),
 
         groom_date_of_birth: z.date({
@@ -230,7 +228,6 @@ const MarriageRegister: React.FC = (): JSX.Element => {
       bride_name: brideNameRef!.current!.value,
       bride_father_name: brideFatherNameRef!.current!.value,
       bride_mother_name: brideMotherNameRef!.current!.value,
-      groom_address: groomAddressRef!.current!.value,
       bride_address: brideAddressRef!.current!.value,
       witness_one_details: witnessOneRef!.current!.value,
       witness_two_details: witnessTwoRef!.current!.value,
@@ -352,7 +349,6 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               bride_name: marriageRegisterScheme.bride_name,
               bride_father_name: marriageRegisterScheme.bride_father_name,
               bride_mother_name: marriageRegisterScheme.bride_mother_name,
-              groom_address: marriageRegisterScheme.groom_address,
               bride_address: marriageRegisterScheme.bride_address,
               religion_groom: marriageRegisterScheme.religion_groom,
               religion_bride: marriageRegisterScheme.religion_bride,
@@ -378,6 +374,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
           },
         });
         if (!data.status) {
+          console.log(data.message);
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(
@@ -516,11 +513,11 @@ const MarriageRegister: React.FC = (): JSX.Element => {
           </div>
 
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-          <input
-                            ref={emailRef}
-                            placeholder="Applicant Email"
-                            className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-                        />
+            <input
+              ref={emailRef}
+              placeholder="Applicant Email"
+              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
+            />
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -528,7 +525,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+            <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
               {" "}
               XXXX-XXXX-{user.user_uid_four.toString()}
             </div>
@@ -627,20 +624,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.7</span>Groom's Address
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto">
-            <textarea
-              ref={groomAddressRef}
-              placeholder="Groom's Address"
-              className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2"
-            ></textarea>
-          </div>
-        </div>
-
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.8</span>Bride's Address
+            <span className="mr-2">3.7</span>Bride's Address
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <textarea
@@ -653,7 +637,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.9</span>Groom's Religion
+            <span className="mr-2">3.8</span>Groom's Religion
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto flex gap-6 items-center">
             {Religion.map((val: string, index: number) => (
@@ -677,7 +661,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.10</span> Bride's Religion
+            <span className="mr-2">3.9</span> Bride's Religion
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto flex gap-6 items-center">
             {Religion.map((val: string, index: number) => (
@@ -701,7 +685,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.11</span>Witness 1 Details
+            <span className="mr-2">3.10</span>Witness 1 Details
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
@@ -714,7 +698,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.12</span>Witness 2 Details
+            <span className="mr-2">3.11</span>Witness 2 Details
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
@@ -727,7 +711,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.13</span>Witness 3 Details
+            <span className="mr-2">3.12</span>Witness 3 Details
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
@@ -740,7 +724,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.14</span> Groom's Date of Birth
+            <span className="mr-2">3.13</span> Groom's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
@@ -754,7 +738,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.15</span> Bride's Date of Birth
+            <span className="mr-2">3.14</span> Bride's Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input
@@ -768,7 +752,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.16</span> Date of Marriage
+            <span className="mr-2">3.15</span> Date of Marriage
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
             <input

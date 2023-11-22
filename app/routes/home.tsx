@@ -4,16 +4,13 @@ import { Link, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import { useRef } from "react";
 import {
   CilCameraControl,
-  Fa6SolidArrowsUpDownLeftRight,
   Fa6SolidBars,
   Fa6SolidCalendarDays,
   Fa6SolidCodeBranch,
   Fa6SolidFile,
   Fa6SolidHouse,
   Fa6SolidMagnifyingGlass,
-  Fa6SolidMapLocationDot,
   Fa6SolidObjectUngroup,
-  Fa6SolidPersonMilitaryPointing,
   Fa6SolidXmark,
   MaterialSymbolsActivityZone,
   MaterialSymbolsAlignHorizontalRight,
@@ -213,7 +210,7 @@ const Home: React.FC = (): JSX.Element => {
                             active={asideindex === SideBarTabs.OldCopy}
                           ></SidebarTab>
                         </Link>
-                        <div className="w-full h-[2px] bg-gray-800 my-3"></div>
+                        {/* <div className="w-full h-[2px] bg-gray-800 my-3"></div>
                         <p className="text-left px-2 font-serif text-sm my-2 text-gray-600 w-full">
                           Department Files
                         </p>
@@ -250,7 +247,7 @@ const Home: React.FC = (): JSX.Element => {
                             title="Land Section"
                             active={asideindex === SideBarTabs.landSection}
                           ></SidebarTab>
-                        </Link>
+                        </Link> */}
                       </>
                     ) : null}
 
@@ -493,6 +490,19 @@ const Home: React.FC = (): JSX.Element => {
                       </>
                     ) : null}
                     {/* EST end here */}
+                    <Link
+                      to={"/home/search"}
+                      onClick={() => {
+                        achangeindex(SideBarTabs.Search);
+                        changeMobile(false);
+                      }}
+                    >
+                      <SidebarTab
+                        icon={Fa6SolidMagnifyingGlass}
+                        title="Search"
+                        active={asideindex === SideBarTabs.Search}
+                      ></SidebarTab>
+                    </Link>
 
                     <div className="w-full h-[2px] bg-gray-800 my-4"></div>
                   </>
@@ -531,19 +541,7 @@ const Home: React.FC = (): JSX.Element => {
                     </Link>
                   </>
                 ) : null}
-                <Link
-                  to={"/home/search"}
-                  onClick={() => {
-                    achangeindex(SideBarTabs.Search);
-                    changeMobile(false);
-                  }}
-                >
-                  <SidebarTab
-                    icon={Fa6SolidMagnifyingGlass}
-                    title="Search"
-                    active={asideindex === SideBarTabs.Search}
-                  ></SidebarTab>
-                </Link>
+
                 <button onClick={logoutHandle}>
                   <SidebarTab
                     icon={MaterialSymbolsLogoutRounded}
