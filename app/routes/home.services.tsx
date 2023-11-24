@@ -146,19 +146,19 @@ const Services: React.FC = (): JSX.Element => {
             <ServiceCard
               title="Occupancy certificate"
               description="Obtain your occupancy certificate online. Ensure your property is compliant with regulations for safe and legal occupation."
-              apply="/home/oc/"
+              apply="/home/pda/oc/"
               icons={22}
             />
             <ServiceCard
               title="Construction permission"
               description="Secure legal authorization swiftly for your projects through our portal. Hassle-free"
-              apply="/home/cp/"
+              apply="/home/pda/cp/"
               icons={23}
             />
             <ServiceCard
               title="Plinth Inspection"
               description="Apply for plinth inspections online. Ensure your project's foundation is stable and secure."
-              apply="/home/plinth"
+              apply="/home/pda/plinth"
               icons={24}
             />
           </div>

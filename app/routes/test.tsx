@@ -1,31 +1,48 @@
-import { $getRoot, $getSelection, FORMAT_TEXT_COMMAND } from 'lexical';
-import { SVGProps, useEffect, useLayoutEffect, useState } from 'react';
-import { jsPDF } from "jspdf";
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import html2canvas from "html2canvas";
+import { FORMAT_TEXT_COMMAND } from "lexical";
+import type { SVGProps } from "react";
+import { useEffect } from "react";
+// import { jsPDF } from "jspdf";
+import { LexicalComposer } from "@lexical/react/LexicalComposer";
+// import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+// import html2canvas from "html2canvas";
 
-import { ThemeProvider } from "@emotion/react";
+// import { ThemeProvider } from "@emotion/react";
 
+import {
+  Fa6SolidHeading,
+  IcBaselineFormatAlignCenter,
+  IcBaselineFormatAlignJustify,
+  IcBaselineFormatAlignLeft,
+  IcBaselineFormatAlignRight,
+  IcBaselineFormatListBulleted,
+  IcBaselineFormatListNumbered,
+  IcBaselineFormatQuote,
+  IcBaselineFormatStrikethrough,
+  IcBaselineFormatUnderlined,
+  IcBaselineImage,
+  IcBaselineInsertLink,
+  IcBaselineSaveAlt,
+  IcBaselineTextFields,
+  IcOutlineCode,
+  MaterialSymbolsFormatBold,
+  MaterialSymbolsFormatItalic,
+  MaterialSymbolsRedo,
+  MaterialSymbolsUndo,
+} from "~/components/icons/icons";
+// import useOnClickListener from '~/editor/editorplugin';
+// import ReactDOMServer, { renderToString } from 'react-dom/server';
 
 const theme = {
   // ltr: 'ltr',
   // rtl: 'rtl',
   // paragraph: 'editor-paragraph',
 };
-
-
-
-
-import { Fa6SolidHeading, IcBaselineFormatAlignCenter, IcBaselineFormatAlignJustify, IcBaselineFormatAlignLeft, IcBaselineFormatAlignRight, IcBaselineFormatListBulleted, IcBaselineFormatListNumbered, IcBaselineFormatQuote, IcBaselineFormatStrikethrough, IcBaselineFormatUnderlined, IcBaselineImage, IcBaselineInsertLink, IcBaselineSaveAlt, IcBaselineTextFields, IcOutlineCode, MaterialSymbolsEdit, MaterialSymbolsFormatBold, MaterialSymbolsFormatItalic, MaterialSymbolsRedo, MaterialSymbolsUndo } from '~/components/icons/icons';
-import useOnClickListener from '~/editor/editorplugin';
-import ReactDOMServer, { renderToString } from 'react-dom/server';
 // import { useOnClickListener } from '~/editor/editorplugin';
 
 export const eventTypes = {
@@ -54,7 +71,7 @@ type PluginsList = {
   id: number;
   Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
   event: string;
-}
+};
 
 const pluginsList: PluginsList[] = [
   {
@@ -156,17 +173,18 @@ const pluginsList: PluginsList[] = [
 ];
 
 const ToolBar = () => {
-
   const [editor] = useLexicalComposerContext();
 
   return (
     <>
-      <div className='flex flex-wrap gap-2 bg-[#eeeeee] py-2'>
+      <div className="flex flex-wrap gap-2 bg-[#eeeeee] py-2">
         {pluginsList.map((plugins: PluginsList, index: number) => (
           <div
             key={index}
-            className='text-xl p-2 text-gray-700 bg-white rounded-md cursor-pointer'
-            onClick={() => { editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold") }}
+            className="text-xl p-2 text-gray-700 bg-white rounded-md cursor-pointer"
+            onClick={() => {
+              editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
+            }}
           >
             <plugins.Icon />
           </div>
@@ -174,37 +192,42 @@ const ToolBar = () => {
       </div>
     </>
   );
-}
+};
 
 function Editor() {
-
   const initialConfig = {
-    namespace: 'MyEditor',
+    namespace: "MyEditor",
     theme,
     onError,
   };
 
   return (
-    <div className='bg-[#eeeeee] min-h-screen grid place-items-center'>
-      <div className='flex flex-col w-5/6'>
-        <div className='relative w-full'>
+    <div className="bg-[#eeeeee] min-h-screen grid place-items-center">
+      <div className="flex flex-col w-5/6">
+        <div className="relative w-full">
           <LexicalComposer initialConfig={initialConfig}>
             <ToolBar />
             <RichTextPlugin
-              contentEditable={<ContentEditable className='bg-white outline-none py-2 px-4 w-full h-96' />}
-              placeholder={<div className='absolute top-[3.6rem] left-4 inline-block'>Enter some text...</div>}
+              contentEditable={
+                <ContentEditable className="bg-white outline-none py-2 px-4 w-full h-96" />
+              }
+              placeholder={
+                <div className="absolute top-[3.6rem] left-4 inline-block">
+                  Enter some text...
+                </div>
+              }
               ErrorBoundary={LexicalErrorBoundary}
             />
-            <OnChangePlugin onChange={onChange} ></OnChangePlugin>
+            <OnChangePlugin onChange={onChange}></OnChangePlugin>
             <HistoryPlugin />
             <MyCustomAutoFocusPlugin />
           </LexicalComposer>
         </div>
-        <div className='flex w-full py-2'>
+        <div className="flex w-full py-2">
           <div className="grow"></div>
-          <div className='flex gap-2 bg-white rounded-md items-center px-4 cursor-pointer'>
-            <IcBaselineSaveAlt className='text-lg text-gray-700'></IcBaselineSaveAlt>
-            <p className='text-gray-700 text-lg'>SAVE</p>
+          <div className="flex gap-2 bg-white rounded-md items-center px-4 cursor-pointer">
+            <IcBaselineSaveAlt className="text-lg text-gray-700"></IcBaselineSaveAlt>
+            <p className="text-gray-700 text-lg">SAVE</p>
           </div>
         </div>
       </div>
@@ -213,17 +236,13 @@ function Editor() {
 }
 export default Editor;
 
-
 // When the editor changes, you can get notified via the
 // LexicalOnChangePlugin!
 function onChange(editorState: any) {
-
   editorState.read(() => {
-
     // Read the contents of the EditorState here.
-    const root = $getRoot();
-    const selection = $getSelection();
-
+    // const root = $getRoot();
+    // const selection = $getSelection();
   });
 }
 

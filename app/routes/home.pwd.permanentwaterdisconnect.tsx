@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import { ApiCall, UploadFile } from "~/services/api";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
@@ -54,7 +55,8 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
 
   const OwnerShipType: string[] = ["OWNERSHIP", "TENANT"];
   type OwnerShipType = (typeof OwnerShipType)[number];
-  const [ownerShipType, setOwnerShipType] = useState<OwnerShipType>("OWNERSHIP");
+  const [ownerShipType, setOwnerShipType] =
+    useState<OwnerShipType>("OWNERSHIP");
 
   const EntityType: string[] = ["RESIDENTIAL", "COMMERCIAL", "INDUSTRIAL"];
   type EntityType = (typeof EntityType)[number];
@@ -62,14 +64,15 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
 
   const ConnectionType: string[] = ["DOMESTIC", "NONDOMESTIC"];
   type ConnectionType = (typeof ConnectionType)[number];
-  const [connectionType, setConnectionType] = useState<ConnectionType>("DOMESTIC");
+  const [connectionType, setConnectionType] =
+    useState<ConnectionType>("DOMESTIC");
 
   const toDateRef = useRef<HTMLInputElement>(null);
 
   const wardNumberRef = useRef<HTMLInputElement>(null);
   const meterNumberRef = useRef<HTMLInputElement>(null);
   const purposeRef = useRef<HTMLTextAreaElement>(null);
-  
+
   // const remarkRef = useRef<HTMLInputElement>(null);
 
   const applicant_uid_url_Ref = useRef<HTMLInputElement>(null);
@@ -141,16 +144,16 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
         email: z.string().email("Enter a valid email.").optional(),
         user_uid: z
           .string()
-        
+
           .optional(),
-        village_id: z.number({
-          invalid_type_error: "Select a valid village",
-          required_error: "Select a village",
-        })
-        .refine((val) => val != 0, {
-          message: "Please select village",
-        }),
-        
+        village_id: z
+          .number({
+            invalid_type_error: "Select a valid village",
+            required_error: "Select a village",
+          })
+          .refine((val) => val != 0, {
+            message: "Please select village",
+          }),
 
         ownership_type: z.string().nonempty("Select your Ownership Type."),
         muncipal_type: z.string().nonempty("Select your Muncipal Type."),
@@ -161,20 +164,18 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
         meter_number: z.string().nonempty("Enter Meter Number"),
         purpose: z.string().nonempty("Enter Purpose"),
 
-        
         to_date: z.date({
           required_error: "Enter End date",
           invalid_type_error: "Enter a valid End date",
         }),
 
-       
-       
-
         iagree: z.string().nonempty("I solemnly affirm & hereby."),
       })
       .strict();
 
-    type PermanentWaterDisconnectScheme = z.infer<typeof PermanentWaterDisconnectScheme>;
+    type PermanentWaterDisconnectScheme = z.infer<
+      typeof PermanentWaterDisconnectScheme
+    >;
 
     const permanentWaterDisconnectScheme: PermanentWaterDisconnectScheme = {
       name: nameRef!.current!.value,
@@ -187,17 +188,17 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
       ward_number: wardNumberRef!.current!.value,
       meter_number: meterNumberRef!.current!.value,
       purpose: purposeRef!.current!.value,
-      
 
       iagree: isChecked ? "YES" : "NO",
       connection_type: connectionType,
       entity_type: entityType,
       muncipal_type: muncipalType,
       ownership_type: ownerShipType,
-      
     };
 
-    const parsed = PermanentWaterDisconnectScheme.safeParse(permanentWaterDisconnectScheme);
+    const parsed = PermanentWaterDisconnectScheme.safeParse(
+      permanentWaterDisconnectScheme
+    );
 
     if (parsed.success) {
       if (sigimg == null || sigimg == undefined) {
@@ -260,12 +261,11 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
               iagree: permanentWaterDisconnectScheme.iagree,
               status: "ACTIVE",
               to_date: permanentWaterDisconnectScheme.to_date,
-            
+
               connection_type: permanentWaterDisconnectScheme.connection_type,
               entity_type: permanentWaterDisconnectScheme.entity_type,
               muncipal_type: permanentWaterDisconnectScheme.muncipal_type,
               ownership_type: permanentWaterDisconnectScheme.ownership_type,
-
             },
           },
         });
@@ -419,13 +419,12 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto">
-          <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
+            <div className="w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2">
               {" "}
               XXXX-XXXX-{user.user_uid_four.toString()}
             </div>
           </div>
         </div>
-
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
@@ -587,8 +586,6 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-       
-        
         {/*--------------------- section 3 end here ------------------------- */}
 
         {/*--------------------- section 4 start here ------------------------- */}
@@ -628,7 +625,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(applicant_uid_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -665,7 +662,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(house_tax_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -702,7 +699,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(electric_bill_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -748,7 +745,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(undertaking_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -817,7 +814,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(sigimg)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>

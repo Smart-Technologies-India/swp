@@ -1,9 +1,10 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { ApiCall, UploadFile } from "~/services/api";
 import { toast } from "react-toastify";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
 
@@ -558,7 +559,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -620,7 +621,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -814,7 +815,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.witness_1_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -834,7 +835,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.witness_2_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -854,7 +855,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.applicant_uid_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -874,7 +875,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.undertaking_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -921,7 +922,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.signature_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -978,7 +979,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
                             title: "Forward to LDC",
                             formstatus: 25,
                             querytype: "INTRA",
-                            authuserid: "23",
+                            authuserid: "22",
                             foacaluserid: "21",
                             intrauserid: "21,23",
                             interuserid: "0",
@@ -1000,7 +1001,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
                             title: "Forward to SUPTD",
                             formstatus: 50,
                             querytype: "INTRA",
-                            authuserid: "22",
+                            authuserid: "21",
                             foacaluserid: "22",
                             intrauserid: "21,22",
                             interuserid: "0",

@@ -3,7 +3,8 @@ import {  useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { ApiCall, UploadFile } from "~/services/api";
 import { toast } from "react-toastify";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
 
@@ -486,7 +487,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -548,7 +549,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -775,7 +776,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.house_tax_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -795,7 +796,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.electric_bill_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -815,7 +816,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.applicant_uid_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -835,7 +836,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.undertaking_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -882,7 +883,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.signature_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -940,7 +941,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                             title: "Forward to Headclerk",
                             formstatus: 25,
                             querytype: "INTRA",
-                            authuserid: "63",
+                            authuserid: "62",
                             foacaluserid: "61",
                             intrauserid: "61,62",
                             interuserid: "0",
@@ -962,7 +963,7 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
                             title: "Forward to SUPTD",
                             formstatus: 50,
                             querytype: "INTRA",
-                            authuserid: "62",
+                            authuserid: "61",
                             foacaluserid: "61",
                             intrauserid: "61,62",
                             interuserid: "0",

@@ -244,7 +244,7 @@ const WaterReconnect: React.FC = (): JSX.Element => {
                         </td>
                         <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                           <Link
-                            to={`/home/pda/plinthview/${val.form_id}`}
+                            to={`/home/pwd/waterreconnectview/${val.form_id}`}
                             className="py-1 w-full sm:w-auto block text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
                           >
                             VIEW

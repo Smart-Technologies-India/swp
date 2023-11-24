@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -224,7 +225,7 @@ const PermanentWaterDisconnect: React.FC = (): JSX.Element => {
                                                     }
                                                 </td>
                                                 <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                                                    <Link to={`/home/pda/plinthview/${val.form_id}`}
+                                                    <Link to={`/home/pwd/permanentwaterdisconnectview/${val.form_id}`}
                                                         className="py-1 w-full sm:w-auto block text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
                                                     >
                                                         VIEW

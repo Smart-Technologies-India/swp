@@ -1,11 +1,13 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import QueryTabs from "~/components/QueryTabs";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { userPrefs } from "~/cookies";
 import { ApiCall, UploadFile } from "~/services/api";
+import { encrypt } from "~/utils";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const id = props.params.id;
@@ -45,7 +47,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               labour_cess,
               iagree,
               signature_url,
-              payment_doc
+              payment_doc,
+              createdAt
             }
           }
       `,
@@ -1061,6 +1064,7 @@ const OCView: React.FC = (): JSX.Element => {
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1123,6 +1127,7 @@ const OCView: React.FC = (): JSX.Element => {
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1185,6 +1190,7 @@ const OCView: React.FC = (): JSX.Element => {
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1403,6 +1409,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.applicant_uid}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1422,6 +1429,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.completion_certificate}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1440,6 +1448,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.construction_permission}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1457,6 +1466,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.building_plan}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1475,6 +1485,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.annexure_fourteen}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1493,6 +1504,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.coast_guard_noc}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1512,6 +1524,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.fire_noc}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1530,6 +1543,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.rainwater_harvest}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1549,6 +1563,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.deviation_plan}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1567,6 +1582,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.indemnity}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1585,6 +1601,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.valuation_certificate}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1603,6 +1620,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.labour_cess}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1650,6 +1668,7 @@ const OCView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.signature_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1670,6 +1689,20 @@ const OCView: React.FC = (): JSX.Element => {
                   Download Document
                 </a>
               ) : null} */}
+              {common.form_status == 75 ? (
+                <Link
+                  target="_blank"
+                  to={`/ocpdf/${encrypt(
+                    `OC-${("0000" + from_data.id).slice(-4)}-${
+                      from_data.createdAt.toString().split("-")[0]
+                    }`,
+                    "certificatedata"
+                  )}`}
+                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+                >
+                  Download Occupancy Certificate
+                </Link>
+              ) : null}
               {common.query_status == "QUERYRAISED" ? (
                 <button
                   onClick={() => setReplyQueryBox((val) => true)}

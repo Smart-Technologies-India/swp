@@ -1,10 +1,12 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import type { ChangeEvent} from "react";
+import { useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { toast } from "react-toastify";
 
 import { ApiCall, UploadFile } from "~/services/api";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
 
@@ -695,7 +697,7 @@ const DeathRegisterView = (): JSX.Element => {
                           }
                         `,
             veriables: {
-              updateRtiInput: payreq,
+              updateDeathRegisterInput: payreq,
             },
           });
 
@@ -992,7 +994,7 @@ const DeathRegisterView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1054,7 +1056,7 @@ const DeathRegisterView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1116,7 +1118,7 @@ const DeathRegisterView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1438,7 +1440,7 @@ const DeathRegisterView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.father_uid_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1457,7 +1459,7 @@ const DeathRegisterView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.deceased_uid_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1476,7 +1478,7 @@ const DeathRegisterView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.authority_letter_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1495,7 +1497,7 @@ const DeathRegisterView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.undertaking_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1544,7 +1546,7 @@ const DeathRegisterView = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.signature_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1560,7 +1562,7 @@ const DeathRegisterView = (): JSX.Element => {
                 <a
                   target="_blank"
                   href={from_data.payment_doc}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium" rel="noreferrer"
                 >
                   Download Document
                 </a>
@@ -1609,7 +1611,7 @@ const DeathRegisterView = (): JSX.Element => {
                         title: "Upload Document & Forward to Headclerk",
                         formstatus: 25,
                         querytype: "INTRA",
-                        authuserid: "43",
+                        authuserid: "42",
                         foacaluserid: "41",
                         intrauserid: "41,43",
                         interuserid: "0",

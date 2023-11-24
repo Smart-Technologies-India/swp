@@ -374,7 +374,6 @@ const MarriageRegister: React.FC = (): JSX.Element => {
           },
         });
         if (!data.status) {
-          console.log(data.message);
           toast.error(data.message, { theme: "light" });
         } else {
           navigator(
@@ -802,7 +801,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(applicant_uid_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -839,7 +838,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(groom_uid_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -876,7 +875,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(bride_uid_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -913,7 +912,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(groom_signature_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -950,7 +949,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(bride_signature_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -991,7 +990,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(joint_bride_groom_photo_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1032,7 +1031,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(witness_one_signature_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1073,7 +1072,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(witness_two_signature_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1114,7 +1113,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(witness_three_signature_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1160,7 +1159,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(undertaking_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1229,7 +1228,7 @@ const MarriageRegister: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(sigimg)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>

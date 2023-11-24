@@ -25,8 +25,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const cookie: any = await userPrefs.parse(cookieHeader);
   const data = await ApiCall({
     query: `
-        query getAllZoneById($id:Int!){
-            getAllZoneById(id:$id){
+        query getBirthById($id:Int!){
+          getBirthById(id:$id){
                 id,
                 name,
                 address,
@@ -36,8 +36,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 userId,
                 survey_no,
                 village_id,
-                sub_division,
-                nakel_url_1_14,
                 iagree,
                 signature_url,
                 payment_doc,
@@ -49,6 +47,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: id,
     },
   });
+  console.log(data);
 
   const village = await ApiCall({
     query: `
@@ -60,26 +59,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
           }
       `,
     veriables: {
-      id: parseInt(data.data.getAllZoneById.village_id!),
-    },
-  });
-
-  const subdivision = await ApiCall({
-    query: `
-        query getSubDivision($searchSurveyInput:SearchSurveyInput!){
-            getSubDivision(searchSurveyInput:$searchSurveyInput){
-              sub_division,
-              owner_name,
-              area,
-              zone
-            }
-          }
-      `,
-    veriables: {
-      searchSurveyInput: {
-        villageId: parseInt(data.data.getAllZoneById.village_id),
-        survey_no: data.data.getAllZoneById.survey_no,
-      },
+      id: parseInt(data.data.getBirthById.village_id!),
     },
   });
 
@@ -105,7 +85,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     veriables: {
       searchCommonInput: {
         form_id: id,
-        form_type: "LANDRECORDS",
+        form_type: "OC",
       },
     },
   });
@@ -113,53 +93,22 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   return json({
     id: id,
     user: cookie,
-    form: data.data.getAllZoneById,
+    form: data.data.getBirthById,
     village: village.data.getAllVillageById.name,
-    subdivision: subdivision.data.getSubDivision,
     common: common.data.searchCommon,
   });
 };
 
-const LandSectionPdfView = (): JSX.Element => {
+const BirthPdfView = (): JSX.Element => {
   const loader = useLoaderData();
   const form = loader.form;
   const village = loader.village;
   //   const common = loader.common;
 
-  const division = loader.subdivision;
   Font.register({
     family: "Oswald",
     src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
   });
-
-  interface landDetailsType {
-    land: string | null;
-    area: string | null;
-    zone: string | null;
-  }
-
-  const [landDetails, setLandDetails] = useState<landDetailsType>({
-    area: null,
-    land: null,
-    zone: null,
-  });
-
-  const setlanddetails = (value: string) => {
-    const selectedSubdivision = division.find(
-      (val: any) => val.sub_division === value
-    );
-    if (selectedSubdivision) {
-      setLandDetails((val) => ({
-        land: selectedSubdivision.owner_name,
-        area: selectedSubdivision.area,
-        zone: selectedSubdivision.zone,
-      }));
-    }
-  };
-
-  useEffect(() => {
-    setlanddetails(form.sub_division);
-  }, []);
 
   const styles = StyleSheet.create({
     body: {
@@ -269,7 +218,7 @@ const LandSectionPdfView = (): JSX.Element => {
     },
   });
 
-  const LandSectionPdf = () => (
+  const BirthPdf = () => (
     <Document>
       <Page style={styles.body} size={"A4"}>
         <View>
@@ -279,27 +228,27 @@ const LandSectionPdfView = (): JSX.Element => {
         </View>
         <View>
           <Text style={styles.heading}>
-            Town & Country Planning Department,
+            Daman Municipal COuncil,
           </Text>
         </View>
         <View>
           <Text style={styles.heading}>
-            First Floor, Collectorate, Moti Daman.
+            First Floor, DMC, Moti Daman.
           </Text>
         </View>
         <View>
-          <Text style={styles.heading}>Zone Information</Text>
+          <Text style={styles.heading}>New Birth Registration</Text>
         </View>
         <View>
           <Text style={styles.subtitle} fixed>
-            With reference to the {form.id}, the zone information for land
-            bearing Survey No. {form.survey_no} of village {village} is
+            With reference to the {form.id}, the Birth Certificate
+            for kid of village{" "}
+            {village}
           </Text>
         </View>
         <View>
           <Text style={styles.subtitle} fixed>
-            for {form.na_type} use is scrutinized from the planning point of
-            view and the following report is hereby submitted.
+            is hereby Granted.
           </Text>
         </View>
         <View>
@@ -310,49 +259,25 @@ const LandSectionPdfView = (): JSX.Element => {
           <Text style={styles.text2}>{form.name}</Text>
         </View>
         <View style={styles.myflex}>
-          <Text style={styles.text1}>1.2 Applicant Contact Number</Text>
-          <Text style={styles.text2}>{form.mobile}</Text>
-        </View>
-        <View style={styles.myflex}>
-          <Text style={styles.text1}>1.3 Applicant Survey Number</Text>
-          <Text style={styles.text2}>{form.survey_no}</Text>
-        </View>
-        <View style={styles.myflex}>
-          <Text style={styles.text1}>1.4 Applicant Village</Text>
-          <Text style={styles.text2}>{village}</Text>
-        </View>
-        <View style={styles.myflex}>
-          <Text style={styles.text1}>1.5 Applicant Area</Text>
-          <Text style={styles.text2}>{landDetails.area}</Text>
-        </View>
-        <View>
-          <Text style={styles.header}>2. Applicant Details(s)</Text>
-        </View>
-        <View style={styles.myflex}>
-          <Text style={styles.text1}>2.1 Applicant Name</Text>
-          <Text style={styles.text2}>{form.name}</Text>
-        </View>
-        <View style={styles.myflex}>
-          <Text style={styles.text1}>2.2 Applicant address</Text>
+          <Text style={styles.text1}>1.2 Applicant address</Text>
           <Text style={styles.text2}>{form.address}</Text>
         </View>
         <View style={styles.myflex}>
-          <Text style={styles.text1}>2.3 Applicant Contact Number</Text>
+          <Text style={styles.text1}>1.3 Applicant Contact Number</Text>
           <Text style={styles.text2}>{form.mobile}</Text>
         </View>
         <View style={styles.myflex}>
-          <Text style={styles.text1}>2.4 Applicant Email</Text>
+          <Text style={styles.text1}>1.4 Applicant Email</Text>
           <Text style={styles.text2}>{form.email}</Text>
         </View>
         <View style={styles.myflex}>
-          <Text style={styles.text1}>2.5 Applicant UID</Text>
+          <Text style={styles.text1}>1.5 Applicant UID</Text>
           <Text style={styles.text2}>{form.user_uid}</Text>
         </View>
+
         <View>
           <Text style={styles.signtext}>
-            &nbsp; &nbsp; &nbsp; &nbsp; The zone info pertaining to land with
-            survey No. {form.survey_no} & sub Division {form.sub_division} of
-            village {village.name} is{landDetails.zone} zone.
+            &nbsp; &nbsp; &nbsp; &nbsp; The Birth Certificate             pertaining to kid of village {village.name} is hereby Granted.
           </Text>
         </View>
         <View style={styles.flexbox}>
@@ -361,7 +286,7 @@ const LandSectionPdfView = (): JSX.Element => {
           <View style={styles.flexbox3}>
             <View>
               <Image src={"/images/signtwo.jpg"} style={styles.img}></Image>
-              <Text style={styles.signtext}>M.S(PDA)/ATP(PDA)</Text>
+              <Text style={styles.signtext}>CEO(DMC)</Text>
               <Text style={styles.signtext}>Daman</Text>
             </View>
           </View>
@@ -370,7 +295,7 @@ const LandSectionPdfView = (): JSX.Element => {
           <Text>
             REF. NO:
             {encrypt(
-              `ZONE-${("0000" + form.id).slice(-4)}-${
+              `BIRTH-${("0000" + form.id).slice(-4)}-${
                 form.createdAt.toString().split("-")[0]
               }`,
               "certificatedata"
@@ -392,7 +317,7 @@ const LandSectionPdfView = (): JSX.Element => {
       {isClient ? (
         <div className="w-full h-scree">
           <PDFViewer style={{ width: "100%", height: "100vh" }}>
-            <LandSectionPdf />
+            <BirthPdf />
           </PDFViewer>
         </div>
       ) : (
@@ -404,4 +329,4 @@ const LandSectionPdfView = (): JSX.Element => {
   );
 };
 
-export default LandSectionPdfView;
+export default BirthPdfView;

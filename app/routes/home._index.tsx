@@ -523,7 +523,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                   pending,
                   completed,
                   rejected
-                },
+                }
             }
           }
         `,
@@ -547,7 +547,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       `,
     veriables: { department: userdata.data.getUserById.department },
   });
-
   return json({
     userdata: userdata.data.getUserById,
     filecount: filecount.data.getFileCount,
