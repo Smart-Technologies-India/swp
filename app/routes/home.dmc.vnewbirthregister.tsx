@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -126,7 +127,7 @@ const BirthRegister: React.FC = (): JSX.Element => {
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
         <div className="flex items-center gap-2">
           <h1 className="text-gray-800 text-3xl font-semibold text-center">
-           Birth Register
+            Birth Register
           </h1>
           <div className="grow"></div>
           {isSearch ? (

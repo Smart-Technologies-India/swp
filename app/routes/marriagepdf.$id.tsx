@@ -25,8 +25,8 @@ import {
     const cookie: any = await userPrefs.parse(cookieHeader);
     const data = await ApiCall({
       query: `
-          query getMarriageById($id:Int!){
-            getMarriageById(id:$id){
+          query getMarriageRegisterById($id:Int!){
+            getMarriageRegisterById(id:$id){
                   id,
                   name,
                   address,
@@ -34,11 +34,9 @@ import {
                   email,
                   user_uid,
                   userId,
-                  survey_no,
                   village_id,
                   iagree,
                   signature_url,
-                  payment_doc,
                   createdAt
               }
             }
@@ -47,7 +45,6 @@ import {
         id: id,
       },
     });
-    console.log(data);
   
     const village = await ApiCall({
       query: `
@@ -59,7 +56,7 @@ import {
             }
         `,
       veriables: {
-        id: parseInt(data.data.getMarriageById.village_id!),
+        id: parseInt(data.data.getMarriageRegisterById.village_id!),
       },
     });
   
@@ -85,7 +82,7 @@ import {
       veriables: {
         searchCommonInput: {
           form_id: id,
-          form_type: "OC",
+          form_type: "MARRIAGEREGISTER",
         },
       },
     });
@@ -93,7 +90,7 @@ import {
     return json({
       id: id,
       user: cookie,
-      form: data.data.getMarriageById,
+      form: data.data.getMarriageRegisterById,
       village: village.data.getAllVillageById.name,
       common: common.data.searchCommon,
     });
@@ -277,7 +274,7 @@ import {
   
           <View>
             <Text style={styles.signtext}>
-              &nbsp; &nbsp; &nbsp; &nbsp; The Marriage Registration              pertaining to applicant based in village {village.name} is hereby Granted.
+              &nbsp; &nbsp; &nbsp; &nbsp; The Marriage Registration pertaining to applicant based in village {village.name} is hereby Granted.
             </Text>
           </View>
           <View style={styles.flexbox}>

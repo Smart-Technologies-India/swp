@@ -1,11 +1,11 @@
-import type { ChangeEvent} from "react";
+import type { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { toast } from "react-toastify";
 
 import { ApiCall, UploadFile } from "~/services/api";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
@@ -146,7 +146,6 @@ const DeathTeorView = (): JSX.Element => {
   const isSubmited = loader.submit;
   const common = isSubmited ? loader.common[0] : null;
   const submit = async () => {
-   
     const data = await ApiCall({
       query: `
             mutation createCommon($createCommonInput:CreateCommonInput!){
@@ -685,7 +684,7 @@ const DeathTeorView = (): JSX.Element => {
                           }
                         `,
             veriables: {
-              updateRtiInput: payreq,
+              updateDeathTeorInput: payreq,
             },
           });
 
@@ -982,7 +981,8 @@ const DeathTeorView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1044,7 +1044,8 @@ const DeathTeorView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1106,7 +1107,8 @@ const DeathTeorView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1204,7 +1206,7 @@ const DeathTeorView = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-          XXXX-XXXX-{from_data.user_uid}
+            XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -1220,7 +1222,8 @@ const DeathTeorView = (): JSX.Element => {
             <span className="mr-2">2.7</span> Deceased Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-          {new Date(from_data.date_of_birth) .toJSON()
+            {new Date(from_data.date_of_birth)
+              .toJSON()
               .slice(0, 10)
               .split("-")
               .reverse()
@@ -1232,8 +1235,8 @@ const DeathTeorView = (): JSX.Element => {
             <span className="mr-2">2.8</span> Deceased Date of Death
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-        
-            {new Date(from_data.date_of_death) .toJSON()
+            {new Date(from_data.date_of_death)
+              .toJSON()
               .slice(0, 10)
               .split("-")
               .reverse()
@@ -1285,8 +1288,8 @@ const DeathTeorView = (): JSX.Element => {
             <span className="mr-2">2.14</span> Date of Registration
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-           
-            {new Date(from_data.date_of_registration) .toJSON()
+            {new Date(from_data.date_of_registration)
+              .toJSON()
               .slice(0, 10)
               .split("-")
               .reverse()
@@ -1317,7 +1320,8 @@ const DeathTeorView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.applicant_uid_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1336,7 +1340,8 @@ const DeathTeorView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.father_uid_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1355,7 +1360,8 @@ const DeathTeorView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.mother_uid_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1374,7 +1380,8 @@ const DeathTeorView = (): JSX.Element => {
               <a
                 target="_blank"
                 href={from_data.undertaking_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <div className="flex items-center gap-2">
                   <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1423,7 +1430,8 @@ const DeathTeorView = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.signature_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1439,7 +1447,8 @@ const DeathTeorView = (): JSX.Element => {
                 <a
                   target="_blank"
                   href={from_data.payment_doc}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium" rel="noreferrer"
+                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+                  rel="noreferrer"
                 >
                   Download Document
                 </a>
@@ -1462,93 +1471,99 @@ const DeathTeorView = (): JSX.Element => {
                 >
                   Close
                 </Link>
-                <button
-                  onClick={() => setQueryBox((val) => true)}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                >
-                  Query
-                </button>
-                {common.form_status == 1 && (user.id == 51 || user.id == 52) ? (
-                  <button
-                    onClick={() => {
-                      setRejectid((val) => common.id);
-                      setRejectBox(true);
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
-                  >
-                    Reject
-                  </button>
-                ) : null}
-                {/* atp button */}
-                {common.form_status == 1 && user.id == 53 ? (
-                  <button
-                    onClick={() => {
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Upload Document & Forward to Headclerk",
-                        formstatus: 25,
-                        querytype: "INTRA",
-                        authuserid: "52",
-                        foacaluserid: "51",
-                        intrauserid: "51,53",
-                        interuserid: "0",
-                        touserid: 52,
-                        querystatus: "PAYMENT",
-                        status: "ACTIVE",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Forward to Headclerk
-                  </button>
-                ) : null}
+                {common.query_status == "REJECTED" ? null : (
+                  <>
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => setQueryBox((val) => true)}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                      >
+                        Query
+                      </button>
+                    ) : null}
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => {
+                          setRejectid((val) => common.id);
+                          setRejectBox(true);
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
+                      >
+                        Reject
+                      </button>
+                    ) : null}
+                    {/* atp button */}
+                    {common.form_status == 1 && user.id == 53 ? (
+                      <button
+                        onClick={() => {
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Upload Document & Forward to Headclerk",
+                            formstatus: 25,
+                            querytype: "INTRA",
+                            authuserid: "52",
+                            foacaluserid: "51",
+                            intrauserid: "51,53",
+                            interuserid: "0",
+                            touserid: 52,
+                            querystatus: "PAYMENT",
+                            status: "ACTIVE",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Forward to Headclerk
+                      </button>
+                    ) : null}
 
-                {/* jtp button */}
-                {common.form_status == 25 && user.id == 52 ? (
-                  <button
-                    onClick={() => {
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Forward to Suptd",
-                        formstatus: 50,
-                        querytype: "INTRA",
-                        authuserid: "51",
-                        foacaluserid: "51",
-                        intrauserid: "51,52",
-                        interuserid: "0",
-                        touserid: 51,
-                        querystatus: "INPROCESS",
-                        status: "NONE",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Forward to Suptd
-                  </button>
-                ) : null}
-                {common.form_status == 50 && user.id == 51 ? (
-                  <button
-                    onClick={() => {
-                      forwardRef!.current!.value = `The Death Teor documents requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Convey to Applicant",
-                        formstatus: 75,
-                        querytype: "PUBLIC",
-                        authuserid: "0",
-                        foacaluserid: "51",
-                        intrauserid: "0",
-                        interuserid: "0",
-                        touserid: from_data.userId,
-                        querystatus: "APPROVED",
-                        status: "NONE",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Convey to Applicant
-                  </button>
-                ) : null}
+                    {/* jtp button */}
+                    {common.form_status == 25 && user.id == 52 ? (
+                      <button
+                        onClick={() => {
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Forward to Suptd",
+                            formstatus: 50,
+                            querytype: "INTRA",
+                            authuserid: "51",
+                            foacaluserid: "51",
+                            intrauserid: "51,52",
+                            interuserid: "0",
+                            touserid: 51,
+                            querystatus: "INPROCESS",
+                            status: "NONE",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Forward to Suptd
+                      </button>
+                    ) : null}
+                    {common.form_status == 50 && user.id == 51 ? (
+                      <button
+                        onClick={() => {
+                          forwardRef!.current!.value = `The Death Teor documents requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Convey to Applicant",
+                            formstatus: 75,
+                            querytype: "PUBLIC",
+                            authuserid: "0",
+                            foacaluserid: "51",
+                            intrauserid: "0",
+                            interuserid: "0",
+                            touserid: from_data.userId,
+                            querystatus: "APPROVED",
+                            status: "NONE",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Convey to Applicant
+                      </button>
+                    ) : null}
+                  </>
+                )}
               </div>
             </>
           )

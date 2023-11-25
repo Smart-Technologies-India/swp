@@ -122,7 +122,7 @@ const Dashboard: React.FC = (): JSX.Element => {
     if (21 == userid) return "Suptd";
     if (22 == userid) return "LDC";
     if (23 == userid) return "UDC";
-    if (24 == userid) return "Dept 7";
+    if (24 == userid) return "SHO";
     if (25 == userid) return "Dept 1";
     if (26 == userid) return "Dept 2";
     if (27 == userid) return "Dept 3";

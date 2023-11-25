@@ -1,12 +1,13 @@
 import type { ActionArgs, LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { Form, Link } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
   Fa6SolidMessage,
   Fa6SolidMobile,
   Fa6SolidUser,
+  SolarPenBold,
 } from "~/components/icons/icons";
 import { userPrefs } from "~/cookies";
 import { ApiCall } from "~/services/api";
@@ -169,6 +170,17 @@ const MobileLogin: React.FC = (): JSX.Element => {
               placeholder="Mobile Number"
               className="bg-transparent outline-none border-none fill-none text-slate-800 py-2 w-full"
             />
+            {user == undefined || user == null || user == "" ? null : (
+              <div
+                role="button"
+                className="cursor-pointer"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                <SolarPenBold className="text-2xl text-gray-700"></SolarPenBold>
+              </div>
+            )}
           </div>
           {user != null || user != undefined ? (
             <>
@@ -218,13 +230,6 @@ const MobileLogin: React.FC = (): JSX.Element => {
               </button>
             </>
           )}
-
-          <Link
-            to={"/"}
-            className="inline-block text-center text-white bg-cyan-500 py-2 px-6 text-xl font-medium rounded-md w-full mt-6"
-          >
-            Back to Home
-          </Link>
         </div>
       </div>
       <div className="hidden">

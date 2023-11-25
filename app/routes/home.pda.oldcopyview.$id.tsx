@@ -1,6 +1,8 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import QueryTabs from "~/components/QueryTabs";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
@@ -1045,6 +1047,7 @@ const OldCopyView: React.FC = (): JSX.Element => {
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1107,6 +1110,7 @@ const OldCopyView: React.FC = (): JSX.Element => {
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1169,6 +1173,7 @@ const OldCopyView: React.FC = (): JSX.Element => {
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -1309,7 +1314,7 @@ const OldCopyView: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-          XXXX-XXXX-{from_data.user_uid}
+            XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         {/*--------------------- section 2 end here ------------------------- */}
@@ -1376,6 +1381,7 @@ const OldCopyView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.aadhar_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1422,6 +1428,7 @@ const OldCopyView: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.signature_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -1438,6 +1445,7 @@ const OldCopyView: React.FC = (): JSX.Element => {
                   target="_blank"
                   href={from_data.payment_doc}
                   className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+                  rel="noreferrer"
                 >
                   Download Document
                 </a>
@@ -1460,92 +1468,99 @@ const OldCopyView: React.FC = (): JSX.Element => {
                 >
                   Close
                 </Link>
-                <button
-                  onClick={() => setQueryBox((val) => true)}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                >
-                  Query
-                </button>
-                {common.form_status == 1 && (user.id == 5 || user.id == 6) ? (
-                  <button
-                    onClick={() => {
-                      setRejectid((val) => common.id);
-                      setRejectBox(true);
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
-                  >
-                    Reject
-                  </button>
-                ) : null}
-                {/* atp button */}
-                {common.form_status == 1 && user.id == common.auth_user_id ? (
-                  <button
-                    onClick={() => {
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Upload Document & Forward to JTP",
-                        formstatus: 25,
-                        querytype: "INTRA",
-                        authuserid: "6",
-                        foacaluserid: "5",
-                        intrauserid: "5,6",
-                        interuserid: "0",
-                        touserid: 6,
-                        querystatus: "PAYMENT",
-                        status: "ACTIVE",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Forward to JTP
-                  </button>
-                ) : null}
-                {/* jtp button */}
-                {common.form_status == 25 && user.id == 6 ? (
-                  <button
-                    onClick={() => {
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Forward to ATP",
-                        formstatus: 50,
-                        querytype: "INTRA",
-                        authuserid: "5",
-                        foacaluserid: "5",
-                        intrauserid: "5,6",
-                        interuserid: "0",
-                        touserid: 5,
-                        querystatus: "INPROCESS",
-                        status: "NONE",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Forward to ATP
-                  </button>
-                ) : null}
-                {common.form_status == 50 && user.id == 5 ? (
-                  <button
-                    onClick={() => {
-                      forwardRef!.current!.value = `The OldCopy documents requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Convey to Applicant",
-                        formstatus: 75,
-                        querytype: "PUBLIC",
-                        authuserid: "0",
-                        foacaluserid: "5",
-                        intrauserid: "0",
-                        interuserid: "0",
-                        touserid: from_data.userId,
-                        querystatus: "APPROVED",
-                        status: "NONE",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Convey to Applicant
-                  </button>
-                ) : null}
+                {common.query_status == "REJECTED" ? null : (
+                  <>
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => setQueryBox((val) => true)}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                      >
+                        Query
+                      </button>
+                    ) : null}
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => {
+                          setRejectid((val) => common.id);
+                          setRejectBox(true);
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
+                      >
+                        Reject
+                      </button>
+                    ) : null}
+                    {/* atp button */}
+                    {common.form_status == 1 &&
+                    user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => {
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Upload Document & Forward to JTP",
+                            formstatus: 25,
+                            querytype: "INTRA",
+                            authuserid: "6",
+                            foacaluserid: "5",
+                            intrauserid: "5,6",
+                            interuserid: "0",
+                            touserid: 6,
+                            querystatus: "PAYMENT",
+                            status: "ACTIVE",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Forward to JTP
+                      </button>
+                    ) : null}
+                    {/* jtp button */}
+                    {common.form_status == 25 && user.id == 6 ? (
+                      <button
+                        onClick={() => {
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Forward to ATP",
+                            formstatus: 50,
+                            querytype: "INTRA",
+                            authuserid: "5",
+                            foacaluserid: "5",
+                            intrauserid: "5,6",
+                            interuserid: "0",
+                            touserid: 5,
+                            querystatus: "INPROCESS",
+                            status: "NONE",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Forward to ATP
+                      </button>
+                    ) : null}
+                    {common.form_status == 50 && user.id == 5 ? (
+                      <button
+                        onClick={() => {
+                          forwardRef!.current!.value = `The OldCopy documents requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Convey to Applicant",
+                            formstatus: 75,
+                            querytype: "PUBLIC",
+                            authuserid: "0",
+                            foacaluserid: "5",
+                            intrauserid: "0",
+                            interuserid: "0",
+                            touserid: from_data.userId,
+                            querystatus: "APPROVED",
+                            status: "NONE",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Convey to Applicant
+                      </button>
+                    ) : null}
+                  </>
+                )}
               </div>
             </>
           )

@@ -1,9 +1,9 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { ApiCall, UploadFile } from "~/services/api";
 import { toast } from "react-toastify";
-import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
@@ -559,7 +559,8 @@ const ReligiousView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -621,7 +622,8 @@ const ReligiousView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -720,7 +722,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant Aadhar Number
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-          XXXX-XXXX-{from_data.user_uid}
+            XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         {/*--------------------- section 2 end here ------------------------- */}
@@ -815,7 +817,8 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.witness_1_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -835,7 +838,8 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.witness_2_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -855,7 +859,8 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.applicant_uid_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -875,7 +880,8 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.undertaking_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -922,7 +928,8 @@ const ReligiousView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.signature_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -952,26 +959,27 @@ const ReligiousView: React.FC = (): JSX.Element => {
                 </Link>
                 {common.query_status == "REJECTED" ? null : (
                   <>
-                    <button
-                      onClick={() => setQueryBox((val) => true)}
-                      className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                    >
-                      Query
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setRejectid((val) => common.id);
-                        setRejectBox(true);
-                      }}
-                      className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
-                    >
-                      Reject
-                    </button>
-
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => setQueryBox((val) => true)}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                      >
+                        Query
+                      </button>
+                    ) : null}
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => {
+                          setRejectid((val) => common.id);
+                          setRejectBox(true);
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
+                      >
+                        Reject
+                      </button>
+                    ) : null}
                     {/* SUPTD button */}
-                    {common.form_status == 1 &&
-                    user.id == 23 ? (
+                    {common.form_status == 1 && user.id == 23 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -1048,11 +1056,11 @@ const ReligiousView: React.FC = (): JSX.Element => {
                             title: "Forward to SHO",
                             formstatus: 100,
                             querytype: "INTRA",
-                            authuserid: "8",
+                            authuserid: "24",
                             foacaluserid: "21",
-                            intrauserid: "21,4,8",
+                            intrauserid: "21,4,24",
                             interuserid: "0",
-                            touserid: 8,
+                            touserid: 24,
                             querystatus: "INPROCESS",
                           }));
                         }}
@@ -1063,7 +1071,7 @@ const ReligiousView: React.FC = (): JSX.Element => {
                     ) : null}
 
                     {/* SHO button */}
-                    {common.form_status == 100 && user.id == 8 ? (
+                    {common.form_status == 100 && user.id == 24 ? (
                       <button
                         onClick={() => {
                           setNotingsBox((val) => true);

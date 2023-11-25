@@ -25,8 +25,8 @@ import {
     const cookie: any = await userPrefs.parse(cookieHeader);
     const data = await ApiCall({
       query: `
-          query getDeathById($id:Int!){
-            getDeathById(id:$id){
+          query getDeathRegisterById($id:Int!){
+            getDeathRegisterById(id:$id){
                   id,
                   name,
                   address,
@@ -34,11 +34,9 @@ import {
                   email,
                   user_uid,
                   userId,
-                  survey_no,
                   village_id,
                   iagree,
                   signature_url,
-                  payment_doc,
                   createdAt
               }
             }
@@ -47,7 +45,6 @@ import {
         id: id,
       },
     });
-    console.log(data);
   
     const village = await ApiCall({
       query: `
@@ -59,7 +56,7 @@ import {
             }
         `,
       veriables: {
-        id: parseInt(data.data.getDeathById.village_id!),
+        id: parseInt(data.data.getDeathRegisterById.village_id!),
       },
     });
   
@@ -85,7 +82,7 @@ import {
       veriables: {
         searchCommonInput: {
           form_id: id,
-          form_type: "OC",
+          form_type: "DEATHREGISTER",
         },
       },
     });
@@ -93,7 +90,7 @@ import {
     return json({
       id: id,
       user: cookie,
-      form: data.data.getDeathById,
+      form: data.data.getDeathRegisterById,
       village: village.data.getAllVillageById.name,
       common: common.data.searchCommon,
     });
@@ -240,16 +237,16 @@ import {
             <Text style={styles.heading}>Death Registration</Text>
           </View>
           <View>
-            <Text style={styles.subtitle} fixed>
-              With reference to the {form.id}, the Death Certificate
-              for deceased living in village{" "}
-              {village}
-            </Text>
-          </View>
-          <View>
-            <Text style={styles.subtitle} fixed>
-              is hereby Granted.
-            </Text>
+          <Text style={styles.subtitle} fixed>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; With reference to the request submitted for registration of Death with registration Number.  {form.id},
+            
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.subtitle} fixed>
+          &nbsp;&nbsp;&nbsp; the Death Certificate for deceased of village{" "}
+            {village} is hereby Granted.
+          </Text>
           </View>
           <View>
             <Text style={styles.header}>1. Applicant Details(s)</Text>
@@ -277,7 +274,7 @@ import {
   
           <View>
             <Text style={styles.signtext}>
-              &nbsp; &nbsp; &nbsp; &nbsp; The Death Certificate             pertaining to deceased living in village {village.name} is hereby Granted.
+              &nbsp; &nbsp; &nbsp; &nbsp; The Death Certificate pertaining to deceased living in village {village.name} is hereby Granted.
             </Text>
           </View>
           <View style={styles.flexbox}>

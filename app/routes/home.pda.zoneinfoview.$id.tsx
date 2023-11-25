@@ -1341,13 +1341,34 @@ const ZoneInofrmationView: React.FC = (): JSX.Element => {
                 >
                   Close
                 </Link>
-                <button
+                {/* <button
                   onClick={() => setQueryBox((val) => true)}
                   className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
                 >
                   Query
-                </button>
-                {/* {loader.payment ? null :
+                </button> */}
+                {common.query_status == "REJECTED" ? null : (
+                  <>
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => setQueryBox((val) => true)}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                      >
+                        Query
+                      </button>
+                    ) : null}
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => {
+                          setRejectid((val) => common.id);
+                          setRejectBox(true);
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
+                      >
+                        Reject
+                      </button>
+                    ) : null}
+                    {/* {loader.payment ? null :
                                     <button
                                         onClick={() => setPaymentBox(val => true)}
                                         className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
@@ -1355,7 +1376,7 @@ const ZoneInofrmationView: React.FC = (): JSX.Element => {
                                         Payment
                                     </button>
                                 } */}
-                {common.form_status == 1 && (user.id == 5 || user.id == 6) ? (
+                    {/* {common.form_status == 1 && (user.id == 5 || user.id == 6) ? (
                   <button
                     onClick={() => {
                       setRejectid((val) => common.id);
@@ -1365,82 +1386,85 @@ const ZoneInofrmationView: React.FC = (): JSX.Element => {
                   >
                     Reject
                   </button>
-                ) : null}
-                {/* atp button */}
-                {common.form_status == 1 && user.id == common.auth_user_id ? (
-                  <button
-                    onClick={() => {
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Upload Document & Forward to JTP",
-                        formstatus: 25,
-                        querytype: "INTRA",
-                        authuserid: "6",
-                        foacaluserid: "5",
-                        intrauserid: "5,6",
-                        interuserid: "0",
-                        touserid: 6,
-                        querystatus: "INPROCESS",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Forward to JTP
-                  </button>
-                ) : null}
-                {/* jtp button */}
-                {common.form_status == 25 && user.id == 6 ? (
-                  <button
-                    onClick={() => {
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Forward to M.S.",
-                        formstatus: 50,
-                        querytype: "INTRA",
-                        authuserid: "4",
-                        foacaluserid: "5",
-                        intrauserid: "5,6",
-                        interuserid: "0",
-                        touserid: 4,
-                        querystatus: "INPROCESS",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Forward to M.S.
-                  </button>
-                ) : null}
-                {common.form_status == 50 && user.id == 4 ? (
-                  <button
-                    onClick={() => {
-                      forwardRef!.current!.value = `The zone info requested as per application number ${from_data.id} pertaining to your land with survey No. ${from_data.survey_no} & sub Division ${from_data.sub_division} of village ${villagedata.name} is ${landDetails.zone} zone.`;
-                      setForwardBox((val) => true);
-                      setNextData((val) => ({
-                        title: "Convey to Applicant",
-                        formstatus: 75,
-                        querytype: "PUBLIC",
-                        authuserid: "0",
-                        foacaluserid: "5",
-                        intrauserid: "0",
-                        interuserid: "0",
-                        touserid: from_data.userId,
-                        querystatus: "APPROVED",
-                      }));
-                    }}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    Convey to Applicant
-                  </button>
-                ) : null}
+                ) : null} */}
+                    {/* atp button */}
+                    {common.form_status == 1 &&
+                    user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => {
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Upload Document & Forward to JTP",
+                            formstatus: 25,
+                            querytype: "INTRA",
+                            authuserid: "6",
+                            foacaluserid: "5",
+                            intrauserid: "5,6",
+                            interuserid: "0",
+                            touserid: 6,
+                            querystatus: "INPROCESS",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Forward to JTP
+                      </button>
+                    ) : null}
+                    {/* jtp button */}
+                    {common.form_status == 25 && user.id == 6 ? (
+                      <button
+                        onClick={() => {
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Forward to M.S.",
+                            formstatus: 50,
+                            querytype: "INTRA",
+                            authuserid: "4",
+                            foacaluserid: "5",
+                            intrauserid: "5,6",
+                            interuserid: "0",
+                            touserid: 4,
+                            querystatus: "INPROCESS",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Forward to M.S.
+                      </button>
+                    ) : null}
+                    {common.form_status == 50 && user.id == 4 ? (
+                      <button
+                        onClick={() => {
+                          forwardRef!.current!.value = `The zone info requested as per application number ${from_data.id} pertaining to your land with survey No. ${from_data.survey_no} & sub Division ${from_data.sub_division} of village ${villagedata.name} is ${landDetails.zone} zone.`;
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Convey to Applicant",
+                            formstatus: 75,
+                            querytype: "PUBLIC",
+                            authuserid: "0",
+                            foacaluserid: "5",
+                            intrauserid: "0",
+                            interuserid: "0",
+                            touserid: from_data.userId,
+                            querystatus: "APPROVED",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Convey to Applicant
+                      </button>
+                    ) : null}
 
-                {common.form_status == 50 && user.id == 5 ? (
-                  <Link
-                    to={`/zonepdf/${from_data.id}`}
-                    className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                  >
-                    View PDF
-                  </Link>
-                ) : null}
+                    {common.form_status == 50 && user.id == 5 ? (
+                      <Link
+                        to={`/zonepdf/${from_data.id}`}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        View PDF
+                      </Link>
+                    ) : null}
+                  </>
+                )}
               </div>
             </>
           )

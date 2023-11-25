@@ -25,8 +25,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const cookie: any = await userPrefs.parse(cookieHeader);
   const data = await ApiCall({
     query: `
-        query getBirthById($id:Int!){
-          getBirthById(id:$id){
+        query getBirthRegisterById($id:Int!){
+          getBirthRegisterById(id:$id){
                 id,
                 name,
                 address,
@@ -34,11 +34,9 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
                 email,
                 user_uid,
                 userId,
-                survey_no,
                 village_id,
                 iagree,
                 signature_url,
-                payment_doc,
                 createdAt
             }
           }
@@ -47,7 +45,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: id,
     },
   });
-  console.log(data);
 
   const village = await ApiCall({
     query: `
@@ -59,7 +56,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
           }
       `,
     veriables: {
-      id: parseInt(data.data.getBirthById.village_id!),
+      id: parseInt(data.data.getBirthRegisterById.village_id!),
     },
   });
 
@@ -85,7 +82,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
     veriables: {
       searchCommonInput: {
         form_id: id,
-        form_type: "OC",
+        form_type: "BIRTHREGISTER",
       },
     },
   });
@@ -93,7 +90,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   return json({
     id: id,
     user: cookie,
-    form: data.data.getBirthById,
+    form: data.data.getBirthRegisterById,
     village: village.data.getAllVillageById.name,
     common: common.data.searchCommon,
   });
@@ -241,14 +238,14 @@ const BirthPdfView = (): JSX.Element => {
         </View>
         <View>
           <Text style={styles.subtitle} fixed>
-            With reference to the {form.id}, the Birth Certificate
-            for kid of village{" "}
-            {village}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; With reference to the request submitted for registration of New birth with registration Number.  {form.id},
+            
           </Text>
         </View>
         <View>
           <Text style={styles.subtitle} fixed>
-            is hereby Granted.
+          &nbsp;&nbsp;&nbsp; the Birth Certificate for kid of village{" "}
+            {village} is hereby Granted.
           </Text>
         </View>
         <View>
@@ -277,7 +274,7 @@ const BirthPdfView = (): JSX.Element => {
 
         <View>
           <Text style={styles.signtext}>
-            &nbsp; &nbsp; &nbsp; &nbsp; The Birth Certificate             pertaining to kid of village {village.name} is hereby Granted.
+            &nbsp; &nbsp; &nbsp; &nbsp; The Birth Certificate pertaining to kid of village {village.name} is hereby Granted.
           </Text>
         </View>
         <View style={styles.flexbox}>

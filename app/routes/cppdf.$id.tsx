@@ -47,7 +47,6 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: id,
     },
   });
-  console.log(data);
 
   const village = await ApiCall({
     query: `

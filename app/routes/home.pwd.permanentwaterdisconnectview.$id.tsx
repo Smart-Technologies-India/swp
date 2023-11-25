@@ -1,9 +1,9 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { ApiCall, UploadFile } from "~/services/api";
 import { toast } from "react-toastify";
-import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
@@ -486,7 +486,8 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -548,7 +549,8 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium" rel="noreferrer"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -647,7 +649,7 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
             <span className="mr-2">2.5</span> Applicant Aadhar Number
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-          XXXX-XXXX-{from_data.user_uid}
+            XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
@@ -680,13 +682,11 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
             <span className="mr-2">3.1</span> DMC / Panachayat
-            </div>
+          </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.muncipal_type}
           </div>
         </div>
-
-      
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
@@ -738,11 +738,9 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
           </div>
         </div>
 
-         {/*--------------------- section 3 end here ------------------------- */}
+        {/*--------------------- section 3 end here ------------------------- */}
 
         {/*--------------------- section 4 start here ------------------------- */}
-
-      
 
         <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
           <p className="text-left font-semibold text-xl text-white">
@@ -762,7 +760,8 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.house_tax_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -782,7 +781,8 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.electric_bill_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -802,7 +802,8 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.applicant_uid_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -822,7 +823,8 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.undertaking_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -869,7 +871,8 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
             <a
               target="_blank"
               href={from_data.signature_url}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -902,24 +905,27 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
 
                 {common.query_status == "REJECTED" ? null : (
                   <>
-                    <button
-                      onClick={() => setQueryBox((val) => true)}
-                      className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                    >
-                      Query
-                    </button>
-                    <button
-                      onClick={() => {
-                        setRejectid((val) => common.id);
-                        setRejectBox(true);
-                      }}
-                      className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
-                    >
-                      Reject
-                    </button>
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => setQueryBox((val) => true)}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                      >
+                        Query
+                      </button>
+                    ) : null}
+                    {user.id == common.auth_user_id ? (
+                      <button
+                        onClick={() => {
+                          setRejectid((val) => common.id);
+                          setRejectBox(true);
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
+                      >
+                        Reject
+                      </button>
+                    ) : null}
 
-                    {common.form_status == 1 &&
-                    user.id == 63 ? (
+                    {common.form_status == 1 && user.id == 63 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
@@ -962,8 +968,6 @@ const PermanentWaterDisconnectView: React.FC = (): JSX.Element => {
                         Forward to SUPTD
                       </button>
                     ) : null}
-
-                   
 
                     {/* Suptd button */}
                     {common.form_status == 50 && user.id == 61 ? (
