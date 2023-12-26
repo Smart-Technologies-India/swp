@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, redirect } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import type { SVGProps } from "react";
 import { useRef, useState } from "react";

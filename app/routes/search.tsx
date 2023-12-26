@@ -15,13 +15,40 @@ const Search: React.FC = (): JSX.Element => {
       if (search) {
         const data = decrypt(search, "certificatedata");
 
-        if (!["ZONE"].includes(data.split("-")[0])) {
+        if (
+          ![
+            "ZONE",
+            "NEWWATERCONNECT",
+            "TEMPWATERCONNECT",
+            "TEMPWATERDISCONNECT",
+            "WATERSIZECHANGE",
+            "WATERRECONNECT",
+            "PERMANENTWATERDISCONNECT",
+          ].includes(data.split("-")[0])
+        ) {
           return toast.error("Invalid search keywords.", { theme: "light" });
         }
 
         if (data.split("-")[0] == "ZONE") {
-          // window.location.href = "/zoneinfopdf/" + parseInt(data.split("-")[1]);
           window.location.href = "/zoneinfopdf/" + search;
+        } else if (data.split("-")[0] == "NWC") {
+          window.location.href = "/newwaterconnectpdf/" + search;
+        } else if (data.split("-")[0] == "TWC") {
+          window.location.href = "/tempwaterconnectpdf/" + search;
+        } else if (data.split("-")[0] == "TWD") {
+          window.location.href = "/tempwaterdisconnectpdf/" + search;
+        } else if (data.split("-")[0] == "WSC") {
+          window.location.href = "/watersizechangepdf/" + search;
+        } else if (data.split("-")[0] == "WR") {
+          window.location.href = "/waterreconnectpdf/" + search;
+        } else if (data.split("-")[0] == "PWD") {
+          window.location.href = "/permanentwaterdisconnectpdf/" + search;
+        } else if (data.split("-")[0] == "MAR") {
+          window.location.href = "/marriagepdf/" + search;
+        } else if (data.split("-")[0] == "REG") {
+          window.location.href = "/religiouspdf/" + search;
+        } else if (data.split("-")[0] == "RS") {
+          window.location.href = "/roadshowpdf/" + search;
         }
       } else {
         toast.error("Enter your search keywords.", { theme: "light" });

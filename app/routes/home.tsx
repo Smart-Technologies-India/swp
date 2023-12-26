@@ -644,7 +644,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
   return (
     <div className="absolute bottom-0 w-full h-14 bg-white font-medium text-center grid place-items-center text-gray-800 text-lg shadow-xl mallanna">
-      &copy; {year} PLANNING & DEVELOPMENT AUTHORITY - All rights reserved.
+      &copy; {year} SUGAM - DAMAN - All rights reserved.
     </div>
   );
 };

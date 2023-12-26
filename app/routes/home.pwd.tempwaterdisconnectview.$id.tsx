@@ -7,6 +7,7 @@ import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 import QueryTabs from "~/components/QueryTabs";
+import { encrypt } from "~/utils";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const id = props.params.id;
@@ -39,7 +40,8 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               undertaking_url,
               iagree,
               signature_url,
-              condition_to_follow
+              condition_to_follow,
+              createdAt
             }
           }
       `,
@@ -900,14 +902,18 @@ const TempWaterDisconnectView: React.FC = (): JSX.Element => {
         {isSubmited ? (
           user.id == from_data.userId ? (
             common.form_status == 75 ? (
-              <>
-                <Link
-                  to={`/tempwaterdisconnectpdf/${from_data.id}`}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                >
-                  Download Certificate
-                </Link>
-              </>
+              <Link
+                target="_blank"
+                to={`/tempwaterdisconnectpdf/${encrypt(
+                  `TWD-${("0000" + from_data.id).slice(-4)}-${
+                    from_data.createdAt.toString().split("-")[0]
+                  }`,
+                  "certificatedata"
+                )}`}
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+              >
+                Download Temporary Water Disconnect Certificate
+              </Link>
             ) : null
           ) : (
             <>

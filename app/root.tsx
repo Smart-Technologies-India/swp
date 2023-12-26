@@ -11,27 +11,22 @@ import {
 } from "@remix-run/react";
 
 import stylesheet from "~/tailwind.css";
-import styles from 'react-toastify/dist/ReactToastify.css';
+import styles from "react-toastify/dist/ReactToastify.css";
 
 import { ToastContainer } from "react-toastify";
 
-
-
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "PLANNING & DEVELOPMENT AUTHORITY" },
-    { name: "description", content: "PLANNING & DEVELOPMENT AUTHORITY || Daman ||" },
+    { title: "Sugam" },
+    { name: "description", content: "Sugam || Daman ||" },
   ];
 };
-
-
-
 
 export const links: LinksFunction = () => [
   // ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: stylesheet },
   { rel: "icon", type: "image/jpg", href: "/logo.png" },
-  { rel: "stylesheet", href: styles }
+  { rel: "stylesheet", href: styles },
 ];
 
 export default function App() {
@@ -53,7 +48,6 @@ export default function App() {
     </html>
   );
 }
-
 
 export function ErrorBoundary() {
   let error: any = useRouteError();
@@ -118,4 +112,3 @@ export function ErrorBoundary() {
     </html>
   );
 }
-

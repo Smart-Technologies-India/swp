@@ -153,7 +153,7 @@ export default function Register() {
       <div className="min-h-screen w-full bg-[#eeeeee] grid place-items-center">
         <div className="p-6 rounded-md shadow-md hover:shadow-xl hover:scale-105 transition-all bg-white border-t-4 border-purple-500">
           <h1 className="text-gray-800 text-xl font-bold">
-            PLANNING & DEVELOPMENT AUTHORITY
+            SUGAM
           </h1>
           <p className="text-lg my-4 text-gray-700 text-center">
             Sign up to start you session
