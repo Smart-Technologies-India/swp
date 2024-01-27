@@ -99,20 +99,20 @@ const Services: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <div className=" p-4 my-4 w-full">
+      <div className="p-4 w-full">
         <h1
           ref={title}
-          className="text-gray-800 text-3xl font-semibold text-center"
+          className="text-gray-800 text-2xl font-semibold text-center"
         >
           Services
         </h1>
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-2 justify-start lg:justify-between flex-wrap">
           {Services.map((val: string, index: number) => (
             <h4
               key={index}
               onClick={() => setServices(val)}
               role="button"
-              className={`cursor-pointer mt-10 px-4 py-2  shadow-lg hover:shadow-2xl grid place-items-center rounded-xl text-sm font-medium lato ${
+              className={`cursor-pointer mt-2 p-2  shadow-lg hover:shadow-2xl grid place-items-center rounded-md text-sm font-medium lato ${
                 val == services
                   ? "text-white bg-blue-500"
                   : "bg-white text-blue-500"
@@ -124,7 +124,7 @@ const Services: React.FC = (): JSX.Element => {
         </div>
 
         {services == "PDA" ? (
-          <div className="services gap-6 grid grid-cols-3 justify-center mt-4">
+          <div className="services gap-6 grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center mt-4">
             <ServiceCard
               title="Right To Information Applicaton"
               description="File your RTI application online fro the departments. Users have to fill this online applicaton form for availing this service"
@@ -165,7 +165,7 @@ const Services: React.FC = (): JSX.Element => {
         ) : null}
 
         {services == "EST" ? (
-          <div className="services gap-6 grid grid-cols-3 justify-center mt-4">
+          <div className="services gap-6 grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center mt-4">
             {/* est */}
             <ServiceCard
               icons={4}
@@ -189,7 +189,7 @@ const Services: React.FC = (): JSX.Element => {
         ) : null}
 
         {services == "DMC" ? (
-          <div className="services gap-6 grid grid-cols-3 justify-center mt-4">
+          <div className="services gap-6 grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center mt-4">
             {/* DMC */}
             <ServiceCard
               icons={7}
@@ -207,7 +207,7 @@ const Services: React.FC = (): JSX.Element => {
         ) : null}
 
         {services == "CRSR" ? (
-          <div className="services gap-6 grid grid-cols-3 justify-center mt-4">
+          <div className="services gap-6 grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center mt-4">
             {/* CRSR */}
             <ServiceCard
               icons={9}
@@ -255,7 +255,7 @@ const Services: React.FC = (): JSX.Element => {
         ) : null}
 
         {services == "PWD" ? (
-          <div className="services gap-6 grid grid-cols-3 justify-center mt-4">
+          <div className="services gap-6 grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center mt-4">
             {/* PWD */}
             <ServiceCard
               icons={16}
@@ -314,8 +314,8 @@ const ServiceCard: React.FC<ServiceCardProps> = (
 ): JSX.Element => {
   return (
     <>
-      <div className="p-4 bg-white shadow-lg hover:shadow-2xl grid place-items-center h-80 rounded-xl">
-        <div className="grid place-items-center gap-2 p-6">
+      <div className="p-4 bg-white shadow-lg hover:shadow-2xl grid place-items-center rounded-xl">
+        <div className="grid place-items-center gap-2 p-4">
           {props.icons == 1 ? (
             <MdiFolderInformation className="text-3xl text-[#0984e3]"></MdiFolderInformation>
           ) : null}
@@ -389,10 +389,10 @@ const ServiceCard: React.FC<ServiceCardProps> = (
             <CibLinuxFoundation className="text-5xl text-[#0984e3]"></CibLinuxFoundation>
           ) : null}
 
-          <h1 className="text-lg font-medium lato text-center">
+          <h1 className="text-sm font-medium lato text-center">
             {props.title}
           </h1>
-          <p className="text-center text-sm mallanna">{props.description}</p>
+          <p className="text-center text-xs mallanna">{props.description}</p>
           <Link
             to={props.apply}
             className="py-1 text-white text-sm bg-[#0984e3] text-center rounded-full font-medium w-28 inline-block mt-2"

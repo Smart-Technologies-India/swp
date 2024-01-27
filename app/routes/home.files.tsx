@@ -298,7 +298,7 @@ const Dashboard: React.FC = (): JSX.Element => {
     <>
       <div className="bg-white rounded-md shadow-lg p-4 my-4 mb-10">
         <div className="flex items-center gap-2">
-          <h1 className="text-gray-800 text-3xl font-semibold text-center">
+          <h1 className="text-gray-800 text-xl font-semibold text-center">
             {" "}
             {user.role == "USER" ? "Dashboard" : "Running Files"}
           </h1>
@@ -349,34 +349,34 @@ const Dashboard: React.FC = (): JSX.Element => {
         ) : (
           <>
             {/* user section */}
-            <div className="overflow-x-auto sm:mx-0.5 my-2 p-4">
+            <div className="overflow-x-auto sm:mx-0.5 my-2">
               <table className="min-w-full rounded-md">
                 <thead>
                   <tr className="bg-[#0984e3] border-b border-t transition duration-300 ease-in-out  rounded-xl">
-                    <th className="bg-[#0984e3] rounded-l-xl px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="bg-[#0984e3] rounded-l-md px-6 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Form Id
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-6 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Purpose
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-6 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Applicant
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-6 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Village
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl">
+                    <th className="px-6 py-2 whitespace-nowrap font-medium text-white text-sm">
                       Status
                     </th>
                     <th
-                      className={`px-6 py-4 whitespace-nowrap font-medium text-white text-xl ${
-                        user.role == "USER" ? "bg-[#0984e3] rounded-r-xl" : ""
+                      className={`px-6 py-2 whitespace-nowrap font-medium text-white text-sm ${
+                        user.role == "USER" ? "bg-[#0984e3] rounded-r-md" : ""
                       } `}
                     >
-                      ACTION
+                      Action
                     </th>
                     {user.role != "USER" ? (
-                      <th className="bg-[#0984e3] rounded-r-xl px-6 py-4 whitespace-nowrap font-medium text-white text-xl">
+                      <th className="bg-[#0984e3] rounded-r-md px-6 py-2 whitespace-nowrap font-medium text-white text-sm">
                         With User
                       </th>
                     ) : null}
@@ -389,54 +389,60 @@ const Dashboard: React.FC = (): JSX.Element => {
                         key={index}
                         className="bg-white border-b border-t transition duration-300 ease-in-out hover:bg-gray-100"
                       >
-                        <td className="text-center text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-center text-sm text-gray-900 font-medium px-6 py-2 whitespace-nowrap">
                           {val.form_id}
                         </td>
-                        <td className="text-center text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                          {val.form_type}
+                        <td className="text-center text-sm text-gray-900 font-medium px-6 py-2 whitespace-nowrap capitalize">
+                          {val.form_type.charAt(0).toUpperCase() +
+                            val.form_type.slice(1).toLowerCase()}
                         </td>
 
-                        <td className="text-center text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-center text-sm text-gray-900 font-medium px-6 py-2 whitespace-nowrap">
                           {val.name}
                         </td>
-                        <td className="text-center text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-center text-sm text-gray-900 font-medium px-6 py-2 whitespace-nowrap">
                           {val.village}
                         </td>
-                        <td className="text-center text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-center text-sm text-gray-900 font-medium px-6 py-2 whitespace-nowrap">
                           {val.query_status == "REJCTED" ? (
-                            <div className="py-1 text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium">
-                              {val.query_status}
+                            <div className="py-1 text-white text-sm px-4 bg-rose-500 text-center rounded-md font-medium">
+                              {val.query_status.charAt(0).toUpperCase() +
+                                val.query_status.slice(1).toLowerCase()}
                             </div>
                           ) : val.query_status == "INPROCESS" ? (
-                            <div className="py-1 text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium">
-                              {val.query_status}
+                            <div className="py-1 text-white text-sm px-4 bg-yellow-500 text-center rounded-md font-medium">
+                              {val.query_status.charAt(0).toUpperCase() +
+                                val.query_status.slice(1).toLowerCase()}
                             </div>
                           ) : val.query_status == "APPROVED" ? (
-                            <div className="py-1 text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium">
-                              {val.query_status}
+                            <div className="py-1 text-white text-sm px-4 bg-green-500 text-center rounded-md font-medium">
+                              {val.query_status.charAt(0).toUpperCase() +
+                                val.query_status.slice(1).toLowerCase()}
                             </div>
                           ) : val.query_status == "PAYMENT" ||
                             val.query_status == "QUERYRAISED" ||
                             val.query_status == "REJCTED" ? (
-                            <div className="py-1 text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium">
-                              {val.query_status}
+                            <div className="py-1 text-white text-sm px-4 bg-rose-500 text-center rounded-md font-medium">
+                              {val.query_status.charAt(0).toUpperCase() +
+                                val.query_status.slice(1).toLowerCase()}
                             </div>
                           ) : (
-                            <div className="py-1 text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium">
-                              {val.query_status}
+                            <div className="py-1 text-white text-sm px-4 bg-[#0984e3] text-center rounded-md font-medium">
+                              {val.query_status.charAt(0).toUpperCase() +
+                                val.query_status.slice(1).toLowerCase()}
                             </div>
                           )}
                         </td>
-                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-6 py-2 whitespace-nowrap">
                           <Link
                             to={getViewLink(val.form_type, val.form_id)}
-                            className="py-1 w-full sm:w-auto block text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+                            className="py-1 w-full sm:w-auto block text-white text-sm px-4 bg-[#0984e3] text-center rounded-md font-medium"
                           >
-                            VIEW
+                            View
                           </Link>
                         </td>
                         {user.role != "USER" ? (
-                          <td className="text-center text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                          <td className="text-center text-sm text-gray-900 font-medium px-6 py-2 whitespace-nowrap">
                             {getUserfromId(val.auth_user_id)}
                           </td>
                         ) : null}

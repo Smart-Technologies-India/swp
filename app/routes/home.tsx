@@ -96,8 +96,8 @@ const Home: React.FC = (): JSX.Element => {
       <section className="h-screen w-full relative bg-[#eeeeee]">
         <div className="flex relative flex-nowrap w-full">
           <div
-            className={`z-40 w-60 shrink-0 bg-[#182330] md:flex flex-col md:relative fixed top-0 left-0 min-h-screen md:min-h-full md:h-auto shadow-xl transition-all duration-700 md:translate-x-0 ${
-              isMobile ? "" : "-translate-x-60"
+            className={`z-40 w-52 shrink-0 bg-[#182330] md:flex flex-col md:relative fixed top-0 left-0 min-h-screen md:min-h-full md:h-auto shadow-xl transition-all duration-700 md:translate-x-0 ${
+              isMobile ? "" : "-translate-x-52"
             }`}
           >
             <div className="md:flex flex-col md:h-full">
@@ -545,13 +545,13 @@ const Home: React.FC = (): JSX.Element => {
                 <button onClick={logoutHandle}>
                   <SidebarTab
                     icon={MaterialSymbolsLogoutRounded}
-                    title="LOGOUT"
+                    title="Logout"
                     active={false}
                   ></SidebarTab>
                 </button>
                 <div
                   onClick={() => changeMobile(false)}
-                  className={`w-60 md:w-auto font-medium flex gap-2 items-center my-1 b  py-1 px-2 text-left text-lg cursor-pointer text-gray-400 hover:text-white hover:bg-white hover:bg-opacity-10 md:hidden`}
+                  className={`w-52 md:w-auto font-medium flex gap-2 items-center my-1 b  py-1 px-2 text-left text-lg cursor-pointer text-gray-400 hover:text-white hover:bg-white hover:bg-opacity-10 md:hidden`}
                 >
                   <Fa6SolidXmark></Fa6SolidXmark>
                   <p className="text-xl">CLOSE</p>
@@ -596,7 +596,7 @@ type SideBarTabProps = {
 const SidebarTab = (props: SideBarTabProps) => {
   return (
     <div
-      className={`w-60 md:w-auto font-medium flex gap-2 items-center my-1 b  py-1 px-2 text-left text-lg cursor-pointer ${
+      className={`w-52 md:w-auto font-medium flex gap-2 items-center my-1 b  py-1 px-2 text-left text-sm cursor-pointer ${
         props.active
           ? "border-r-4 border-[#0984e3] bg-white bg-opacity-10 text-white"
           : "text-gray-400 hover:text-white hover:bg-white hover:bg-opacity-10"
@@ -643,7 +643,7 @@ const TopNavBar = (props: TopNavBarProps) => {
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <div className="absolute bottom-0 w-full h-14 bg-white font-medium text-center grid place-items-center text-gray-800 text-lg shadow-xl mallanna">
+    <div className="absolute bottom-0 w-full h-10 bg-white font-medium text-center grid place-items-center text-gray-800 text-lg shadow-xl mallanna">
       &copy; {year} SUGAM - DAMAN - All rights reserved.
     </div>
   );

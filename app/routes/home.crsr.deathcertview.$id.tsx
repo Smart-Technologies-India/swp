@@ -1133,7 +1133,7 @@ const DeathCertificateView = (): JSX.Element => {
       </div>
       {/* forward box end here */}
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
-        <h1 className="text-gray-800 text-3xl font-semibold text-center">
+        <h1 className="text-gray-800 text-2xl font-semibold text-center">
           Death Certificate Re-Issue Application
         </h1>
         <div className="w-full flex gap-4 my-4">
@@ -1720,7 +1720,7 @@ const DeathCertificateView = (): JSX.Element => {
         </div>
       ) : null}
       <div className="p-6 bg-white rounded-lg shadow-lg my-8">
-        <h1 className="text-gray-800 text-3xl font-semibold text-center">
+        <h1 className="text-gray-800 text-2xl font-semibold text-center">
           {user.id == from_data.userId ? "Department Comment" : "Notings"}
         </h1>
         <div className="w-full flex gap-4 my-4">

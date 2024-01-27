@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -71,21 +72,21 @@ const Roadshow: React.FC = (): JSX.Element => {
       "APPROVED",
     ];
 
-    if(!(loader.department == null || loader.department == undefined)){
+    if (!(loader.department == null || loader.department == undefined)) {
       loader.department.sort((a: any, b: any) => {
-          const statusA = customOrder.indexOf(a.query_status);
-          const statusB = customOrder.indexOf(b.query_status);
+        const statusA = customOrder.indexOf(a.query_status);
+        const statusB = customOrder.indexOf(b.query_status);
 
-          if (statusA !== statusB) {
-              return statusA - statusB;
-          } else {
-              const dateA = new Date(a.event_date.split('/').reverse().join('-'));
-              const dateB = new Date(b.event_date.split('/').reverse().join('-'));
+        if (statusA !== statusB) {
+          return statusA - statusB;
+        } else {
+          const dateA = new Date(a.event_date.split("/").reverse().join("-"));
+          const dateB = new Date(b.event_date.split("/").reverse().join("-"));
 
-              return dateA.getTime() - dateB.getTime();
-          }
+          return dateA.getTime() - dateB.getTime();
+        }
       });
-  }
+    }
 
     setDepartment(loader.department);
   };
@@ -152,7 +153,7 @@ const Roadshow: React.FC = (): JSX.Element => {
     <>
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
         <div className="flex items-center gap-2">
-          <h1 className="text-gray-800 text-3xl font-semibold text-center">
+          <h1 className="text-gray-800 text-2xl font-semibold text-center">
             Roadshow Forms
           </h1>
           <div className="grow"></div>
@@ -201,7 +202,7 @@ const Roadshow: React.FC = (): JSX.Element => {
         {pagination.paginatedItems == undefined ||
         pagination.paginatedItems.length == 0 ||
         pagination.paginatedItems == null ? (
-          <h3 className="text-lg md:text-xl font-semibold text-center bg-rose-500 bg-opacity-25 rounded-md border-l-4 border-rose-500 py-2  text-rose-500">
+          <h3 className="text-sm md:text-sm font-semibold text-center bg-rose-500 bg-opacity-25 rounded-md border-l-4 border-rose-500 py-2  text-rose-500">
             You do not have any pending forms.
           </h3>
         ) : (
@@ -211,25 +212,25 @@ const Roadshow: React.FC = (): JSX.Element => {
               <table className="min-w-full rounded-md">
                 <thead>
                   <tr className="rounded-md bg-[#0984e3] border-b border-t transition duration-300 ease-in-out">
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Form Id
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Purpose
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Applicant
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Event Date
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
                       Village
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm">
                       Status
                     </th>
-                    <th className="px-6 py-4 whitespace-nowrap font-medium text-white text-xl">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm">
                       ACTION
                     </th>
                   </tr>
@@ -241,19 +242,19 @@ const Roadshow: React.FC = (): JSX.Element => {
                         key={index}
                         className="bg-white border-b border-t transition duration-300 ease-in-out hover:bg-gray-100"
                       >
-                        <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-4 py-2 whitespace-nowrap">
                           EST-RD-
                           {`0000${val.form_id}`.substring(
                             `0000${val.form_id}`.length - 4
                           )}
                         </td>
-                        <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-4 py-2 whitespace-nowrap">
                           {val.form_type}
                         </td>
-                        <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-4 py-2 whitespace-nowrap">
                           {val.name}
                         </td>
-                        <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-4 py-2 whitespace-nowrap">
                           {new Date(val.event_date)
                             .toJSON()
                             .slice(0, 10)
@@ -261,34 +262,34 @@ const Roadshow: React.FC = (): JSX.Element => {
                             .reverse()
                             .join("/")}
                         </td>
-                        <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-4 py-2 whitespace-nowrap">
                           {val.village}
                         </td>
-                        <td className="text-lg text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-4 py-2 whitespace-nowrap">
                           {val.query_status == "REJECTED" ? (
-                            <div className="py-1 text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium">
+                            <div className="py-1 text-white text-sm px-4 bg-rose-500 text-center rounded-md font-medium">
                               {val.query_status}
                             </div>
                           ) : val.query_status == "INPROCESS" ? (
-                            <div className="py-1 text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium">
+                            <div className="py-1 text-white text-sm px-4 bg-yellow-500 text-center rounded-md font-medium">
                               {val.query_status}
                             </div>
                           ) : val.query_status == "APPROVED" ? (
-                            <div className="py-1 text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium">
+                            <div className="py-1 text-white text-sm px-4 bg-green-500 text-center rounded-md font-medium">
                               {val.query_status}
                             </div>
                           ) : (
-                            <div className="py-1 text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium">
+                            <div className="py-1 text-white text-sm px-4 bg-[#0984e3] text-center rounded-md font-medium">
                               {val.query_status}
                             </div>
                           )}
                         </td>
-                        <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
+                        <td className="text-sm text-gray-900 font-medium px-4 py-2 whitespace-nowrap">
                           <Link
                             to={`/home/est/roadshowview/${val.form_id}`}
-                            className="py-1 w-full sm:w-auto block text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+                            className="py-1 w-full sm:w-auto block text-white text-sm px-4 bg-[#0984e3] text-center rounded-md font-medium"
                           >
-                            VIEW
+                            View
                           </Link>
                         </td>
                       </tr>

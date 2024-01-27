@@ -128,15 +128,15 @@ const MobileLogin: React.FC = (): JSX.Element => {
         />
       </div>
       <div className="min-h-screen w-full grid place-items-center relative">
-        <div className=" p-6 rounded-md shadow-md hover:shadow-xl hover:scale-105 transition-all bg-white border-t-4 border-purple-500">
+        <div className="w-72 p-6 rounded-md shadow-md hover:shadow-xl hover:scale-105 transition-all bg-white border-t-4 border-purple-500">
           <div className="w-full grid place-items-center">
             <img
               src="/logo.png"
               alt="logo"
-              className="w-80 h-80 object-cover object-center"
+              className="w-60 h-60 object-cover object-center"
             />
           </div>
-          <h1 className="text-gray-800 text-xl font-bold text-center my-4">
+          <h1 className="text-gray-800 text-lg font-bold text-center my-4">
             Sign in to Account
           </h1>
           {user != null || user != undefined ? (
@@ -151,7 +151,7 @@ const MobileLogin: React.FC = (): JSX.Element => {
             ) : null
           ) : null}
           <div className="border-b-2 border-gray-200 py-1 flex items-center">
-            <div className="text-slate-800 font-bold text-xl mr-4">
+            <div className="text-slate-800 font-bold text-lg mr-4">
               <Fa6SolidMobile></Fa6SolidMobile>
             </div>
             <input
@@ -188,7 +188,7 @@ const MobileLogin: React.FC = (): JSX.Element => {
               user.name == undefined ||
               user.name == "" ? (
                 <div className="border-b-2 border-gray-200 py-1 flex items-center mt-4">
-                  <div className="text-slate-800 font-bold text-xl mr-4">
+                  <div className="text-slate-800 font-bold text-lg mr-4">
                     <Fa6SolidUser></Fa6SolidUser>
                   </div>
                   <input
@@ -202,7 +202,7 @@ const MobileLogin: React.FC = (): JSX.Element => {
               ) : null}
 
               <div className="border-b-2 border-gray-200 py-1 flex items-center mt-4">
-                <div className="text-slate-800 font-bold text-xl mr-4">
+                <div className="text-slate-800 font-bold text-lg mr-4">
                   <Fa6SolidMessage></Fa6SolidMessage>
                 </div>
                 <input
@@ -215,7 +215,7 @@ const MobileLogin: React.FC = (): JSX.Element => {
               </div>
               <button
                 onClick={verifyOtp}
-                className="inline-block text-center text-white bg-purple-500 py-2 px-6 text-xl font-medium rounded-md w-full mt-6"
+                className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6"
               >
                 Submit
               </button>
@@ -224,7 +224,7 @@ const MobileLogin: React.FC = (): JSX.Element => {
             <>
               <button
                 onClick={submit}
-                className="inline-block text-center text-white bg-purple-500 py-2 px-6 text-xl font-medium rounded-md w-full mt-6"
+                className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6"
               >
                 Verify Mobile
               </button>

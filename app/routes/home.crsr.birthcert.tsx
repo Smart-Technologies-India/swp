@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import { ApiCall, UploadFile } from "~/services/api";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
@@ -282,7 +283,7 @@ const BirthCertificate: React.FC = (): JSX.Element => {
   return (
     <>
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
-        <h1 className="text-gray-800 text-3xl font-semibold text-center">
+        <h1 className="text-gray-800 text-2xl font-semibold text-center">
           Birth Certificate Re-Issue Application
         </h1>
         <div className="w-full flex gap-4 my-4">
@@ -525,7 +526,7 @@ const BirthCertificate: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(applicant_uid_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -562,7 +563,7 @@ const BirthCertificate: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(father_uid_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -599,7 +600,7 @@ const BirthCertificate: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(mother_uid_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -645,7 +646,7 @@ const BirthCertificate: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(undertaking_url)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -714,7 +715,7 @@ const BirthCertificate: React.FC = (): JSX.Element => {
               <a
                 target="_blank"
                 href={URL.createObjectURL(sigimg)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium" rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
