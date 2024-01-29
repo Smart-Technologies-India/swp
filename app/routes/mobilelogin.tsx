@@ -29,8 +29,10 @@ const MobileLogin: React.FC = (): JSX.Element => {
   const [mobile, setMobile] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
   const [isAlreadyLogin, setIsAlreadyLogin] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const submit = async () => {
+    setIsLoading((val) => true);
     if (mobile == null || mobile == undefined || mobile == "") {
       return toast.error("Enter the mobile number.", { theme: "light" });
     }
@@ -62,11 +64,13 @@ const MobileLogin: React.FC = (): JSX.Element => {
         setIsAlreadyLogin((val) => true);
       }
     } else {
-      return toast.error(data.message, { theme: "light" });
+      toast.error(data.message, { theme: "light" });
     }
+    setIsLoading((val) => false);
   };
 
   const verifyOtp = async () => {
+    setIsLoading((val) => true);
     if (mobile == null || mobile == undefined || mobile == "") {
       toast.error("Enter the mobile number.", { theme: "light" });
     } else if (name == undefined || name == null || name == "") {
@@ -103,6 +107,7 @@ const MobileLogin: React.FC = (): JSX.Element => {
         nextButton.current!.click();
       }
     }
+    setIsLoading((val) => false);
   };
 
   const iref = useRef<HTMLInputElement>(null);
@@ -200,7 +205,6 @@ const MobileLogin: React.FC = (): JSX.Element => {
                   />
                 </div>
               ) : null}
-
               <div className="border-b-2 border-gray-200 py-1 flex items-center mt-4">
                 <div className="text-slate-800 font-bold text-lg mr-4">
                   <Fa6SolidMessage></Fa6SolidMessage>
@@ -213,22 +217,30 @@ const MobileLogin: React.FC = (): JSX.Element => {
                   className="bg-transparent outline-none border-none fill-none text-slate-800 py-2 w-full"
                 />
               </div>
-              <button
-                onClick={verifyOtp}
-                className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6"
-              >
-                Submit
-              </button>
+              {isLoading ? (
+                <div className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6">
+                  Loading...
+                </div>
+              ) : (
+                <button
+                  onClick={verifyOtp}
+                  className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6"
+                >
+                  Submit
+                </button>
+              )}
             </>
+          ) : isLoading ? (
+            <div className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6">
+              Loading...
+            </div>
           ) : (
-            <>
-              <button
-                onClick={submit}
-                className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6"
-              >
-                Verify Mobile
-              </button>
-            </>
+            <button
+              onClick={submit}
+              className="inline-block text-center text-white bg-purple-500 py-1 px-6 text-lg font-medium rounded-md w-full mt-6"
+            >
+              Verify Mobile
+            </button>
           )}
         </div>
       </div>

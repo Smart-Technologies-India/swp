@@ -184,16 +184,16 @@ const CP: React.FC = (): JSX.Element => {
               <table className="min-w-full rounded-md">
                 <thead>
                   <tr className="rounded-md bg-[#0984e3] border-b border-t transition duration-300 ease-in-out">
-                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm ">
                       Form Id
                     </th>
-                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm ">
                       Purpose
                     </th>
-                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm ">
                       Applicant
                     </th>
-                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm text-left">
+                    <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm ">
                       Village
                     </th>
                     <th className="px-4 py-2 whitespace-nowrap font-medium text-white text-sm">
