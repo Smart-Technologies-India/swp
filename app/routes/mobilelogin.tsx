@@ -122,7 +122,7 @@ const MobileLogin: React.FC = (): JSX.Element => {
     <div className="relative min-h-screen w-full">
       <div className="fixed top-0 left-0 h-screen w-full">
         <img
-          src="/images/login.jpg"
+          src="/images/daman.jpg"
           alt="login background"
           className="h-full w-full object-cover object-center"
         />
