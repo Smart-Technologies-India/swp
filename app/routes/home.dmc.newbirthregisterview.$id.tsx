@@ -725,80 +725,90 @@ const BirthRegisterView = (): JSX.Element => {
     }));
   };
 
-  const paymentType = useRef<HTMLSelectElement>(null);
-  const refrancerRef = useRef<HTMLInputElement>(null);
+  // const paymentType = useRef<HTMLSelectElement>(null);
+  // const refrancerRef = useRef<HTMLInputElement>(null);
 
   const submitpayment = async () => {
-    if (
-      refrancerRef.current?.value == null ||
-      refrancerRef.current?.value == undefined ||
-      refrancerRef.current?.value == ""
-    ) {
-      toast.error("Enter Payment Reference.", { theme: "light" });
-    } else if (
-      paymentType.current?.value == null ||
-      paymentType.current?.value == undefined ||
-      paymentType.current?.value == "" ||
-      parseInt(paymentType.current?.value) == 0
-    ) {
-      toast.error("Select Payment Type.", { theme: "light" });
-    } else {
-      const submitpayment = await ApiCall({
-        query: `
-                mutation updatePaymentById($updatePaymentInput:UpdatePaymentInput!){
-                    updatePaymentById(updatePaymentInput:$updatePaymentInput){
-                      id,
-                    }
-                  }
-              `,
-        veriables: {
-          updatePaymentInput: {
-            id: loader.paymentinfo.id,
-            paymentstatus: "PAID",
-            reference: refrancerRef.current?.value,
-            paymentType: paymentType.current?.value,
-          },
-        },
-      });
+    // const nanoid = customAlphabet("1234567890abcdef", 10);
+    // const uniqueid = nanoid();
 
-      if (!submitpayment.status) {
-        toast.error(submitpayment.message, { theme: "light" });
-      } else {
-        const req: { [key: string]: any } = {
-          stage: "BIRTHREGISTER",
-          form_id: from_data.id,
-          from_user_id: Number(user.id),
-          to_user_id: 51,
-          form_status: common.form_status,
-          query_type: "PUBLIC",
-          remark: `The payment of Rs. (${loader.paymentinfo.paymentamout}) requested from user is successfully paid vide ${paymentType.current?.value} with reference no ${refrancerRef.current?.value}.`,
-          query_status: "SENT",
-          status: "NONE",
-        };
-
-        const data = await ApiCall({
-          query: `
-                    mutation createQuery($createQueryInput:CreateQueryInput!){
-                        createQuery(createQueryInput:$createQueryInput){
-                          id,
-                        }
-                      }
-                    `,
-          veriables: {
-            createQueryInput: req,
-          },
-        });
-
-        if (data.status) {
-          toast.success("Submitted successfully.", { theme: "light" });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          return toast.error(data.message, { theme: "light" });
-        }
+    const uniqueid = (): string => {
+      const length = 10;
+      const charSet =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let randomString = "";
+      for (let i = 0; i < length; i++) {
+        const randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
       }
-    }
+
+      return randomString;
+    };
+
+    console.log(uniqueid());
+    console.log(loader.paymentinfo);
+
+    window.location.href = `/payamount?xlmnx=${
+      loader.paymentinfo.paymentamout
+    }&ynboy=${uniqueid()}&zgvfz=${parseInt(
+      loader.paymentinfo.id.toString()
+    )}_${parseInt(loader.paymentinfo.user_id.toString())}_${
+      loader.paymentinfo.form_type
+    }`;
+
+    // const submitpayment = await ApiCall({
+    //   query: `
+    //             mutation updatePaymentById($updatePaymentInput:UpdatePaymentInput!){
+    //                 updatePaymentById(updatePaymentInput:$updatePaymentInput){
+    //                   id,
+    //                 }
+    //               }
+    //           `,
+    //   veriables: {
+    //     updatePaymentInput: {
+    //       id: loader.paymentinfo.id,
+    //       paymentstatus: "PAID",
+    //       reference: refrancerRef.current?.value,
+    //       paymentType: paymentType.current?.value,
+    //     },
+    //   },
+    // });
+
+    // if (!submitpayment.status) {
+    //   toast.error(submitpayment.message, { theme: "light" });
+    // } else {
+    //   // const req: { [key: string]: any } = {
+    //   //   stage: "BIRTHREGISTER",
+    //   //   form_id: from_data.id,
+    //   //   from_user_id: Number(user.id),
+    //   //   to_user_id: 51,
+    //   //   form_status: common.form_status,
+    //   //   query_type: "PUBLIC",
+    //   //   remark: `The payment of Rs. (${loader.paymentinfo.paymentamout}) requested from user is successfully paid vide ${paymentType.current?.value} with reference no ${refrancerRef.current?.value}.`,
+    //   //   query_status: "SENT",
+    //   //   status: "NONE",
+    //   // };
+    //   // const data = await ApiCall({
+    //   //   query: `
+    //   //               mutation createQuery($createQueryInput:CreateQueryInput!){
+    //   //                   createQuery(createQueryInput:$createQueryInput){
+    //   //                     id,
+    //   //                   }
+    //   //                 }
+    //   //               `,
+    //   //   veriables: {
+    //   //     createQueryInput: req,
+    //   //   },
+    //   // });
+    //   // if (data.status) {
+    //   //   toast.success("Submitted successfully.", { theme: "light" });
+    //   //   setTimeout(() => {
+    //   //     window.location.reload();
+    //   //   }, 1500);
+    //   // } else {
+    //   //   return toast.error(data.message, { theme: "light" });
+    //   // }
+    // }
   };
 
   return (
@@ -1848,9 +1858,27 @@ const BirthRegisterView = (): JSX.Element => {
             <div className="flex gap-3 my-2 justify-between">
               <p className="flex-2">Time Limit [Day]</p>
               <div className="flex-1"></div>
-              <p className="flex-1">{loader.paymentinfo.paymentamout} </p>
+              <p className="flex-1 text-right">
+                {loader.paymentinfo.daycount}{" "}
+              </p>
             </div>
-            <div className="flex gap-3 my-2 justify-between items-center">
+            <div className="flex gap-3 my-2 justify-between">
+              <p className="flex-2">Day Remaning</p>
+              <div className="flex-1"></div>
+              {/* <p className="flex-1">{ loader.paymentinfo.daycount} </p> */}
+              <p className="flex-1 text-right">
+                {new Date(loader.paymentinfo.duedate).getTime() -
+                  new Date().getTime() >
+                0
+                  ? Math.floor(
+                      (new Date(loader.paymentinfo.duedate).getTime() -
+                        new Date().getTime()) /
+                        (1000 * 60 * 60 * 24)
+                    )
+                  : 0}
+              </p>
+            </div>
+            {/* <div className="flex gap-3 my-2 justify-between items-center">
               <p className="flex-2 shrink-0">Panyment Type</p>
               <select
                 ref={paymentType}
@@ -1884,13 +1912,15 @@ const BirthRegisterView = (): JSX.Element => {
                 type="text"
                 className="flex-2 bg-[#eeeeee] fill-none focus:outline-none outline-none arounded-md py-1 px-2"
               />
+            </div> */}
+            <div className="w-full">
+              <button
+                onClick={submitpayment}
+                className="py-1 w-full text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium grow"
+              >
+                Pay
+              </button>
             </div>
-            <button
-              onClick={submitpayment}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium grow"
-            >
-              Pay
-            </button>
           </div>
         </div>
       ) : null}
