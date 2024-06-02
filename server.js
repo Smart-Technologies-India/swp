@@ -1,4 +1,5 @@
 const path = require("path");
+const axios = require("axios");
 
 const { createRequestHandler } = require("@remix-run/express");
 const { installGlobals } = require("@remix-run/node");
@@ -90,64 +91,61 @@ const postRes = (request, response) => {
     });
 
     if (result.order_status == "Aborted") {
-      const htmlcode = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Abort</title><script src="https://cdn.tailwindcss.com"></script></head><body><main class="h-screen w-full bg-[#eeeeee] grid place-items-center"><div class="w-96 bg-white rounded-lg p-6"><h1 class="text-rose-500 text-4xl text-center font-semibold">Abort</h1><div class="h-[1px] bg-gray-400 w-full mt-2"></div><p class="text-xl text-slate-700 text-center font-medium mt-4">Payment declined by client.</p><div class="flex item-center gap-6 mt-4"><a href="https://s2.dddgov.in/" class="grow py-1 text-center rounded-lg bg-blue-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4 21v-9.375L2.2 13L1 11.4L12 3l11 8.4l-1.2 1.575l-1.8-1.35V21zm4-6q-.425 0-.712-.288T7 14q0-.425.288-.712T8 13q.425 0 .713.288T9 14q0 .425-.288.713T8 15m4 0q-.425 0-.712-.288T11 14q0-.425.288-.712T12 13q.425 0 .713.288T13 14q0 .425-.288.713T12 15m4 0q-.425 0-.712-.288T15 14q0-.425.288-.712T16 13q.425 0 .713.288T17 14q0 .425-.288.713T16 15"/></svg><p>Home</p></a><a href="https://s2.dddgov.in/contact.html" class="grow py-1 text-center rounded-lg bg-rose-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M19 11.95q0-2.925-2.037-4.962T12 4.95v-2q1.875 0 3.513.713t2.85 1.925q1.212 1.212 1.925 2.85T21 11.95zm-4 0q0-1.25-.875-2.125T12 8.95v-2q2.075 0 3.538 1.463T17 11.95zM19.95 21q-3.125 0-6.175-1.362t-5.55-3.863q-2.5-2.5-3.862-5.55T3 4.05q0-.45.3-.75t.75-.3H8.1q.35 0 .625.238t.325.562l.65 3.5q.05.4-.025.675T9.4 8.45L6.975 10.9q.5.925 1.187 1.787t1.513 1.663q.775.775 1.625 1.438T13.1 17l2.35-2.35q.225-.225.588-.337t.712-.063l3.45.7q.35.1.575.363T21 15.9v4.05q0 .45-.3.75t-.75.3"/></svg><p>Contact</p></a></div></div></main></body></html>`;
+      const htmlcode = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Abort</title><script src="https://cdn.tailwindcss.com"></script></head><body><main class="h-screen w-full bg-[#eeeeee] grid place-items-center"><div class="w-96 bg-white rounded-lg p-6"><h1 class="text-rose-500 text-4xl text-center font-semibold">Abort</h1><div class="h-[1px] bg-gray-400 w-full mt-2"></div><p class="text-xl text-slate-700 text-center font-medium mt-4">Payment declined by client.</p><div class="flex item-center gap-6 mt-4"><a href="https://s2.dddgov.in/" class="grow py-1 text-center rounded-lg bg-blue-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4 21v-9.375L2.2 13L1 11.4L12 3l11 8.4l-1.2 1.575l-1.8-1.35V21zm4-6q-.425 0-.712-.288T7 14q0-.425.288-.712T8 13q.425 0 .713.288T9 14q0 .425-.288.713T8 15m4 0q-.425 0-.712-.288T11 14q0-.425.288-.712T12 13q.425 0 .713.288T13 14q0 .425-.288.713T12 15m4 0q-.425 0-.712-.288T15 14q0-.425.288-.712T16 13q.425 0 .713.288T17 14q0 .425-.288.713T16 15"/></svg><p>Home</p></a><a href="https://s2.dddgov.in/contact_about" class="grow py-1 text-center rounded-lg bg-rose-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M19 11.95q0-2.925-2.037-4.962T12 4.95v-2q1.875 0 3.513.713t2.85 1.925q1.212 1.212 1.925 2.85T21 11.95zm-4 0q0-1.25-.875-2.125T12 8.95v-2q2.075 0 3.538 1.463T17 11.95zM19.95 21q-3.125 0-6.175-1.362t-5.55-3.863q-2.5-2.5-3.862-5.55T3 4.05q0-.45.3-.75t.75-.3H8.1q.35 0 .625.238t.325.562l.65 3.5q.05.4-.025.675T9.4 8.45L6.975 10.9q.5.925 1.187 1.787t1.513 1.663q.775.775 1.625 1.438T13.1 17l2.35-2.35q.225-.225.588-.337t.712-.063l3.45.7q.35.1.575.363T21 15.9v4.05q0 .45-.3.75t-.75.3"/></svg><p>Contact</p></a></div></div></main></body></html>`;
       response.writeHeader(200, { "Content-Type": "text/html" });
       response.write(htmlcode);
       response.end();
     } else if (result.order_status == "Success") {
-      const bidid = result.merchant_param1.toString().split("_")[0];
+      const paymentid = result.merchant_param1.toString().split("_")[0];
       const userid = result.merchant_param1.toString().split("_")[1];
-      const shopid = result.merchant_param1.toString().split("_")[2];
+      const formid = result.merchant_param1.toString().split("_")[2];
       const type = result.merchant_param1.toString().split("_")[3];
+      const formstatus = result.merchant_param1.toString().split("_")[4];
 
-      if (type == "bid") {
-        // const update_response = await prisma.bid_payment.updateMany({
-        //   where: {
-        //     userId: userid ? parseInt(userid) : 0,
-        //     shopId: shopid ? parseInt(shopid) : 0,
-        //     bidId: bidid ? parseInt(bidid) : 0,
-        //   },
-        //   data: {
-        //     transactionid: result.bank_ref_no,
-        //     trackid: result.tracking_id,
-        //     transaction_date: new Date().toISOString(),
-        //     paymentmode: result.payment_mode.toString().toUpperCase(),
-        //     remarks: result.order_status,
-        //   },
-        // });
-      } else if (type == "rent") {
-        // const update_response = await prisma.rent_transact.updateMany({
-        //   where: {
-        //     id: {
-        //       in: bidid.split(",").map((id) => parseInt(id)),
-        //     },
-        //   },
-        //   data: {
-        //     transactionid: result.bank_ref_no,
-        //     trackid: result.tracking_id,
-        //     status: "PAID",
-        //     transaction_date: new Date().toISOString(),
-        //     paymentmode: result.payment_mode.toString().toUpperCase(),
-        //     remarks: result.order_status,
-        //   },
-        //   include: {
-        //     user: true,
-        //     shop: {
-        //       include: {
-        //         property: true,
-        //         shop_category: true,
-        //       },
-        //     },
-        //   },
-        // });
-        // const RentIsPaid = `https://api.arihantsms.com/api/v2/SendSMS?SenderId=DNHPDA&Is_Unicode=false&Is_Flash=false&Message=Confirmation%3A%20Your%20rent%20for%20${update_response.shop.shop_category.name}%20at%20${update_response.shop.property.name}%20has%20been%20paid.%20We%20appreciate%20your%20timely%20payment%20-DNH%20PDA.&MobileNumbers=91${update_response.user.contactone}&ApiKey=rL56LBkGeOa1MKFm5SrSKtz%2Bq55zMVdxk5PNvQkg2nY%3D&ClientId=ebff4d6c-072b-4342-b71f-dcca677713f8`;
-        // const message_response = await fetch(RentIsPaid, {
-        //   method: "GET",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // });
-      }
+      const res1 = await axios.post("https://apis2.dddgov.in/graphql", {
+        query: `mutation updatePaymentById($updatePaymentInput:UpdatePaymentInput!){
+            updatePaymentById(updatePaymentInput:$updatePaymentInput){
+              id,
+            }
+          }`,
+        variables: {
+          updatePaymentInput: {
+            id: paymentid,
+            paymentstatus: "PAID",
+            bankreference: result.bank_ref_no,
+            paymentType: result.payment_mode,
+            orderid: result.order_id,
+            transactionid: result.tracking_id,
+          },
+        },
+      });
+
+      console.log(res1);
+
+      const req = {
+        stage: type,
+        form_id: formid,
+        from_user_id: Number(userid),
+        to_user_id: 51,
+        form_status: formstatus,
+        query_type: "PUBLIC",
+        remark: `The payment of Rs. (${result.amount}) requested from user is successfully paid vide ${result.payment_mode} with reference no ${result.bank_ref_no}.`,
+        query_status: "SENT",
+        status: "NONE",
+      };
+
+      const res2 = await axios.post("https://apis2.dddgov.in/graphql", {
+        query: `mutation createQuery($createQueryInput:CreateQueryInput!){
+            createQuery(createQueryInput:$createQueryInput){
+              id,
+            }
+          }`,
+        variables: {
+          createQueryInput: req,
+        },
+      });
+
+      console.log(res2);
 
       const htmlcode = `<html lang="en">
       <head>
@@ -320,7 +318,7 @@ const postRes = (request, response) => {
               </svg>
               <p>Home</p>
             </a>
-            <a href="https://s2.dddgov.in/contact.html" class="btntwo" target="_self">
+            <a href="https://s2.dddgov.in/contact_about" class="btntwo" target="_self">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
@@ -347,24 +345,11 @@ const postRes = (request, response) => {
       response.write(htmlcode);
       response.end();
     } else {
-      const htmlcode = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Failed</title><script src="https://cdn.tailwindcss.com"></script></head><body><main class="h-screen w-full bg-[#eeeeee] grid place-items-center"><div class="w-96 bg-white rounded-lg p-6"><h1 class="text-rose-500 text-4xl text-center font-semibold">Failed</h1><div class="h-[1px] bg-gray-400 w-full mt-2"></div><p class="text-xl text-slate-700 text-center font-medium mt-4">Payment Failed.</p><div class="flex item-center gap-6 mt-4"><a href="https://s2.dddgov.in/" class="grow py-1 text-center rounded-lg bg-blue-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4 21v-9.375L2.2 13L1 11.4L12 3l11 8.4l-1.2 1.575l-1.8-1.35V21zm4-6q-.425 0-.712-.288T7 14q0-.425.288-.712T8 13q.425 0 .713.288T9 14q0 .425-.288.713T8 15m4 0q-.425 0-.712-.288T11 14q0-.425.288-.712T12 13q.425 0 .713.288T13 14q0 .425-.288.713T12 15m4 0q-.425 0-.712-.288T15 14q0-.425.288-.712T16 13q.425 0 .713.288T17 14q0 .425-.288.713T16 15"/></svg><p>Home</p></a><a href="https://s2.dddgov.in/contact.html" class="grow py-1 text-center rounded-lg bg-rose-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M19 11.95q0-2.925-2.037-4.962T12 4.95v-2q1.875 0 3.513.713t2.85 1.925q1.212 1.212 1.925 2.85T21 11.95zm-4 0q0-1.25-.875-2.125T12 8.95v-2q2.075 0 3.538 1.463T17 11.95zM19.95 21q-3.125 0-6.175-1.362t-5.55-3.863q-2.5-2.5-3.862-5.55T3 4.05q0-.45.3-.75t.75-.3H8.1q.35 0 .625.238t.325.562l.65 3.5q.05.4-.025.675T9.4 8.45L6.975 10.9q.5.925 1.187 1.787t1.513 1.663q.775.775 1.625 1.438T13.1 17l2.35-2.35q.225-.225.588-.337t.712-.063l3.45.7q.35.1.575.363T21 15.9v4.05q0 .45-.3.75t-.75.3"/></svg><p>Contact</p></a></div></div></main></body></html>`;
+      const htmlcode = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Failed</title><script src="https://cdn.tailwindcss.com"></script></head><body><main class="h-screen w-full bg-[#eeeeee] grid place-items-center"><div class="w-96 bg-white rounded-lg p-6"><h1 class="text-rose-500 text-4xl text-center font-semibold">Failed</h1><div class="h-[1px] bg-gray-400 w-full mt-2"></div><p class="text-xl text-slate-700 text-center font-medium mt-4">Payment Failed.</p><div class="flex item-center gap-6 mt-4"><a href="https://s2.dddgov.in/" class="grow py-1 text-center rounded-lg bg-blue-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4 21v-9.375L2.2 13L1 11.4L12 3l11 8.4l-1.2 1.575l-1.8-1.35V21zm4-6q-.425 0-.712-.288T7 14q0-.425.288-.712T8 13q.425 0 .713.288T9 14q0 .425-.288.713T8 15m4 0q-.425 0-.712-.288T11 14q0-.425.288-.712T12 13q.425 0 .713.288T13 14q0 .425-.288.713T12 15m4 0q-.425 0-.712-.288T15 14q0-.425.288-.712T16 13q.425 0 .713.288T17 14q0 .425-.288.713T16 15"/></svg><p>Home</p></a><a href="https://s2.dddgov.in/contact_about" class="grow py-1 text-center rounded-lg bg-rose-500 text-2xl text-white flex items-center gap-2 justify-center cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M19 11.95q0-2.925-2.037-4.962T12 4.95v-2q1.875 0 3.513.713t2.85 1.925q1.212 1.212 1.925 2.85T21 11.95zm-4 0q0-1.25-.875-2.125T12 8.95v-2q2.075 0 3.538 1.463T17 11.95zM19.95 21q-3.125 0-6.175-1.362t-5.55-3.863q-2.5-2.5-3.862-5.55T3 4.05q0-.45.3-.75t.75-.3H8.1q.35 0 .625.238t.325.562l.65 3.5q.05.4-.025.675T9.4 8.45L6.975 10.9q.5.925 1.187 1.787t1.513 1.663q.775.775 1.625 1.438T13.1 17l2.35-2.35q.225-.225.588-.337t.712-.063l3.45.7q.35.1.575.363T21 15.9v4.05q0 .45-.3.75t-.75.3"/></svg><p>Contact</p></a></div></div></main></body></html>`;
       response.writeHeader(200, { "Content-Type": "text/html" });
       response.write(htmlcode);
       response.end();
     }
-
-    // var pData = "";
-    // pData = "<table border=1 cellspacing=2 cellpadding=2><tr><td>";
-    // pData = pData + ccavResponse.replace(/=/gi, "</td><td>");
-    // pData = pData.replace(/&/gi, "</td></tr><tr><td>");
-    // pData = pData + "</td></tr></table>";
-    // htmlcode =
-    //   '<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Response Handler</title></head><body><center><font size="4" color="blue"><b>Response Page</b></font><br>' +
-    //   pData +
-    //   "</center><br></body></html>";
-    // response.writeHeader(200, { "Content-Type": "text/html" });
-    // response.write(htmlcode);
-    // response.end();
   });
 };
 

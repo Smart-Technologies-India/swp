@@ -745,16 +745,13 @@ const BirthRegisterView = (): JSX.Element => {
       return randomString;
     };
 
-    console.log(uniqueid());
-    console.log(loader.paymentinfo);
-
     window.location.href = `/payamount?xlmnx=${
       loader.paymentinfo.paymentamout
     }&ynboy=${uniqueid()}&zgvfz=${parseInt(
       loader.paymentinfo.id.toString()
-    )}_${parseInt(loader.paymentinfo.user_id.toString())}_${
+    )}_${parseInt(loader.paymentinfo.user_id.toString())}_${from_data.id}_${
       loader.paymentinfo.form_type
-    }`;
+    }_${common.form_status}`;
 
     // const submitpayment = await ApiCall({
     //   query: `
