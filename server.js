@@ -110,7 +110,7 @@ const postRes = (request, response) => {
           }`,
         variables: {
           updatePaymentInput: {
-            id: paymentid,
+            id: Number(paymentid),
             paymentstatus: "PAID",
             bankreference: result.bank_ref_no,
             paymentType: result.payment_mode,
@@ -120,7 +120,7 @@ const postRes = (request, response) => {
         },
       });
 
-      console.log(res1);
+      console.log(res1.data);
 
       const req = {
         stage: type,
@@ -145,7 +145,7 @@ const postRes = (request, response) => {
         },
       });
 
-      console.log(res2);
+      console.log(res2.data);
 
       const htmlcode = `<html lang="en">
       <head>
