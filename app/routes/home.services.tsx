@@ -112,7 +112,7 @@ const Services: React.FC = (): JSX.Element => {
               key={index}
               onClick={() => setServices(val)}
               role="button"
-              className={`cursor-pointer mt-2 p-2  shadow-lg hover:shadow-2xl grid place-items-center rounded-md text-sm font-medium lato ${
+              className={`cursor-pointer mt-2 p-2  shadow-sm hover:shadow-xl grid place-items-center rounded-md text-sm font-medium lato ${
                 val == services
                   ? "text-white bg-blue-500"
                   : "bg-white text-blue-500"
@@ -314,7 +314,7 @@ const ServiceCard: React.FC<ServiceCardProps> = (
 ): JSX.Element => {
   return (
     <>
-      <div className="p-4 bg-white shadow-lg hover:shadow-2xl grid place-items-center rounded-xl">
+      <div className="p-4 bg-white shadow-sm hover:shadow-md grid place-items-center rounded-xl">
         <div className="grid place-items-center gap-2 p-4">
           {props.icons == 1 ? (
             <MdiFolderInformation className="text-3xl text-[#0984e3]"></MdiFolderInformation>

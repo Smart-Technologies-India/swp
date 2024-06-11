@@ -559,7 +559,7 @@ const Home: React.FC = (): JSX.Element => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col min-h-screen relative bg-[#eeeeee] flex-grow overflow-y-auto">
+          <div className="flex flex-col min-h-screen relative bg-[#ebedf3] flex-grow overflow-y-auto">
             <div className="pb-14 h-full">
               <TopNavBar name={username}></TopNavBar>
               <div className="px-4">
