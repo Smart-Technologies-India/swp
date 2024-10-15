@@ -166,7 +166,6 @@ const MarriageRegisterView = (): JSX.Element => {
    * @returns None
    */
   const submit = async () => {
-   
     const data = await ApiCall({
       query: `
             mutation createCommon($createCommonInput:CreateCommonInput!){
@@ -603,7 +602,7 @@ const MarriageRegisterView = (): JSX.Element => {
     }
   };
 
-  const timelimit = useRef<HTMLInputElement>(null);
+  // const timelimit = useRef<HTMLInputElement>(null);
 
   const [payamt, setPayamt] = useState<{ [key: string]: number }>({
     type1: 0,
@@ -615,126 +614,128 @@ const MarriageRegisterView = (): JSX.Element => {
   });
 
   const requestpayment = async () => {
-    if (
-      timelimit.current?.value == null ||
-      timelimit.current?.value == undefined ||
-      timelimit.current?.value == "" ||
-      parseInt(timelimit.current?.value) == 0
-    ) {
-      toast.error("Time limit is required.", { theme: "light" });
-    } else {
-      let req: any = {
-        form_id: from_data.id,
-        deptuser_id: parseInt(user.id),
-        user_id: parseInt(from_data.userId),
-        form_type: "MARRIAGEREGISTER",
-        paymentstatus: "PENDING",
-      };
-      if (payamt.type1 != 0) req.type1 = payamt.type1;
-      if (payamt.amount1 != 0) req.amount1 = payamt.amount1;
-      if (payamt.type2 != 0) req.type2 = payamt.type2;
-      if (payamt.amount2 != 0) req.amount2 = payamt.amount2;
-      if (payamt.type3 != 0) req.type3 = payamt.type3;
-      if (payamt.amount3 != 0) req.amount3 = payamt.amount3;
-      if (parseInt(timelimit!.current!.value) != 0)
-        req.daycount = parseInt(timelimit!.current!.value);
-      if (
-        payamt.type1 * payamt.amount1 +
-          payamt.type2 * payamt.amount2 +
-          payamt.type3 * payamt.amount3 !=
-        0
-      )
-        req.paymentamout =
-          payamt.type1 * payamt.amount1 +
-          payamt.type2 * payamt.amount2 +
-          payamt.type3 * payamt.amount3;
+    // if (
+    //   timelimit.current?.value == null ||
+    //   timelimit.current?.value == undefined ||
+    //   timelimit.current?.value == "" ||
+    //   parseInt(timelimit.current?.value) == 0
+    // ) {
+    //   toast.error("Time limit is required.", { theme: "light" });
+    // } else {
 
-      const addpayment = await ApiCall({
-        query: `
+    let req: any = {
+      form_id: from_data.id,
+      deptuser_id: parseInt(user.id),
+      user_id: parseInt(from_data.userId),
+      form_type: "MARRIAGEREGISTER",
+      paymentstatus: "PENDING",
+      daycount: 0,
+    };
+    if (payamt.type1 != 0) req.type1 = payamt.type1;
+    if (payamt.amount1 != 0) req.amount1 = payamt.amount1;
+    if (payamt.type2 != 0) req.type2 = payamt.type2;
+    if (payamt.amount2 != 0) req.amount2 = payamt.amount2;
+    if (payamt.type3 != 0) req.type3 = payamt.type3;
+    if (payamt.amount3 != 0) req.amount3 = payamt.amount3;
+    // if (parseInt(timelimit!.current!.value) != 0)
+    //   req.daycount = parseInt(timelimit!.current!.value);
+    if (
+      payamt.type1 * payamt.amount1 +
+        payamt.type2 * payamt.amount2 +
+        payamt.type3 * payamt.amount3 !=
+      0
+    )
+      req.paymentamout =
+        payamt.type1 * payamt.amount1 +
+        payamt.type2 * payamt.amount2 +
+        payamt.type3 * payamt.amount3;
+
+    const addpayment = await ApiCall({
+      query: `
                 mutation createPayment($createPaymentInput:CreatePaymentInput!){
                     createPayment(createPaymentInput:$createPaymentInput){
                       id,
                     }
                   }
               `,
-        veriables: {
-          createPaymentInput: req,
-        },
-      });
+      veriables: {
+        createPaymentInput: req,
+      },
+    });
 
-      if (!addpayment.status) {
-        setPaymentBox(false);
-        toast.error(addpayment.message, { theme: "light" });
-      } else {
-        const reqdata: { [key: string]: any } = {
-          stage: "MARRIAGEREGISTER",
-          form_id: from_data.id,
-          from_user_id: 51,
-          to_user_id: Number(from_data.userId),
-          form_status: common.form_status,
-          query_type: "PUBLIC",
-          remark: `Payment Request of Rs. (${req.paymentamout}) requested successfully from user.`,
-          query_status: "SENT",
-          status: "NONE",
-        };
+    if (!addpayment.status) {
+      setPaymentBox(false);
+      toast.error(addpayment.message, { theme: "light" });
+    } else {
+      const reqdata: { [key: string]: any } = {
+        stage: "MARRIAGEREGISTER",
+        form_id: from_data.id,
+        from_user_id: 51,
+        to_user_id: Number(from_data.userId),
+        form_status: common.form_status,
+        query_type: "PUBLIC",
+        remark: `Payment Request of Rs. (${req.paymentamout}) requested successfully from user.`,
+        query_status: "SENT",
+        status: "NONE",
+      };
 
-        const data = await ApiCall({
-          query: `
+      const data = await ApiCall({
+        query: `
                     mutation createQuery($createQueryInput:CreateQueryInput!){
                         createQuery(createQueryInput:$createQueryInput){
                           id,
                         }
                       }
                     `,
-          veriables: {
-            createQueryInput: reqdata,
-          },
-        });
+        veriables: {
+          createQueryInput: reqdata,
+        },
+      });
 
-        if (data.status) {
-          setPaymentBox(false);
-          toast.success("Payment request sent to user", { theme: "light" });
+      if (data.status) {
+        setPaymentBox(false);
+        toast.success("Payment request sent to user", { theme: "light" });
 
-          let payreq: any = {
-            id: from_data.id,
-          };
+        let payreq: any = {
+          id: from_data.id,
+        };
 
-          if (attachment != null) {
-            const attach = await UploadFile(attachment);
-            if (attach.status) {
-              payreq.payment_doc = attach.data;
-            } else {
-              return toast.error("Unable to upload attachment", {
-                theme: "light",
-              });
-            }
+        if (attachment != null) {
+          const attach = await UploadFile(attachment);
+          if (attach.status) {
+            payreq.payment_doc = attach.data;
+          } else {
+            return toast.error("Unable to upload attachment", {
+              theme: "light",
+            });
           }
+        }
 
-          const savepaymentdoc = await ApiCall({
-            query: `
+        const savepaymentdoc = await ApiCall({
+          query: `
                         mutation updateMarriageRegisterById($updateMarriageRegisterInput:UpdateMarriageRegisterInput!){
                             updateMarriageRegisterById(updateMarriageRegisterInput:$updateMarriageRegisterInput){
                               id,
                             }
                           }
                         `,
-            veriables: {
-              updateMarriageRegisterInput: payreq,
-            },
-          });
+          veriables: {
+            updateMarriageRegisterInput: payreq,
+          },
+        });
 
-          if (!savepaymentdoc.status) {
-            toast.error(savepaymentdoc.message, { theme: "light" });
-          } else {
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500);
-          }
+        if (!savepaymentdoc.status) {
+          toast.error(savepaymentdoc.message, { theme: "light" });
         } else {
-          return toast.error(data.message, { theme: "light" });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         }
+      } else {
+        return toast.error(data.message, { theme: "light" });
       }
     }
+    // }
   };
 
   const handleInputChange = (key: string, value: number) => {
@@ -744,80 +745,100 @@ const MarriageRegisterView = (): JSX.Element => {
     }));
   };
 
-  const paymentType = useRef<HTMLSelectElement>(null);
-  const refrancerRef = useRef<HTMLInputElement>(null);
+  // const paymentType = useRef<HTMLSelectElement>(null);
+  // const refrancerRef = useRef<HTMLInputElement>(null);
 
   const submitpayment = async () => {
-    if (
-      refrancerRef.current?.value == null ||
-      refrancerRef.current?.value == undefined ||
-      refrancerRef.current?.value == ""
-    ) {
-      toast.error("Enter Payment Reference.", { theme: "light" });
-    } else if (
-      paymentType.current?.value == null ||
-      paymentType.current?.value == undefined ||
-      paymentType.current?.value == "" ||
-      parseInt(paymentType.current?.value) == 0
-    ) {
-      toast.error("Select Payment Type.", { theme: "light" });
-    } else {
-      const submitpayment = await ApiCall({
-        query: `
-                mutation updatePaymentById($updatePaymentInput:UpdatePaymentInput!){
-                    updatePaymentById(updatePaymentInput:$updatePaymentInput){
-                      id,
-                    }
-                  }
-              `,
-        veriables: {
-          updatePaymentInput: {
-            id: loader.paymentinfo.id,
-            paymentstatus: "PAID",
-            reference: refrancerRef.current?.value,
-            paymentType: paymentType.current?.value,
-          },
-        },
-      });
-
-      if (!submitpayment.status) {
-        toast.error(submitpayment.message, { theme: "light" });
-      } else {
-        const req: { [key: string]: any } = {
-          stage: "MARRIAGEREGISTER",
-          form_id: from_data.id,
-          from_user_id: Number(user.id),
-          to_user_id: 51,
-          form_status: common.form_status,
-          query_type: "PUBLIC",
-          remark: `The payment of Rs. (${loader.paymentinfo.paymentamout}) requested from user is successfully paid vide ${paymentType.current?.value} with reference no ${refrancerRef.current?.value}.`,
-          query_status: "SENT",
-          status: "NONE",
-        };
-
-        const data = await ApiCall({
-          query: `
-                    mutation createQuery($createQueryInput:CreateQueryInput!){
-                        createQuery(createQueryInput:$createQueryInput){
-                          id,
-                        }
-                      }
-                    `,
-          veriables: {
-            createQueryInput: req,
-          },
-        });
-
-        if (data.status) {
-          toast.success("Submitted successfully.", { theme: "light" });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          return toast.error(data.message, { theme: "light" });
-        }
+    const uniqueid = (): string => {
+      const length = 10;
+      const charSet =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let randomString = "";
+      for (let i = 0; i < length; i++) {
+        const randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
       }
-    }
+
+      return randomString;
+    };
+
+    window.location.href = `/payamount?xlmnx=${
+      loader.paymentinfo.paymentamout
+    }&ynboy=${uniqueid()}&zgvfz=${parseInt(
+      loader.paymentinfo.id.toString()
+    )}_${parseInt(loader.paymentinfo.user_id.toString())}_${from_data.id}_${
+      loader.paymentinfo.form_type
+    }_${common.form_status}`;
+    // if (
+    //   refrancerRef.current?.value == null ||
+    //   refrancerRef.current?.value == undefined ||
+    //   refrancerRef.current?.value == ""
+    // ) {
+    //   toast.error("Enter Payment Reference.", { theme: "light" });
+    // } else if (
+    //   paymentType.current?.value == null ||
+    //   paymentType.current?.value == undefined ||
+    //   paymentType.current?.value == "" ||
+    //   parseInt(paymentType.current?.value) == 0
+    // ) {
+    //   toast.error("Select Payment Type.", { theme: "light" });
+    // } else {
+    //   const submitpayment = await ApiCall({
+    //     query: `
+    //             mutation updatePaymentById($updatePaymentInput:UpdatePaymentInput!){
+    //                 updatePaymentById(updatePaymentInput:$updatePaymentInput){
+    //                   id,
+    //                 }
+    //               }
+    //           `,
+    //     veriables: {
+    //       updatePaymentInput: {
+    //         id: loader.paymentinfo.id,
+    //         paymentstatus: "PAID",
+    //         reference: refrancerRef.current?.value,
+    //         paymentType: paymentType.current?.value,
+    //       },
+    //     },
+    //   });
+
+    //   if (!submitpayment.status) {
+    //     toast.error(submitpayment.message, { theme: "light" });
+    //   } else {
+    //     const req: { [key: string]: any } = {
+    //       stage: "MARRIAGEREGISTER",
+    //       form_id: from_data.id,
+    //       from_user_id: Number(user.id),
+    //       to_user_id: 51,
+    //       form_status: common.form_status,
+    //       query_type: "PUBLIC",
+    //       remark: `The payment of Rs. (${loader.paymentinfo.paymentamout}) requested from user is successfully paid vide ${paymentType.current?.value} with reference no ${refrancerRef.current?.value}.`,
+    //       query_status: "SENT",
+    //       status: "NONE",
+    //     };
+
+    //     const data = await ApiCall({
+    //       query: `
+    //                 mutation createQuery($createQueryInput:CreateQueryInput!){
+    //                     createQuery(createQueryInput:$createQueryInput){
+    //                       id,
+    //                     }
+    //                   }
+    //                 `,
+    //       veriables: {
+    //         createQueryInput: req,
+    //       },
+    //     });
+
+    //     if (data.status) {
+    //       toast.success("Submitted successfully.", { theme: "light" });
+    //       setTimeout(() => {
+    //         window.location.reload();
+    //       }, 1500);
+    //     } else {
+    //       return toast.error(data.message, { theme: "light" });
+    //     }
+    //   }
+    // }
   };
 
   return (
@@ -835,13 +856,13 @@ const MarriageRegisterView = (): JSX.Element => {
           <div className="w-full h-[2px] bg-gray-800 my-4"></div>
           <div className="flex gap-3 my-2 justify-between">
             <p className="flex-1"></p>
-            <p className="flex-1">Page Qty.</p>
+            {/* <p className="flex-1">Page Qty.</p> */}
             <p className="flex-1">Amount</p>
-            <p className="flex-1">Total</p>
+            {/* <p className="flex-1">Total</p> */}
           </div>
           <div className="flex gap-3 my-2 justify-between">
             <p className="shrink-0 flex-1">A4</p>
-            <input
+            {/* <input
               value={payamt.type1}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const newValue = parseInt(e.target.value) || 0;
@@ -849,7 +870,7 @@ const MarriageRegisterView = (): JSX.Element => {
               }}
               type="text"
               className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none arounded-md py-1 px-2"
-            />
+            /> */}
             <input
               value={payamt.amount1}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -859,11 +880,11 @@ const MarriageRegisterView = (): JSX.Element => {
               type="text"
               className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
             />
-            <p className="flex-1 shrink-0">{payamt.type1 * payamt.amount1}</p>
+            {/* <p className="flex-1 shrink-0">{payamt.type1 * payamt.amount1}</p> */}
           </div>
           <div className="flex gap-3 my-2 justify-between">
             <p className="shrink-0 flex-1">A3</p>
-            <input
+            {/* <input
               value={payamt.type2}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const newValue = parseInt(e.target.value) || 0;
@@ -871,7 +892,7 @@ const MarriageRegisterView = (): JSX.Element => {
               }}
               type="text"
               className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
-            />
+            /> */}
             <input
               value={payamt.amount2}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -881,11 +902,11 @@ const MarriageRegisterView = (): JSX.Element => {
               type="text"
               className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
             />
-            <p className="flex-1 shrink-0">{payamt.type2 * payamt.amount2}</p>
+            {/* <p className="flex-1 shrink-0">{payamt.type2 * payamt.amount2}</p> */}
           </div>
           <div className="flex gap-3 my-2 justify-between">
             <p className="shrink-0 flex-1">Maps</p>
-            <input
+            {/* <input
               value={payamt.type3}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const newValue = parseInt(e.target.value) || 0;
@@ -893,7 +914,7 @@ const MarriageRegisterView = (): JSX.Element => {
               }}
               type="text"
               className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
-            />
+            /> */}
             <input
               value={payamt.amount3}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -903,26 +924,26 @@ const MarriageRegisterView = (): JSX.Element => {
               type="text"
               className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
             />
-            <p className="flex-1 shrink-0">{payamt.type3 * payamt.amount3}</p>
+            {/* <p className="flex-1 shrink-0">{payamt.type3 * payamt.amount3}</p> */}
           </div>
           <div className="w-full h-[1px] bg-gray-800 my-2"></div>
           <div className="flex gap-3 my-2 justify-between">
             <p className="shrink-0 flex-1">Total</p>
-            <p className="shrink-0 flex-1">
+            {/* <p className="shrink-0 flex-1">
               {payamt.type1 + payamt.type2 + payamt.type3}
-            </p>
+            </p> */}
             <p className="shrink-0 flex-1">
               {payamt.amount1 + payamt.amount2 + payamt.amount3}
             </p>
-            <p className="shrink-0 flex-1">
+            {/* <p className="shrink-0 flex-1">
               {payamt.type1 * payamt.amount1 +
                 payamt.type2 * payamt.amount2 +
                 payamt.type3 * payamt.amount3}
-            </p>
+            </p> */}
           </div>
 
           <div className="w-full h-[1px] bg-gray-800 my-2"></div>
-          <div className="flex gap-3 my-2 justify-between">
+          {/* <div className="flex gap-3 my-2 justify-between">
             <p className="flex-2">Time Limit [Day]</p>
             <div className="flex-1"></div>
             <input
@@ -933,7 +954,7 @@ const MarriageRegisterView = (): JSX.Element => {
               type="text"
               className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
             />
-          </div>
+          </div> */}
           <div className="flex flex-wrap gap-6 mt-4">
             <button
               onClick={requestpayment}
@@ -1670,7 +1691,7 @@ const MarriageRegisterView = (): JSX.Element => {
                   Download Document
                 </a>
               ) : null} */}
-                {common.form_status == 75 ? (
+              {common.form_status == 75 ? (
                 <Link
                   target="_blank"
                   to={`/marriagepdf/${encrypt(
@@ -1793,7 +1814,7 @@ const MarriageRegisterView = (): JSX.Element => {
                         Convey to Applicant
                       </button>
                     ) : null}
-                     {common.form_status == 75 && user.id == 51 ? (
+                    {common.form_status == 75 && user.id == 51 ? (
                       <Link
                         to={`/marriagepdf/${encrypt(
                           `MARRIAGE-${("0000" + from_data.id).slice(-4)}-${
@@ -1842,68 +1863,68 @@ const MarriageRegisterView = (): JSX.Element => {
             <div className="w-full h-[2px] bg-gray-800 my-4"></div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="flex-1"></p>
-              <p className="flex-1 text-center">Page Qty.</p>
+              {/* <p className="flex-1 text-center">Page Qty.</p> */}
               <p className="flex-1 text-center">Amount</p>
-              <p className="flex-1 text-center">Total</p>
+              {/* <p className="flex-1 text-center">Total</p> */}
             </div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">A4</p>
-              <p className="shrink-0 flex-1 text-center">
+              {/* <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.type1 ?? 0}
-              </p>
+              </p> */}
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount1 ?? 0}
               </p>
-              <p className="flex-1 shrink-0 text-center">
+              {/* <p className="flex-1 shrink-0 text-center">
                 {loader.paymentinfo.type1 ??
                   0 * loader.paymentinfo.amount1 ??
                   0}
-              </p>
+              </p> */}
             </div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">A3</p>
-              <p className="shrink-0 flex-1 text-center">
+              {/* <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.type2 ?? 0}
-              </p>
+              </p> */}
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount2 ?? 0}
               </p>
-              <p className="flex-1 shrink-0 text-center">
+              {/* <p className="flex-1 shrink-0 text-center">
                 {loader.paymentinfo.type2 ??
                   0 * loader.paymentinfo.amount2 ??
                   0}
-              </p>
+              </p> */}
             </div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">Maps</p>
-              <p className="shrink-0 flex-1 text-center">
+              {/* <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.type3 ?? 0}
-              </p>
+              </p> */}
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount3 ?? 0}
               </p>
-              <p className="flex-1 shrink-0 text-center">
+              {/* <p className="flex-1 shrink-0 text-center">
                 {loader.paymentinfo.type3 ??
                   0 * loader.paymentinfo.amount3 ??
                   0}
-              </p>
+              </p> */}
             </div>
             <div className="w-full h-[1px] bg-gray-800 my-2"></div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">Total</p>
-              <p className="shrink-0 flex-1 text-center">
+              {/* <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.type1 ??
                   0 + loader.paymentinfo.type2 ??
                   0 + loader.paymentinfo.type3 ??
                   0}
-              </p>
+              </p> */}
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount1 ??
                   0 + loader.paymentinfo.amount2 ??
                   0 + loader.paymentinfo.amount3 ??
                   0}
               </p>
-              <p className="shrink-0 flex-1 text-center">
+              {/* <p className="shrink-0 flex-1 text-center">
                 {(loader.paymentinfo.type1 ??
                   0 * loader.paymentinfo.amount1 ??
                   0) +
@@ -1911,11 +1932,11 @@ const MarriageRegisterView = (): JSX.Element => {
                     0 * loader.paymentinfo.amount1 ??
                     0) +
                   (loader.paymentinfo.type3 * loader.paymentinfo.amount3 ?? 0)}
-              </p>
+              </p> */}
             </div>
 
             <div className="w-full h-[1px] bg-gray-800 my-2"></div>
-            <div className="flex gap-3 my-2 justify-between">
+            {/* <div className="flex gap-3 my-2 justify-between">
               <p className="flex-2">Time Limit [Day]</p>
               <div className="flex-1"></div>
               <p className="flex-1">{loader.paymentinfo.paymentamout} </p>
@@ -1954,7 +1975,7 @@ const MarriageRegisterView = (): JSX.Element => {
                 type="text"
                 className="flex-2 bg-[#eeeeee] fill-none focus:outline-none outline-none arounded-md py-1 px-2"
               />
-            </div>
+            </div> */}
             <button
               onClick={submitpayment}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium grow"

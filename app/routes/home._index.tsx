@@ -202,6 +202,19 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
         department: userdata.data.getUserById.department,
       },
     });
+  } else if (userdata.data.getUserById.department == "FCS") {
+    filecount = await ApiCall({
+      query: `
+        query getFileCount($department:String!){
+            getFileCount(department:$department){
+              NEWRATIONCARD
+            }
+          }
+      `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
   }
 
   const villagecount = await ApiCall({
@@ -531,7 +544,26 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
         department: userdata.data.getUserById.department,
       },
     });
+  } else if (userdata.data.getUserById.department == "FCS") {
+    processcount = await ApiCall({
+      query: `
+          query officerFileProgress($department:String!){
+              officerFileProgress(department:$department){
+              NEWRATIONCARD{
+                pending,
+                completed,
+                rejected
+              }
+          }
+          }
+        `,
+      veriables: {
+        department: userdata.data.getUserById.department,
+      },
+    });
   }
+
+  console.log(processcount);
 
   const villageprocess = await ApiCall({
     query: `
@@ -803,6 +835,8 @@ const DashBoard = (): JSX.Element => {
       "Roadshow Permission",
       "Religious Permission",
     ];
+  } else if (userdata.department == "FCS") {
+    labels = ["New Ration Card"];
   } else {
     labels = ["NONE"];
   }

@@ -1,4 +1,5 @@
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
+import type { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
 import { ApiCall, UploadFile } from "~/services/api";
@@ -418,8 +419,293 @@ const WaterSizeChangeView: React.FC = (): JSX.Element => {
     }, 1500);
   };
 
+  const [paymentbox, setPaymentBox] = useState<boolean>(false);
+
+  const [payamt, setPayamt] = useState<{ [key: string]: number }>({
+    type1: 0,
+    amount1: 0,
+    type2: 0,
+    amount2: 0,
+    type3: 0,
+    amount3: 0,
+  });
+
+  const requestpayment = async () => {
+    let req: any = {
+      form_id: from_data.id,
+      deptuser_id: parseInt(user.id),
+      user_id: parseInt(from_data.userId),
+      form_type: "WATERSIZECHANGE",
+      paymentstatus: "PENDING",
+      daycount: 0,
+    };
+    if (payamt.type1 != 0) req.type1 = payamt.type1;
+    if (payamt.amount1 != 0) req.amount1 = payamt.amount1;
+    if (payamt.type2 != 0) req.type2 = payamt.type2;
+    if (payamt.amount2 != 0) req.amount2 = payamt.amount2;
+    if (payamt.type3 != 0) req.type3 = payamt.type3;
+    if (payamt.amount3 != 0) req.amount3 = payamt.amount3;
+    // if (parseInt(timelimit!.current!.value) != 0)
+    // req.daycount = parseInt(timelimit!.current!.value);
+    if (
+      payamt.type1 * payamt.amount1 +
+        payamt.type2 * payamt.amount2 +
+        payamt.type3 * payamt.amount3 !=
+      0
+    )
+      req.paymentamout =
+        payamt.type1 * payamt.amount1 +
+        payamt.type2 * payamt.amount2 +
+        payamt.type3 * payamt.amount3;
+
+    const addpayment = await ApiCall({
+      query: `
+                mutation createPayment($createPaymentInput:CreatePaymentInput!){
+                    createPayment(createPaymentInput:$createPaymentInput){
+                      id,
+                    }
+                  }
+              `,
+      veriables: {
+        createPaymentInput: req,
+      },
+    });
+
+    if (!addpayment.status) {
+      setPaymentBox(false);
+      toast.error(addpayment.message, { theme: "light" });
+    } else {
+      const reqdata: { [key: string]: any } = {
+        stage: "WATERSIZECHANGE",
+        form_id: from_data.id,
+        from_user_id: 51,
+        to_user_id: Number(from_data.userId),
+        form_status: common.form_status,
+        query_type: "PUBLIC",
+        remark: `Payment Request of Rs. (${req.paymentamout}) requested successfully from user.`,
+        query_status: "SENT",
+        status: "NONE",
+      };
+
+      const data = await ApiCall({
+        query: `
+                    mutation createQuery($createQueryInput:CreateQueryInput!){
+                        createQuery(createQueryInput:$createQueryInput){
+                          id,
+                        }
+                      }
+                    `,
+        veriables: {
+          createQueryInput: reqdata,
+        },
+      });
+
+      if (data.status) {
+        setPaymentBox(false);
+        toast.success("Payment request sent to user", { theme: "light" });
+
+        let payreq: any = {
+          id: from_data.id,
+        };
+
+        if (attachment != null) {
+          const attach = await UploadFile(attachment);
+          if (attach.status) {
+            payreq.payment_doc = attach.data;
+          } else {
+            return toast.error("Unable to upload attachment", {
+              theme: "light",
+            });
+          }
+        }
+
+        const savepaymentdoc = await ApiCall({
+          query: `
+                        mutation updateWaterSizeChangeById($updateWaterSizeChangeInput:UpdateWaterSizeChangeInput!){
+                            updateWaterSizeChangeById(updateWaterSizeChangeInput:$updateWaterSizeChangeInput){
+                              id,
+                            }
+                          }
+                        `,
+          veriables: {
+            updateBirthRegisterInput: payreq,
+          },
+        });
+
+        if (!savepaymentdoc.status) {
+          toast.error(savepaymentdoc.message, { theme: "light" });
+        } else {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        }
+      } else {
+        return toast.error(data.message, { theme: "light" });
+      }
+    }
+  };
+
+  const handleInputChange = (key: string, value: number) => {
+    setPayamt((prevPayamt) => ({
+      ...prevPayamt,
+      [key]: value,
+    }));
+  };
+
+  const submitpayment = async () => {
+    const uniqueid = (): string => {
+      const length = 10;
+      const charSet =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let randomString = "";
+      for (let i = 0; i < length; i++) {
+        const randomPoz = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.substring(randomPoz, randomPoz + 1);
+      }
+
+      return randomString;
+    };
+
+    window.location.href = `/payamount?xlmnx=${
+      loader.paymentinfo.paymentamout
+    }&ynboy=${uniqueid()}&zgvfz=${parseInt(
+      loader.paymentinfo.id.toString()
+    )}_${parseInt(loader.paymentinfo.user_id.toString())}_${from_data.id}_${
+      loader.paymentinfo.form_type
+    }_${common.form_status}`;
+  };
+
   return (
     <>
+      {/* payment box start here */}
+      <div
+        className={`fixed top-0 left-0 bg-black bg-opacity-20 min-h-screen w-full  z-50 ${
+          paymentbox ? "grid place-items-center" : "hidden"
+        }`}
+      >
+        <div className="bg-white p-4 rounded-md w-96">
+          <h3 className="text-2xl text-center font-semibold">
+            Payment Request
+          </h3>
+          <div className="w-full h-[2px] bg-gray-800 my-4"></div>
+          <div className="flex gap-3 my-2 justify-between">
+            <p className="flex-1"></p>
+            {/* <p className="flex-1">Page Qty.</p> */}
+            <p className="flex-1">Amount</p>
+            {/* <p className="flex-1">Total</p> */}
+          </div>
+          <div className="flex gap-3 my-2 justify-between">
+            <p className="shrink-0 flex-1">A4</p>
+            {/* <input
+              value={payamt.type1}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const newValue = parseInt(e.target.value) || 0;
+                handleInputChange("type1", newValue);
+              }}
+              type="text"
+              className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none arounded-md py-1 px-2"
+            /> */}
+            <input
+              value={payamt.amount1}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const newValue = parseInt(e.target.value) || 0;
+                handleInputChange("amount1", newValue);
+              }}
+              type="text"
+              className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
+            />
+            {/* <p className="flex-1 shrink-0">{payamt.type1 * payamt.amount1}</p> */}
+          </div>
+          <div className="flex gap-3 my-2 justify-between">
+            <p className="shrink-0 flex-1">A3</p>
+            {/* <input
+              value={payamt.type2}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const newValue = parseInt(e.target.value) || 0;
+                handleInputChange("type2", newValue);
+              }}
+              type="text"
+              className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
+            /> */}
+            <input
+              value={payamt.amount2}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const newValue = parseInt(e.target.value) || 0;
+                handleInputChange("amount2", newValue);
+              }}
+              type="text"
+              className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
+            />
+            {/* <p className="flex-1 shrink-0">{payamt.type2 * payamt.amount2}</p> */}
+          </div>
+          <div className="flex gap-3 my-2 justify-between">
+            <p className="shrink-0 flex-1">Maps</p>
+            {/* <input
+              value={payamt.type3}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const newValue = parseInt(e.target.value) || 0;
+                handleInputChange("type3", newValue);
+              }}
+              type="text"
+              className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
+            /> */}
+            <input
+              value={payamt.amount3}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const newValue = parseInt(e.target.value) || 0;
+                handleInputChange("amount3", newValue);
+              }}
+              type="text"
+              className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
+            />
+            {/* <p className="flex-1 shrink-0">{payamt.type3 * payamt.amount3}</p> */}
+          </div>
+          <div className="w-full h-[1px] bg-gray-800 my-2"></div>
+          <div className="flex gap-3 my-2 justify-between">
+            <p className="shrink-0 flex-1">Total</p>
+            {/* <p className="shrink-0 flex-1">
+              {payamt.type1 + payamt.type2 + payamt.type3}
+            </p> */}
+            <p className="shrink-0 flex-1">
+              {payamt.amount1 + payamt.amount2 + payamt.amount3}
+            </p>
+            {/* <p className="shrink-0 flex-1">
+              {payamt.type1 * payamt.amount1 +
+                payamt.type2 * payamt.amount2 +
+                payamt.type3 * payamt.amount3}
+            </p> */}
+          </div>
+
+          <div className="w-full h-[1px] bg-gray-800 my-2"></div>
+          {/* <div className="flex gap-3 my-2 justify-between">
+            <p className="flex-2">Time Limit [Day]</p>
+            <div className="flex-1"></div>
+            <input
+              ref={timelimit}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                e.target.value = e.target.value.replace(/\D/g, "");
+              }}
+              type="text"
+              className="flex-1 w-20 bg-[#eeeeee] fill-none focus:outline-none outline-none rounded-md py-1 px-2"
+            />
+          </div> */}
+          <div className="flex flex-wrap gap-6 mt-4">
+            <button
+              onClick={requestpayment}
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium grow"
+            >
+              Request
+            </button>
+            <button
+              onClick={() => setPaymentBox((val) => false)}
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium grow"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* payment box end here */}
       {/* reject box start here */}
       <div
         className={`fixed top-0 left-0 bg-black bg-opacity-20 min-h-screen w-full  z-50 ${
@@ -1035,6 +1321,65 @@ const WaterSizeChangeView: React.FC = (): JSX.Element => {
           </>
         ) : null}
       </div>
+      {user.id == from_data.userId &&
+      loader.payment &&
+      loader.paymentinfo.paymentstatus == "PENDING" ? (
+        <div className="p-6 bg-white rounded-lg shadow-lg my-8 grid place-items-center">
+          <div className="bg-white p-4 rounded-md w-96">
+            <h3 className="text-2xl text-center font-semibold">
+              Payment Request
+            </h3>
+            <div className="w-full h-[2px] bg-gray-800 my-4"></div>
+            <div className="flex gap-3 my-2 justify-between">
+              <p className="flex-1"></p>
+              <p className="flex-1 text-center">Amount</p>
+            </div>
+            <div className="flex gap-3 my-2 justify-between">
+              <p className="shrink-0 flex-1">A4</p>
+
+              <p className="shrink-0 flex-1 text-center">
+                {loader.paymentinfo.amount1 ?? 0}
+              </p>
+            </div>
+            <div className="flex gap-3 my-2 justify-between">
+              <p className="shrink-0 flex-1">A3</p>
+
+              <p className="shrink-0 flex-1 text-center">
+                {loader.paymentinfo.amount2 ?? 0}
+              </p>
+            </div>
+            <div className="flex gap-3 my-2 justify-between">
+              <p className="shrink-0 flex-1">Maps</p>
+
+              <p className="shrink-0 flex-1 text-center">
+                {loader.paymentinfo.amount3 ?? 0}
+              </p>
+            </div>
+            <div className="w-full h-[1px] bg-gray-800 my-2"></div>
+            <div className="flex gap-3 my-2 justify-between">
+              <p className="shrink-0 flex-1">Total</p>
+
+              <p className="shrink-0 flex-1 text-center">
+                {loader.paymentinfo.amount1 ??
+                  0 + loader.paymentinfo.amount2 ??
+                  0 + loader.paymentinfo.amount3 ??
+                  0}
+              </p>
+            </div>
+
+            <div className="w-full h-[1px] bg-gray-800 my-2"></div>
+
+            <div className="w-full">
+              <button
+                onClick={submitpayment}
+                className="py-1 w-full text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium grow"
+              >
+                Pay
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
       <div className="p-6 bg-white rounded-lg shadow-lg my-8">
         <h1 className="text-gray-800 text-2xl font-semibold text-center">
           Notings

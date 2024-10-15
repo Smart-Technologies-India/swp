@@ -3,6 +3,7 @@ import { redirect } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { useRef, useState } from "react";
 import {
+  BiCardHeading,
   CibLinuxFoundation,
   EmojioneMonotoneCoupleWithHeart,
   Fa6SolidPeopleGroup,
@@ -67,13 +68,14 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
 const Services: React.FC = (): JSX.Element => {
   const title = useRef<HTMLHeadingElement | null>(null);
 
-  const Services: string[] = ["PDA", "EST", "CRSR", "PWD", "DMC"];
+  const Services: string[] = ["PDA", "EST", "CRSR", "PWD", "DMC", "FCS"];
   const ServicesName: string[] = [
     "Planning & Development Authority ",
     "Establishment Section",
     "Sub Registrar",
     "Public Works Department",
     "Daman Municipal Council",
+    "Food & Civil Supply",
   ];
   type Services = (typeof Services)[number];
   const [services, setServices] = useState<Services>("PDA");
@@ -112,7 +114,7 @@ const Services: React.FC = (): JSX.Element => {
               key={index}
               onClick={() => setServices(val)}
               role="button"
-              className={`cursor-pointer mt-2 p-2  shadow-sm hover:shadow-xl grid place-items-center rounded-md text-sm font-medium lato ${
+              className={`cursor-pointer mt-2 p-2 px-4  shadow-sm hover:shadow-xl grid place-items-center rounded-md text-sm font-medium lato ${
                 val == services
                   ? "text-white bg-blue-500"
                   : "bg-white text-blue-500"
@@ -295,6 +297,18 @@ const Services: React.FC = (): JSX.Element => {
             />
           </div>
         ) : null}
+
+        {services == "FCS" ? (
+          <div className="services gap-6 grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center mt-4">
+            {/* DMC */}
+            <ServiceCard
+              icons={25}
+              title="New Ration Card"
+              description="Apply for a New Ration Card by submitting the necessary documents."
+              apply="/home/fcs/issuenewrationcard"
+            />
+          </div>
+        ) : null}
       </div>
     </>
   );
@@ -387,6 +401,9 @@ const ServiceCard: React.FC<ServiceCardProps> = (
           ) : null}
           {props.icons == 24 ? (
             <CibLinuxFoundation className="text-5xl text-[#0984e3]"></CibLinuxFoundation>
+          ) : null}
+          {props.icons == 25 ? (
+            <BiCardHeading className="text-5xl text-[#0984e3]" />
           ) : null}
 
           <h1 className="text-sm font-medium lato text-center">

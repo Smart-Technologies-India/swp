@@ -43,6 +43,8 @@ enum SideBarTabs {
   Marriage,
   Religious,
   RoadShow,
+
+  ReceiptHistory,
 }
 
 interface SideBarState {

@@ -1,4 +1,5 @@
-import { LoaderArgs, LoaderFunction, json } from "@remix-run/node";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -21,6 +22,7 @@ import { ApiCall, UploadFile } from "~/services/api";
 // } from "@react-pdf/renderer";
 import { z } from "zod";
 import QueryTabs from "~/components/QueryTabs";
+import { Font } from "@react-pdf/renderer";
 
 export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const id = props.params.id;
@@ -656,6 +658,7 @@ const Petroleum: React.FC = (): JSX.Element => {
                 target="_blank"
                 href={URL.createObjectURL(attachment)}
                 className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
+                rel="noreferrer"
               >
                 <Fa6SolidFileLines></Fa6SolidFileLines>
                 <p>View Doc.</p>
@@ -883,6 +886,7 @@ const Petroleum: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.noc_fire_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -902,6 +906,7 @@ const Petroleum: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.na_order_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -921,6 +926,7 @@ const Petroleum: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.sanad_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -940,6 +946,7 @@ const Petroleum: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.coastguard_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -959,6 +966,7 @@ const Petroleum: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.plan_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.
@@ -978,6 +986,7 @@ const Petroleum: React.FC = (): JSX.Element => {
               target="_blank"
               href={from_data.explosive_url}
               className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-2">
                 <Fa6SolidLink></Fa6SolidLink> View Doc.

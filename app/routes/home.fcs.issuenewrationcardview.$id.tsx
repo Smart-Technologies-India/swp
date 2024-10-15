@@ -1,10 +1,9 @@
+import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import type { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Fa6SolidFileLines, Fa6SolidLink } from "~/components/icons/icons";
-import { toast } from "react-toastify";
-
 import { ApiCall, UploadFile } from "~/services/api";
-import { Link, useLoaderData, useNavigate } from "@remix-run/react";
+import { toast } from "react-toastify";
 import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { userPrefs } from "~/cookies";
@@ -15,49 +14,78 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
   const id = props.params.id;
   const cookieHeader = props.request.headers.get("Cookie");
   const cookie: any = await userPrefs.parse(cookieHeader);
-
   const data = await ApiCall({
     query: `
-        query getBirthRegisterById($id:Int!){
-            getBirthRegisterById(id:$id){
-              id,
-              name,
-              address,
-              mobile,
-              email,
-              user_uid,
-              userId,
-              date_of_birth,
-              village_id,
-              gender,
-              name_of_child,
-              father_name,
-              mother_name,
-              grandfather_name,
-              grandmother_name,
-              birth_place,
-              birth_place_name,
-              current_address,
-              permanent_address,
-              religion_child,
-              father_education,
-              mother_education,
-              father_occupation,
-              mother_occupation,
-              mother_date_of_birth,
-              date_of_marriage,
-              attender_type,
-              delivery_method,
-              weight_of_child_at_birth,
-              previous_child_count,
-              number_of_week_of_pregnency,
-              mother_uid_url,
-              father_uid_url,
-              authority_letter_url,
-              undertaking_url,
-              iagree,
-              signature_url,
-              createdAt
+        query getRationCardById($id:Int!){
+            getRationCardById(id:$id){
+              id
+              userId
+              mobile
+              email
+              card_type
+              user_uid
+              user_eid
+              name
+              mother_name
+              father_name
+              gender
+              spouse_name
+              date_of_birth
+              age
+              occupation
+              annual_income
+              gasconnection
+              gas_company_name
+              gas_agency_name
+              consumer_no
+              address
+              village_id
+              pin_code
+              mandal
+              district
+              paddress
+              pvillage_id
+              ppin_code
+              pmandal
+              pdistrict
+              old_ration_card_number
+              informate_name
+              informant_relation
+              delivery_type
+              mobile_no
+              photo
+              proof_one
+              proof_one_name
+              proof_two
+              proof_two_name
+              proof_three
+              proof_three_name
+              signature_url
+              iagree
+              remarks
+              other_remarks
+              status
+              updatedAt
+              deletedAt
+              members{
+                id
+                userId
+                name
+                gender
+                date_of_birth
+                mother_name
+                father_name
+                spouse_name
+                option_to_life_commodity
+                age
+                eid
+                uid
+                relationship_with_head_of_family
+                status
+                createdAt
+                updatedAt
+                deletedAt
+              }
             }
           }
       `,
@@ -65,6 +93,7 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
       id: parseInt(id!),
     },
   });
+  console.log(data);
 
   const submit = await ApiCall({
     query: `
@@ -82,13 +111,14 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
               number,
               form_status,
               query_status, 
+              event_date
             }
           }
       `,
     veriables: {
       searchCommonInput: {
         form_id: parseInt(id!),
-        form_type: "BIRTHREGISTER",
+        form_type: "NEWRATIONCARD",
       },
     },
   });
@@ -103,64 +133,48 @@ export const loader: LoaderFunction = async (props: LoaderArgs) => {
           }
       `,
     veriables: {
-      id: parseInt(data.data.getBirthRegisterById.village_id),
+      id: parseInt(data.data.getRationCardById.village_id),
     },
   });
-
-  const searchpayment = await ApiCall({
+  const pvillage = await ApiCall({
     query: `
-        query searchPayment($searchPaymentInput:SearchPaymentInput!){
-            searchPayment(searchPaymentInput:$searchPaymentInput){
-            id,
-            form_id,
-            deptuser_id,
-            user_id,
-            type1,
-            amount1,
-            type2,
-            amount2,
-            type3,
-            amount3,
-            daycount,
-            paymentamout,
-            form_type,
-            paymentstatus
+        query getAllVillageById($id:Int!){
+          getAllVillageById(id:$id){
+              id,
+              name
             }
           }
       `,
     veriables: {
-      searchPaymentInput: {
-        form_id: parseInt(data.data.getBirthRegisterById.id),
-        form_type: "BIRTHREGISTER",
-      },
+      id: parseInt(data.data.getRationCardById.pvillage_id),
     },
   });
+
   return json({
     user: cookie,
-    formid: id,
-    from_data: data.data.getBirthRegisterById,
-    village: village.data.getAllVillageById,
+    from_data: data.data.getRationCardById,
     submit: submit.status,
+    village: village.data.getAllVillageById,
+    pvillage: pvillage.data.getAllVillageById,
     common: submit.data.searchCommon,
-    payment: searchpayment.status,
-    paymentinfo: searchpayment.status
-      ? searchpayment.data.searchPayment[0]
-      : "",
   });
 };
 
-const BirthRegisterView = (): JSX.Element => {
+const NewRationCardConnectView: React.FC = (): JSX.Element => {
   const loader = useLoaderData();
-
   const user = loader.user;
-  const isUser = user.role == "USER";
-  const from_data = loader.from_data;
   const villagedata = loader.village;
+  const pvillagedata = loader.village;
+  const from_data = loader.from_data;
+
+  const isSubmited = loader.submit;
+
+  const isUser = user.role == "USER";
+
+  const common = isSubmited ? loader.common[0] : null;
 
   const navigator = useNavigate();
 
-  const isSubmited = loader.submit;
-  const common = isSubmited ? loader.common[0] : null;
   const submit = async () => {
     const data = await ApiCall({
       query: `
@@ -174,15 +188,16 @@ const BirthRegisterView = (): JSX.Element => {
         createCommonInput: {
           form_id: Number(from_data.id),
           user_id: Number(user.id),
-          auth_user_id: "43",
-          focal_user_id: "41",
-          intra_user_id: "43,41",
+          auth_user_id: "66",
+          focal_user_id: "65",
+          intra_user_id: "65,66",
           inter_user_id: "0",
           village: villagedata.name,
           name: from_data.name,
           number: from_data.mobile.toString(),
+          event_date: from_data.from_date,
           form_status: 1,
-          form_type: "BIRTHREGISTER",
+          form_type: "NEWRATIONCARD",
           query_status: "SUBMIT",
         },
       },
@@ -209,10 +224,8 @@ const BirthRegisterView = (): JSX.Element => {
   };
 
   const [querybox, setQueryBox] = useState<boolean>(false);
-  const [paymentbox, setPaymentBox] = useState<boolean>(false);
   const queryRef = useRef<HTMLTextAreaElement>(null);
-  const [replyquerybox, setReplyQueryBox] = useState<boolean>(false);
-  const replyQueryRef = useRef<HTMLTextAreaElement>(null);
+  const rejectRef = useRef<HTMLTextAreaElement>(null);
   const attachmentRef = useRef<HTMLInputElement>(null);
   const [attachment, setAttachment] = useState<File>();
 
@@ -220,7 +233,7 @@ const BirthRegisterView = (): JSX.Element => {
     if (queryRef.current?.value == null || queryRef.current?.value == "")
       return toast.error("Remark is required", { theme: "light" });
     const req: { [key: string]: any } = {
-      stage: "BIRTHREGISTER",
+      stage: "NEWRATIONCARD",
       form_id: from_data.id,
       from_user_id: Number(user.id),
       to_user_id: from_data.userId,
@@ -228,7 +241,6 @@ const BirthRegisterView = (): JSX.Element => {
       query_type: "PUBLIC",
       remark: queryRef.current?.value,
       query_status: "SENT",
-      status: "NONE",
     };
 
     if (attachment != null) {
@@ -254,98 +266,8 @@ const BirthRegisterView = (): JSX.Element => {
     });
 
     if (data.status) {
-      const updatecommon = await ApiCall({
-        query: `
-                mutation updateCommonById($updateCommonInput:UpdateCommonInput!){
-                    updateCommonById(updateCommonInput:$updateCommonInput){
-                      id,
-                    }
-                  }
-              `,
-        veriables: {
-          updateCommonInput: {
-            id: common.id,
-            query_status: "QUERYRAISED",
-          },
-        },
-      });
-
-      if (updatecommon.status) {
-        setQueryBox((val) => false);
-        return toast.success("Query sent successfully.", { theme: "light" });
-      } else {
-        return toast.error(updatecommon.message, { theme: "light" });
-      }
-    } else {
-      return toast.error(data.message, { theme: "light" });
-    }
-  };
-
-  const submitReplyQuery = async () => {
-    if (
-      replyQueryRef.current?.value == null ||
-      replyQueryRef.current?.value == ""
-    )
-      return toast.error("Remark is required", { theme: "light" });
-    const req: { [key: string]: any } = {
-      stage: "BIRTHREGISTER",
-      form_id: from_data.id,
-      from_user_id: Number(user.id),
-      to_user_id: 41,
-      form_status: common.form_status,
-      query_type: "PUBLIC",
-      remark: replyQueryRef.current?.value,
-      query_status: "SENT",
-      status: "NONE",
-    };
-
-    if (attachment != null) {
-      const attach = await UploadFile(attachment);
-      if (attach.status) {
-        req.doc_url = attach.data;
-      } else {
-        return toast.error("Unable to upload attachment", { theme: "light" });
-      }
-    }
-
-    const data = await ApiCall({
-      query: `
-                mutation createQuery($createQueryInput:CreateQueryInput!){
-                    createQuery(createQueryInput:$createQueryInput){
-                      id,
-                    }
-                  }
-                `,
-      veriables: {
-        createQueryInput: req,
-      },
-    });
-
-    if (data.status) {
-      const updatecommon = await ApiCall({
-        query: `
-                    mutation updateCommonById($updateCommonInput:UpdateCommonInput!){
-                        updateCommonById(updateCommonInput:$updateCommonInput){
-                          id,
-                        }
-                      }
-                  `,
-        veriables: {
-          updateCommonInput: {
-            id: common.id,
-            query_status: "INPROCESS",
-          },
-        },
-      });
-
-      if (updatecommon.status) {
-        setReplyQueryBox((val) => false);
-        return toast.success("Query Replied successfully.", {
-          theme: "light",
-        });
-      } else {
-        return toast.error(updatecommon.message, { theme: "light" });
-      }
+      setQueryBox((val) => false);
+      return toast.success("Query sent successfully.", { theme: "light" });
     } else {
       return toast.error(data.message, { theme: "light" });
     }
@@ -364,7 +286,6 @@ const BirthRegisterView = (): JSX.Element => {
     interuserid: string;
     touserid: number;
     querystatus: string;
-    status: string;
   }
 
   const [nextdata, setNextData] = useState<forwardqueryType>({
@@ -377,14 +298,13 @@ const BirthRegisterView = (): JSX.Element => {
     querytype: "NONE",
     touserid: 0,
     querystatus: "NONE",
-    status: "NONE",
   });
 
   const forwardQuery = async (args: forwardqueryType) => {
     if (forwardRef.current?.value == null || forwardRef.current?.value == "")
       return toast.error("Remark is required", { theme: "light" });
     const req: { [key: string]: any } = {
-      stage: "BIRTHREGISTER",
+      stage: "NEWRATIONCARD",
       form_id: from_data.id,
       from_user_id: Number(user.id),
       to_user_id: args.touserid,
@@ -392,7 +312,6 @@ const BirthRegisterView = (): JSX.Element => {
       query_type: args.querytype,
       remark: forwardRef.current?.value,
       query_status: "SENT",
-      status: args.status,
     };
 
     if (attachment != null) {
@@ -443,73 +362,13 @@ const BirthRegisterView = (): JSX.Element => {
         toast.error(data.message, { theme: "light" });
       } else {
         setForwardBox((val) => false);
-        // toast.success("Form sent successfully.", { theme: "light" });
-        if (common.form_status == 1) {
-          setPaymentBox((val) => true);
-        } else if (common.form_status == 50) {
-          await sendDocQuery();
-        } else {
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        }
-      }
-    } else {
-      return toast.error(data.message, { theme: "light" });
-    }
-  };
-
-  const sendDocQuery = async () => {
-    const getdoc = await ApiCall({
-      query: `
-            query searchQuery($searchQueryInput:SearchQueryInput!){
-                searchQuery(searchQueryInput:$searchQueryInput){
-                  id,
-                  doc_url
-                }
-              }
-          `,
-      veriables: {
-        searchQueryInput: {
-          status: "ACTIVE",
-          form_id: from_data.id,
-          stage: "BIRTHREGISTER",
-          query_type: "INTRA",
-        },
-      },
-    });
-    if (getdoc.status) {
-      const req: { [key: string]: any } = {
-        stage: "BIRTHREGISTER",
-        form_id: from_data.id,
-        from_user_id: Number(user.id),
-        to_user_id: Number(from_data.userId),
-        form_status: 75,
-        query_type: "PUBLIC",
-        remark: "Document",
-        query_status: "SENT",
-        status: "NONE",
-        doc_url: getdoc.data.searchQuery[0].doc_url,
-      };
-
-      const createQuery = await ApiCall({
-        query: `
-                mutation createQuery($createQueryInput:CreateQueryInput!){
-                    createQuery(createQueryInput:$createQueryInput){
-                      id,
-                    }
-                  }
-                `,
-        veriables: {
-          createQueryInput: req,
-        },
-      });
-
-      if (createQuery.status) {
+        toast.success("Form sent successfully.", { theme: "light" });
         setTimeout(() => {
           window.location.reload();
         }, 1500);
       }
+    } else {
+      return toast.error(data.message, { theme: "light" });
     }
   };
 
@@ -521,27 +380,27 @@ const BirthRegisterView = (): JSX.Element => {
                 query searchQuery($searchQueryInput:SearchQueryInput!){
                     searchQuery(searchQueryInput:$searchQueryInput){
                         id,
-                      from_user_id,
-                      to_user_id
-                      remark
-                      doc_url,
-                      createdAt,
-                      query_type,
+                        from_user_id,
+                        to_user_id
+                        remark
+                        doc_url,
+                        createdAt,
+                        query_type,
                         from_user{
-                        name,
-                        role
-                      },
-                      to_user{
-                        name,
-                        role
-                      }
+                            name,
+                            role
+                        },
+                        to_user{
+                            name,
+                            role
+                        }
                     }
                   }
                 `,
       veriables: {
         searchQueryInput: {
           form_id: from_data.id,
-          stage: "BIRTHREGISTER",
+          stage: "NEWRATIONCARD",
           query_type: isUser ? "PUBLIC" : "INTRA",
         },
       },
@@ -558,6 +417,8 @@ const BirthRegisterView = (): JSX.Element => {
   const [rejectid, setRejectid] = useState<number>(0);
 
   const reject = async (id: number) => {
+    if (rejectRef.current?.value == null || rejectRef.current?.value == "")
+      return toast.error("Reject reason is required", { theme: "light" });
     if (rejectid == 0)
       return toast.error("Select the form for rejection.", { theme: "light" });
     const data = await ApiCall({
@@ -577,12 +438,47 @@ const BirthRegisterView = (): JSX.Element => {
     });
 
     if (!data.status) {
-      setRejectBox(false);
       toast.error(data.message, { theme: "light" });
     } else {
-      window.location.reload();
+      const req: { [key: string]: any } = {
+        stage: "NEWRATIONCARDs",
+        form_id: from_data.id,
+        from_user_id: Number(user.id),
+        to_user_id: from_data.userId,
+        form_status: common.form_status,
+        query_type: "PUBLIC",
+        remark: rejectRef.current?.value,
+        query_status: "SENT",
+      };
+
+      const data = await ApiCall({
+        query: `
+                mutation createQuery($createQueryInput:CreateQueryInput!){
+                    createQuery(createQueryInput:$createQueryInput){
+                      id,
+                    }
+                  }
+                `,
+        veriables: {
+          createQueryInput: req,
+        },
+      });
+
+      if (data.status) {
+        setQueryBox((val) => false);
+        toast.success("Form Rejected successfully.", { theme: "light" });
+      } else {
+        toast.error(data.message, { theme: "light" });
+      }
     }
+
+    setRejectBox(false);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
   };
+
+  const [paymentbox, setPaymentBox] = useState<boolean>(false);
 
   const [payamt, setPayamt] = useState<{ [key: string]: number }>({
     type1: 0,
@@ -598,7 +494,7 @@ const BirthRegisterView = (): JSX.Element => {
       form_id: from_data.id,
       deptuser_id: parseInt(user.id),
       user_id: parseInt(from_data.userId),
-      form_type: "BIRTHREGISTER",
+      form_type: "NEWRATIONCARD",
       paymentstatus: "PENDING",
       daycount: 0,
     };
@@ -639,7 +535,7 @@ const BirthRegisterView = (): JSX.Element => {
       toast.error(addpayment.message, { theme: "light" });
     } else {
       const reqdata: { [key: string]: any } = {
-        stage: "BIRTHREGISTER",
+        stage: "NEWRATIONCARD",
         form_id: from_data.id,
         from_user_id: 51,
         to_user_id: Number(from_data.userId),
@@ -684,14 +580,14 @@ const BirthRegisterView = (): JSX.Element => {
 
         const savepaymentdoc = await ApiCall({
           query: `
-                        mutation updateBirthRegisterById($updateBirthRegisterInput:UpdateBirthRegisterInput!){
-                            updateBirthRegisterById(updateBirthRegisterInput:$updateBirthRegisterInput){
+                        mutation updateRationCardById($updateNewrationcardInput:UpdateNewrationcardInput!){
+                            updateRationCardById(updateNewrationcardInput:$updateNewrationcardInput){
                               id,
                             }
                           }
                         `,
           veriables: {
-            updateBirthRegisterInput: payreq,
+            updateNewrationcardInput: payreq,
           },
         });
 
@@ -715,13 +611,7 @@ const BirthRegisterView = (): JSX.Element => {
     }));
   };
 
-  // const paymentType = useRef<HTMLSelectElement>(null);
-  // const refrancerRef = useRef<HTMLInputElement>(null);
-
   const submitpayment = async () => {
-    // const nanoid = customAlphabet("1234567890abcdef", 10);
-    // const uniqueid = nanoid();
-
     const uniqueid = (): string => {
       const length = 10;
       const charSet =
@@ -742,60 +632,6 @@ const BirthRegisterView = (): JSX.Element => {
     )}_${parseInt(loader.paymentinfo.user_id.toString())}_${from_data.id}_${
       loader.paymentinfo.form_type
     }_${common.form_status}`;
-
-    // const submitpayment = await ApiCall({
-    //   query: `
-    //             mutation updatePaymentById($updatePaymentInput:UpdatePaymentInput!){
-    //                 updatePaymentById(updatePaymentInput:$updatePaymentInput){
-    //                   id,
-    //                 }
-    //               }
-    //           `,
-    //   veriables: {
-    //     updatePaymentInput: {
-    //       id: loader.paymentinfo.id,
-    //       paymentstatus: "PAID",
-    //       reference: refrancerRef.current?.value,
-    //       paymentType: paymentType.current?.value,
-    //     },
-    //   },
-    // });
-
-    // if (!submitpayment.status) {
-    //   toast.error(submitpayment.message, { theme: "light" });
-    // } else {
-    //   // const req: { [key: string]: any } = {
-    //   //   stage: "BIRTHREGISTER",
-    //   //   form_id: from_data.id,
-    //   //   from_user_id: Number(user.id),
-    //   //   to_user_id: 51,
-    //   //   form_status: common.form_status,
-    //   //   query_type: "PUBLIC",
-    //   //   remark: `The payment of Rs. (${loader.paymentinfo.paymentamout}) requested from user is successfully paid vide ${paymentType.current?.value} with reference no ${refrancerRef.current?.value}.`,
-    //   //   query_status: "SENT",
-    //   //   status: "NONE",
-    //   // };
-    //   // const data = await ApiCall({
-    //   //   query: `
-    //   //               mutation createQuery($createQueryInput:CreateQueryInput!){
-    //   //                   createQuery(createQueryInput:$createQueryInput){
-    //   //                     id,
-    //   //                   }
-    //   //                 }
-    //   //               `,
-    //   //   veriables: {
-    //   //     createQueryInput: req,
-    //   //   },
-    //   // });
-    //   // if (data.status) {
-    //   //   toast.success("Submitted successfully.", { theme: "light" });
-    //   //   setTimeout(() => {
-    //   //     window.location.reload();
-    //   //   }, 1500);
-    //   // } else {
-    //   //   return toast.error(data.message, { theme: "light" });
-    //   // }
-    // }
   };
 
   return (
@@ -937,19 +773,23 @@ const BirthRegisterView = (): JSX.Element => {
       >
         <div className="bg-white p-4 rounded-md w-80">
           <h3 className="text-2xl text-center font-semibold">
-            Are you sure you want to Reject?
+            Are you sure you want to reject?
           </h3>
-          <div className="w-full h-[2px] bg-gray-800 my-4"></div>
+          <textarea
+            ref={rejectRef}
+            placeholder="Reject Reason"
+            className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2 h-28 resize-none my-2"
+          ></textarea>
           <div className="flex flex-wrap gap-6 mt-4">
             <button
               onClick={() => reject(rejectid)}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium grow"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium grow"
             >
-              Rejact
+              Reject
             </button>
             <button
               onClick={() => setRejectBox((val) => false)}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium grow"
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-blue-500 text-center rounded-md font-medium grow"
             >
               Close
             </button>
@@ -1020,69 +860,6 @@ const BirthRegisterView = (): JSX.Element => {
         </div>
       </div>
       {/* query box end here */}
-      {/* reply query box start here */}
-      <div
-        className={`fixed top-0 left-0 bg-black bg-opacity-20 min-h-screen w-full  z-50 ${
-          replyquerybox ? "grid place-items-center" : "hidden"
-        }`}
-      >
-        <div className="bg-white p-4 rounded-md w-80">
-          <h3 className="text-2xl text-center font-semibold">Reply to query</h3>
-
-          <textarea
-            ref={replyQueryRef}
-            placeholder="Information Needed"
-            className=" w-full border-2 border-gray-600 bg-transparent outline-none fill-none text-slate-800 p-2 h-28 resize-none my-4"
-          ></textarea>
-
-          <div className="flex-none flex flex-col gap-4 lg:flex-1 w-full lg:w-auto">
-            <div className="hidden">
-              <input
-                type="file"
-                ref={attachmentRef}
-                accept="*/*"
-                onChange={(e) => handleLogoChange(e, setAttachment)}
-              />
-            </div>
-            <button
-              onClick={() => attachmentRef.current?.click()}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
-            >
-              <div className="flex items-center gap-2">
-                <Fa6SolidLink></Fa6SolidLink>{" "}
-                {attachment == null ? "Attach Doc." : "Update Doc."}
-              </div>
-            </button>
-            {attachment != null ? (
-              <a
-                target="_blank"
-                href={URL.createObjectURL(attachment)}
-                className="py-1 w-full sm:w-auto flex items-center gap-2  text-white text-lg px-4 bg-yellow-500 text-center rounded-md font-medium"
-                rel="noreferrer"
-              >
-                <Fa6SolidFileLines></Fa6SolidFileLines>
-                <p>View Doc.</p>
-              </a>
-            ) : null}
-          </div>
-          <div className="w-full h-[2px] bg-gray-800 my-4"></div>
-          <div className="flex flex-wrap gap-6 mt-4">
-            <button
-              onClick={submitReplyQuery}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium grow"
-            >
-              Proceed
-            </button>
-            <button
-              onClick={() => setReplyQueryBox((val) => false)}
-              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium grow"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-      {/*reply query box end here */}
       {/* forward box start here */}
       <div
         className={`fixed top-0 left-0 bg-black bg-opacity-20 min-h-screen w-full  z-50 ${
@@ -1148,7 +925,7 @@ const BirthRegisterView = (): JSX.Element => {
       {/* forward box end here */}
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
         <h1 className="text-gray-800 text-2xl font-semibold text-center">
-          New Birth Register Application
+          New Ration Card Connection Permission
         </h1>
         <div className="w-full flex gap-4 my-4">
           <div className="grow bg-gray-700 h-[2px]"></div>
@@ -1156,100 +933,82 @@ const BirthRegisterView = (): JSX.Element => {
           <div className="grow bg-gray-700 h-[2px]"></div>
         </div>
         <p className="text-center font-semibold text-xl text-gray-800">
-          {" "}
-          Format of Application for registering a new Birth of Child.{" "}
+          SUBJECT : Request for Obtaining New Ration Card Connection Permission.
         </p>
 
-        {/*--------------------- section 2 start here ------------------------- */}
-
+        {/*--------------------- section 1 start here ------------------------- */}
         <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
           <p className="text-left font-semibold text-xl text-white">
-            {" "}
             1. Village Details{" "}
           </p>
         </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+        <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
             <span className="mr-2">1.1</span> Applicant village
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {villagedata.name}
           </div>
         </div>
-
         {/*--------------------- section 1 end here ------------------------- */}
 
         {/*--------------------- section 2 start here ------------------------- */}
         <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
           <p className="text-left font-semibold text-xl text-white">
-            {" "}
-            2. Applicant Details(s){" "}
+            2. Applicant Details(s)
           </p>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.1</span> Applicant Name
+            <span className="mr-2">2.1</span> Card Type
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.card_type}
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">2.2</span> Applicant Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {from_data.name}
           </div>
         </div>
-        <div className="flex flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.2</span> Applicant address
+            <span className="mr-2">2.3</span> Applicant Father Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.address}
+            {from_data.father_name}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.3</span> Applicant Contact Number
+            <span className="mr-2">2.4</span> Applicant Mother Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.mobile}
+            {from_data.mother_name}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.4</span> Applicant Email
+            <span className="mr-2">2.5</span> Applicant Spouse Name
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.email}
+            {from_data.spouse_name}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.5</span> Applicant UID
+            <span className="mr-2">2.6</span> Gender
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            XXXX-XXXX-{from_data.user_uid}
+            {from_data.gender}
           </div>
         </div>
-
-        {/*--------------------- section 2 end here ------------------------- */}
-
-        {/*--------------------- section 3 start here ------------------------- */}
-
-        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
-          <p className="text-left font-semibold text-xl text-white">
-            {" "}
-            3. Child Detail(s){" "}
-          </p>
-        </div>
-
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.1</span> Name of Child
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.name_of_child}
-          </div>
-        </div>
-
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.2</span> Date of Birth
+            <span className="mr-2">2.7</span> Date of Birth
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
             {new Date(from_data.date_of_birth)
@@ -1262,291 +1021,376 @@ const BirthRegisterView = (): JSX.Element => {
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.3</span> Gender of Child
+            <span className="mr-2">2.8</span> Applicant Contact Number
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.gender}
+            {from_data.mobile}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.4</span> Name of Father
+            <span className="mr-2">2.9</span> Applicant Email
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.father_name}
+            {from_data.email}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.5</span> Mother Name
+            <span className="mr-2">2.10</span> Applicant UID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.mother_name}
+            XXXX-XXXX-{from_data.user_uid}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.10</span> Grand Father Name
+            <span className="mr-2">2.11</span> Applicant EID
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.grandfather_name}
+            {from_data.user_eid}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.11</span> Grand Mother Name
+            <span className="mr-2">2.12</span> Applicant Age
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.grandmother_name}
+            {from_data.age}
           </div>
         </div>
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.12</span> Birth Place
+            <span className="mr-2">2.13</span> Old Ration Card No. (If any)
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.birth_place}
+            {from_data.old_ration_card_number}
           </div>
         </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.13</span> Name and Address of Place
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.birth_place_name}
-          </div>
+        {/*--------------------- section 2 end here ------------------------- */}
+
+        {/*--------------------- section 3 start here ------------------------- */}
+
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+          <p className="text-left font-semibold text-xl text-white">
+            3. Professional Details(s)
+          </p>
         </div>
+
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.14</span> Current Address
+            <span className="mr-2">3.1</span> Occupation
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.current_address}
+            {from_data.occupation}
           </div>
         </div>
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.4</span> Permanent Address
+            <span className="mr-2">3.2</span> Annual Income
           </div>
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.permanent_address}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.5</span> Child Religion
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.religion_child}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.10</span> Father Education
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.father_education}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.11</span> Mother Education
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.mother_education}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.12</span> Father Occupation
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.father_occupation}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.13</span> Mother Occupation
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.mother_occupation}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.14</span> Mother's Date of Birth
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {new Date(from_data.mother_date_of_birth)
-              .toJSON()
-              .slice(0, 10)
-              .split("-")
-              .reverse()
-              .join("/")}
+            {from_data.annual_income}
           </div>
         </div>
 
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.4</span> Date of Marriage
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {new Date(from_data.date_of_marriage)
-              .toJSON()
-              .slice(0, 10)
-              .split("-")
-              .reverse()
-              .join("/")}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">3.5</span> Number of Previous Child Count
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.previous_child_count}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.10</span> Attender Type
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.attender_type}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.11</span> Delivery Method
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.delivery_method}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.12</span> Weight of Child at time of Birth
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.weight_of_child_at_birth}
-          </div>
-        </div>
-        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
-            <span className="mr-2">2.13</span> Number of Weeks Pregnant
-          </div>
-          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
-            {from_data.number_of_week_of_pregnency}
-          </div>
-        </div>
-
-        {/*--------------------- section 3 end here ------------------------- */}
-
-        {/*--------------------- section 4 start here ------------------------- */}
-
-        <>
-          <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
-            <p className="text-left font-semibold text-xl text-white">
-              {" "}
-              4. Document Attachment(s){" "}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
-            <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-              <span className="mr-2">4.1</span> Father UIDAI Aadhaar Upload
-              <p className="text-rose-500 text-sm">
-                ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
-              </p>
-            </div>
-            <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
-              <a
-                target="_blank"
-                href={from_data.father_uid_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                rel="noreferrer"
-              >
-                <div className="flex items-center gap-2">
-                  <Fa6SolidLink></Fa6SolidLink> View Doc.
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
-            <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-              <span className="mr-2">4.2</span> Mother UIDAI Aadhar Upload
-              <p className="text-rose-500 text-sm">
-                ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
-              </p>
-            </div>
-            <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
-              <a
-                target="_blank"
-                href={from_data.mother_uid_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                rel="noreferrer"
-              >
-                <div className="flex items-center gap-2">
-                  <Fa6SolidLink></Fa6SolidLink> View Doc.
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
-            <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-              <span className="mr-2">4.3</span> Authority Letter Upload
-              <p className="text-rose-500 text-sm">
-                ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
-              </p>
-            </div>
-            <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
-              <a
-                target="_blank"
-                href={from_data.authority_letter_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                rel="noreferrer"
-              >
-                <div className="flex items-center gap-2">
-                  <Fa6SolidLink></Fa6SolidLink> View Doc.
-                </div>
-              </a>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
-            <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-              <span className="mr-2">4.4</span> Undertaking
-              <p className="text-rose-500 text-sm">
-                ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
-              </p>
-            </div>
-            <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
-              <a
-                target="_blank"
-                href={from_data.undertaking_url}
-                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
-                rel="noreferrer"
-              >
-                <div className="flex items-center gap-2">
-                  <Fa6SolidLink></Fa6SolidLink> View Doc.
-                </div>
-              </a>
-            </div>
-          </div>
-        </>
         {/*--------------------- section 3 end here ------------------------- */}
 
         {/*--------------------- section 4 start here ------------------------- */}
 
         <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
           <p className="text-left font-semibold text-xl text-white">
-            4. Applicant Declaration and Signature{" "}
+            4. Gas Connection Details
+          </p>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">4.1</span> Gas Connection Status
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.gasconnection}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">4.2</span> Gas Company Name
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.gas_company_name}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">4.3</span> Gas Agency Name
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.gas_agency_name}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">4.4</span> Consumer No
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.consumer_no}
+          </div>
+        </div>
+
+        {/*--------------------- section 4 end here ------------------------- */}
+
+        {/*--------------------- section 5 start here ------------------------- */}
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+          <p className="text-left font-semibold text-xl text-white">
+            5. Residence Address
+          </p>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">5.1</span> Address
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.address}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">5.2</span> District
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.district}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">5.3</span> Mandal
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.mandal}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">5.4</span> Pin Code
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.pin_code}
+          </div>
+        </div>
+
+        {/*--------------------- section 5 end here ------------------------- */}
+
+        {/*--------------------- section 6 start here ------------------------- */}
+
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+          <p className="text-left font-semibold text-xl text-white">
+            6. Permanent Address
+          </p>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">6.1</span> Applicant village
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {pvillagedata.name}
+          </div>
+        </div>
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">6.2</span> Address
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.paddress}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">6.3</span> District
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.pdistrict}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">6.4</span> Mandal
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.pmandal}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">6.5</span> Pin Code
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.ppin_code}
+          </div>
+        </div>
+
+        {/*--------------------- section 6 end here ------------------------- */}
+
+        {/*--------------------- section 7 start here ------------------------- */}
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+          <p className="text-left font-semibold text-xl text-white">
+            7. Informant Details
+          </p>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">7.1</span> Informant Name
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.informate_name}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">7.2</span> Informant Relation
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.informant_relation}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">7.3</span> Delivery Type
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.delivery_type}
+          </div>
+        </div>
+
+        <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
+            <span className="mr-2">7.4</span> Mobile No
+          </div>
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal">
+            {from_data.mobile_no}
+          </div>
+        </div>
+
+        {/*--------------------- section 7 end here ------------------------- */}
+
+        {/*--------------------- section 8 start here ------------------------- */}
+
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+          <p className="text-left font-semibold text-xl text-white">
+            8. Document Attachment(s)
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
+            <span className="mr-2">8.1</span> Applicant UIDAI Aadhaar Upload
+            <p className="text-rose-500 text-sm">
+              ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
+            </p>
+          </div>
+          <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
+            <a
+              target="_blank"
+              href={from_data.proof_three_name}
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
+            >
+              <div className="flex items-center gap-2">
+                <Fa6SolidLink></Fa6SolidLink> View Doc.
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
+            <span className="mr-2">8.2</span> Gas Connection Proof
+            <p className="text-rose-500 text-sm">
+              ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
+            </p>
+          </div>
+          <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
+            <a
+              target="_blank"
+              href={from_data.proof_one}
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
+            >
+              <div className="flex items-center gap-2">
+                <Fa6SolidLink></Fa6SolidLink> View Doc.
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
+            <span className="mr-2">8.3</span> Residence Proof
+            <p className="text-rose-500 text-sm">
+              ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
+            </p>
+          </div>
+          <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
+            <a
+              target="_blank"
+              href={from_data.proof_two}
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
+            >
+              <div className="flex items-center gap-2">
+                <Fa6SolidLink></Fa6SolidLink> View Doc.
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
+          <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
+            <span className="mr-2">8.4</span> Applicant Photo
+            <p className="text-rose-500 text-sm">
+              ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
+            </p>
+          </div>
+          <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
+            <a
+              target="_blank"
+              href={from_data.photo}
+              className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-green-500 text-center rounded-md font-medium"
+              rel="noreferrer"
+            >
+              <div className="flex items-center gap-2">
+                <Fa6SolidLink></Fa6SolidLink> View Doc.
+              </div>
+            </a>
+          </div>
+        </div>
+
+        {/*--------------------- section 8 end here ------------------------- */}
+
+        {/*--------------------- section 9 start here ------------------------- */}
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+          <p className="text-left font-semibold text-xl text-white">
+            9. Applicant / Occupant Declaration and Signature{" "}
           </p>
         </div>
 
         <div className="flex gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="text-xl font-normal text-left text-gray-700 ">
-            4.1
+            9.1
           </div>
           <div className="flex items-start">
             <p className="text-xl font-normal text-left text-gray-700 pr-2">
@@ -1562,12 +1406,11 @@ const BirthRegisterView = (): JSX.Element => {
             </label>
           </div>
         </div>
-
         <div className="flex flex-wrap gap-4 gap-y-2 items-center px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700">
-            <span className="mr-2">4.2</span> Applicant Signature Image
+            <span className="mr-2">9.2</span> Applicant Signature Image
             <p className="text-rose-500 text-sm">
-              ( Maximum Upload Size 4MB & Allowed Format JPG / PDF / PNG )
+              ( Maximum Upload Size 2MB & Allowed Format JPG / PDF / PNG )
             </p>
           </div>
           <div className="flex-none flex gap-4 lg:flex-1 w-full lg:w-auto">
@@ -1583,43 +1426,76 @@ const BirthRegisterView = (): JSX.Element => {
             </a>
           </div>
         </div>
-        {/*--------------------- section 4 end here ------------------------- */}
+        {/*--------------------- section 9 end here ------------------------- */}
+
+        <div className="w-full bg-[#0984e3] py-2 rounded-md px-4 mt-4">
+          <p className="text-left font-semibold text-xl text-white">
+            Member List
+          </p>
+        </div>
+
+        <div className="container mx-auto my-5">
+          {from_data.members.length > 0 ? (
+            <table className="min-w-full bg-white border border-gray-200">
+              <thead>
+                <tr className="bg-gray-200 text-gray-700 text-left">
+                  <th className="py-2 px-4 border">Name</th>
+                  <th className="py-2 px-4 border">Gender</th>
+                  <th className="py-2 px-4 border">Date of Birth</th>
+                  <th className="py-2 px-4 border">Mother's Name</th>
+                  <th className="py-2 px-4 border">Father's Name</th>
+                  <th className="py-2 px-4 border">Spouse Name</th>
+                  <th className="py-2 px-4 border">UID</th>
+                  <th className="py-2 px-4 border">EID</th>
+                  <th className="py-2 px-4 border">Age</th>
+                  <th className="py-2 px-4 border">Option to Life Commodity</th>
+                  <th className="py-2 px-4 border">Relationship with Head</th>
+                </tr>
+              </thead>
+              <tbody>
+                {from_data.members.map((m: any, index: number) => (
+                  <tr key={index} className="hover:bg-gray-100">
+                    <td className="py-2 px-4 border">{m.name}</td>
+                    <td className="py-2 px-4 border">{m.gender}</td>
+                    <td className="py-2 px-4 border">{m.date_of_birth}</td>
+                    <td className="py-2 px-4 border">{m.mother_name}</td>
+                    <td className="py-2 px-4 border">{m.father_name}</td>
+                    <td className="py-2 px-4 border">
+                      {m.spouse_name || "N/A"}
+                    </td>
+                    <td className="py-2 px-4 border">{m.uid}</td>
+                    <td className="py-2 px-4 border">{m.eid}</td>
+                    <td className="py-2 px-4 border">{m.age}</td>
+                    <td className="py-2 px-4 border">
+                      {m.option_to_life_commodity ? "Yes" : "No"}
+                    </td>
+                    <td className="py-2 px-4 border">
+                      {m.relationship_with_head_of_family}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-gray-600">No members available</p>
+          )}
+        </div>
         {isSubmited ? (
           user.id == from_data.userId ? (
-            <>
-              {/* {common.form_status == 75 ? (
-                <a
-                  target="_blank"
-                  href={from_data.payment_doc}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
-                  rel="noreferrer"
-                >
-                  Download Document
-                </a>
-              ) : null} */}
-              {common.form_status == 75 ? (
-                <Link
-                  target="_blank"
-                  to={`/birthpdf/${encrypt(
-                    `BIRTH-${("0000" + from_data.id).slice(-4)}-${
-                      from_data.createdAt.toString().split("-")[0]
-                    }`,
-                    "certificatedata"
-                  )}`}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
-                >
-                  Download Birth Certificate
-                </Link>
-              ) : null}
-              {common.query_status == "QUERYRAISED" ? (
-                <button
-                  onClick={() => setReplyQueryBox((val) => true)}
-                  className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-rose-500 text-center rounded-md font-medium"
-                >
-                  Reply to Query
-                </button>
-              ) : null}
-            </>
+            common.form_status == 75 ? (
+              <Link
+                target="_blank"
+                to={`/newwaterconnectpdf/${encrypt(
+                  `NWC-${("0000" + from_data.id).slice(-4)}-${
+                    from_data.createdAt.toString().split("-")[0]
+                  }`,
+                  "certificatedata"
+                )}`}
+                className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-[#0984e3] text-center rounded-md font-medium"
+              >
+                Download New Ration Card Connect Certificate
+              </Link>
+            ) : null
           ) : (
             <>
               <div className="flex flex-wrap gap-6 mt-4">
@@ -1629,6 +1505,7 @@ const BirthRegisterView = (): JSX.Element => {
                 >
                   Close
                 </Link>
+
                 {common.query_status == "REJECTED" ? null : (
                   <>
                     {user.id == common.auth_user_id ? (
@@ -1650,69 +1527,66 @@ const BirthRegisterView = (): JSX.Element => {
                         Reject
                       </button>
                     ) : null}
-                    {/* atp button */}
-                    {common.form_status == 1 && user.id == 43 ? (
+
+                    {common.form_status == 1 && user.id == 66 ? (
                       <button
                         onClick={() => {
                           setForwardBox((val) => true);
                           setNextData((val) => ({
-                            title: "Upload Document & Forward to UDC",
+                            title: "Forward to Headclerk",
                             formstatus: 25,
                             querytype: "INTRA",
-                            authuserid: "42",
-                            foacaluserid: "41",
-                            intrauserid: "41,43",
+                            authuserid: "67",
+                            foacaluserid: "65",
+                            intrauserid: "65,67",
                             interuserid: "0",
-                            touserid: 42,
-                            querystatus: "PAYMENT",
-                            status: "ACTIVE",
+                            touserid: 67,
+                            querystatus: "INPROCESS",
                           }));
                         }}
                         className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
                       >
-                        Forward to UDC
+                        Forward to Headclerk
+                      </button>
+                    ) : null}
+                    {/* LDC button */}
+                    {common.form_status == 25 && user.id == 67 ? (
+                      <button
+                        onClick={() => {
+                          setForwardBox((val) => true);
+                          setNextData((val) => ({
+                            title: "Forward to SUPTD",
+                            formstatus: 50,
+                            querytype: "INTRA",
+                            authuserid: "65",
+                            foacaluserid: "65",
+                            intrauserid: "65,67",
+                            interuserid: "0",
+                            touserid: 65,
+                            querystatus: "INPROCESS",
+                          }));
+                        }}
+                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
+                      >
+                        Forward to SUPTD
                       </button>
                     ) : null}
 
-                    {/* jtp button */}
-                    {common.form_status == 25 && user.id == 42 ? (
+                    {/* Suptd button */}
+                    {common.form_status == 50 && user.id == 65 ? (
                       <button
                         onClick={() => {
-                          setForwardBox((val) => true);
-                          setNextData((val) => ({
-                            title: "Forward to Suptd",
-                            formstatus: 50,
-                            querytype: "INTRA",
-                            authuserid: "41",
-                            foacaluserid: "41",
-                            intrauserid: "41,42",
-                            interuserid: "0",
-                            touserid: 41,
-                            querystatus: "INPROCESS",
-                            status: "NONE",
-                          }));
-                        }}
-                        className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
-                      >
-                        Forward to Suptd
-                      </button>
-                    ) : null}
-                    {common.form_status == 50 && user.id == 41 ? (
-                      <button
-                        onClick={() => {
-                          forwardRef!.current!.value = `The Birth Registration certificate requested as per application number ${from_data.id} pertaining to your request is as attached below.`;
                           setForwardBox((val) => true);
                           setNextData((val) => ({
                             title: "Convey to Applicant",
                             formstatus: 75,
                             querytype: "PUBLIC",
                             authuserid: "0",
-                            foacaluserid: "41",
+                            foacaluserid: "65",
                             intrauserid: "0",
                             interuserid: "0",
                             touserid: from_data.userId,
                             querystatus: "APPROVED",
-                            status: "NONE",
                           }));
                         }}
                         className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
@@ -1720,17 +1594,13 @@ const BirthRegisterView = (): JSX.Element => {
                         Convey to Applicant
                       </button>
                     ) : null}
-                    {common.form_status == 75 && user.id == 41 ? (
+
+                    {common.form_status == 75 && user.id == 65 ? (
                       <Link
-                        to={`/birthpdf/${encrypt(
-                          `BIRTH-${("0000" + from_data.id).slice(-4)}-${
-                            from_data.createdAt.toString().split("-")[0]
-                          }`,
-                          "certificatedata"
-                        )}`}
+                        to={`/newwaterconnectpdf/${from_data.id}`}
                         className="py-1 w-full sm:w-auto text-white text-lg px-4 bg-cyan-500 text-center rounded-md font-medium"
                       >
-                        View PDF
+                        Download Certificate
                       </Link>
                     ) : null}
                   </>
@@ -1757,7 +1627,6 @@ const BirthRegisterView = (): JSX.Element => {
           </>
         ) : null}
       </div>
-
       {user.id == from_data.userId &&
       loader.payment &&
       loader.paymentinfo.paymentstatus == "PENDING" ? (
@@ -1769,137 +1638,43 @@ const BirthRegisterView = (): JSX.Element => {
             <div className="w-full h-[2px] bg-gray-800 my-4"></div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="flex-1"></p>
-              {/* <p className="flex-1 text-center">Page Qty.</p> */}
               <p className="flex-1 text-center">Amount</p>
-              {/* <p className="flex-1 text-center">Total</p> */}
             </div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">A4</p>
-              {/* <p className="shrink-0 flex-1 text-center">
-                {loader.paymentinfo.type1 ?? 0}
-              </p> */}
+
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount1 ?? 0}
               </p>
-              {/* <p className="flex-1 shrink-0 text-center">
-                {loader.paymentinfo.type1 ??
-                  0 * loader.paymentinfo.amount1 ??
-                  0}
-              </p> */}
             </div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">A3</p>
-              {/* <p className="shrink-0 flex-1 text-center">
-                {loader.paymentinfo.type2 ?? 0}
-              </p> */}
+
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount2 ?? 0}
               </p>
-              {/* <p className="flex-1 shrink-0 text-center">
-                {loader.paymentinfo.type2 ??
-                  0 * loader.paymentinfo.amount2 ??
-                  0}
-              </p> */}
             </div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">Maps</p>
-              {/* <p className="shrink-0 flex-1 text-center">
-                {loader.paymentinfo.type3 ?? 0}
-              </p> */}
+
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount3 ?? 0}
               </p>
-              {/* <p className="flex-1 shrink-0 text-center">
-                {loader.paymentinfo.type3 ??
-                  0 * loader.paymentinfo.amount3 ??
-                  0}
-              </p> */}
             </div>
             <div className="w-full h-[1px] bg-gray-800 my-2"></div>
             <div className="flex gap-3 my-2 justify-between">
               <p className="shrink-0 flex-1">Total</p>
-              {/* <p className="shrink-0 flex-1 text-center">
-                {loader.paymentinfo.type1 ??
-                  0 + loader.paymentinfo.type2 ??
-                  0 + loader.paymentinfo.type3 ??
-                  0}
-              </p> */}
+
               <p className="shrink-0 flex-1 text-center">
                 {loader.paymentinfo.amount1 ??
                   0 + loader.paymentinfo.amount2 ??
                   0 + loader.paymentinfo.amount3 ??
                   0}
               </p>
-              {/* <p className="shrink-0 flex-1 text-center">
-                {(loader.paymentinfo.type1 ??
-                  0 * loader.paymentinfo.amount1 ??
-                  0) +
-                  (loader.paymentinfo.type2 ??
-                    0 * loader.paymentinfo.amount1 ??
-                    0) +
-                  (loader.paymentinfo.type3 * loader.paymentinfo.amount3 ?? 0)}
-              </p> */}
             </div>
 
             <div className="w-full h-[1px] bg-gray-800 my-2"></div>
-            {/* <div className="flex gap-3 my-2 justify-between">
-              <p className="flex-2">Time Limit [Day]</p>
-              <div className="flex-1"></div>
-              <p className="flex-1 text-right">
-                {loader.paymentinfo.daycount}{" "}
-              </p>
-            </div> */}
-            {/* <div className="flex gap-3 my-2 justify-between">
-              <p className="flex-2">Day Remaning</p>
-              <div className="flex-1"></div>
-              <p className="flex-1">{ loader.paymentinfo.daycount} </p>
-              <p className="flex-1 text-right">
-                {new Date(loader.paymentinfo.duedate).getTime() -
-                  new Date().getTime() >
-                0
-                  ? Math.floor(
-                      (new Date(loader.paymentinfo.duedate).getTime() -
-                        new Date().getTime()) /
-                        (1000 * 60 * 60 * 24)
-                    )
-                  : 0}
-              </p>
-            </div> */}
-            {/* <div className="flex gap-3 my-2 justify-between items-center">
-              <p className="flex-2 shrink-0">Panyment Type</p>
-              <select
-                ref={paymentType}
-                defaultValue={"0"}
-                className="flex-2 px-4 bg-primary-700 fill-none outline-none border-2 border-black text-black py-2 w-96"
-              >
-                <option value="0" className=" text-black text-lg " disabled>
-                  Select Payment Type
-                </option>
-                <option className=" text-black text-lg" value="CASH">
-                  CASH
-                </option>
-                <option className=" text-black text-lg" value="CHEQUE">
-                  CHEQUE
-                </option>
-                <option className=" text-black text-lg" value="NETBANKING">
-                  NETBANKING
-                </option>
-                <option className=" text-black text-lg" value="UPI">
-                  UPI
-                </option>
-                <option className=" text-black text-lg" value="CCDC">
-                  CREDIT/DEBIT CARD
-                </option>
-              </select>
-            </div>
-            <div className="flex gap-3 my-2 justify-between items-center">
-              <p className="flex-2 shrink-0">Panyment Reference</p>
-              <input
-                ref={refrancerRef}
-                type="text"
-                className="flex-2 bg-[#eeeeee] fill-none focus:outline-none outline-none arounded-md py-1 px-2"
-              />
-            </div> */}
+
             <div className="w-full">
               <button
                 onClick={submitpayment}
@@ -1913,7 +1688,7 @@ const BirthRegisterView = (): JSX.Element => {
       ) : null}
       <div className="p-6 bg-white rounded-lg shadow-lg my-8">
         <h1 className="text-gray-800 text-2xl font-semibold text-center">
-          {user.id == from_data.userId ? "Department Comment" : "Notings"}
+          Notings
         </h1>
         <div className="w-full flex gap-4 my-4">
           <div className="grow bg-gray-700 h-[2px]"></div>
@@ -1922,7 +1697,7 @@ const BirthRegisterView = (): JSX.Element => {
         </div>
         {notings.length == 0 ? (
           <h3 className="text-2xl font-semibold text-center bg-rose-500 bg-opacity-25 rounded-md border-l-4 border-rose-500 py-2  text-rose-500">
-            No queries pending.
+            You have not submitted any query.
           </h3>
         ) : (
           <>
@@ -1951,13 +1726,4 @@ const BirthRegisterView = (): JSX.Element => {
   );
 };
 
-export default BirthRegisterView;
-
-// interface QueryTabsProps {
-//   isUser: boolean;
-//   message: string;
-//   date: string;
-//   from_user: string;
-//   to_user: string;
-//   doc: null | undefined | string;
-// }
+export default NewRationCardConnectView;

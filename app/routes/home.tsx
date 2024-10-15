@@ -2,6 +2,7 @@ import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useNavigate } from "@remix-run/react";
 import { useRef } from "react";
+
 import {
   CilCameraControl,
   Fa6SolidBars,
@@ -35,6 +36,7 @@ import {
   PhNewspaperClippingLight,
   TablerFileCertificate,
 } from "~/components/icons/icons";
+
 import { userPrefs } from "~/cookies";
 import { ApiCall } from "~/services/api";
 import sideBarStore, { SideBarTabs } from "~/state/sidebar";
@@ -507,6 +509,7 @@ const Home: React.FC = (): JSX.Element => {
                     <div className="w-full h-[2px] bg-gray-800 my-4"></div>
                   </>
                 )}
+
                 {user.role == "USER" ? (
                   <Link
                     to={"/home/editprofile"}
@@ -541,6 +544,20 @@ const Home: React.FC = (): JSX.Element => {
                     </Link>
                   </>
                 ) : null}
+
+                <Link
+                  to={"/home/receipt"}
+                  onClick={() => {
+                    achangeindex(SideBarTabs.Dashborad);
+                    changeMobile(false);
+                  }}
+                >
+                  <SidebarTab
+                    icon={MdiDesktopMacDashboard}
+                    title="Receipt History"
+                    active={asideindex === SideBarTabs.ReceiptHistory}
+                  ></SidebarTab>
+                </Link>
 
                 <button onClick={logoutHandle}>
                   <SidebarTab

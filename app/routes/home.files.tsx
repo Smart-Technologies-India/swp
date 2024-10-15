@@ -289,6 +289,8 @@ const Dashboard: React.FC = (): JSX.Element => {
       return `/home/crsr/marriageteorview/${id}`;
     } else if (value == "MARRIAGEREGISTER") {
       return `/home/crsr/newmarriageregisterview/${id}`;
+    } else if (value == "NEWRATIONCARD") {
+      return `/home/fcs/issuenewrationcardview/${id}`;
     } else {
       return "/home";
     }

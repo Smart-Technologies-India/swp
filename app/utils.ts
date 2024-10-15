@@ -128,3 +128,39 @@ export const decrypt = (encryptedText: string, key: string): string => {
   }
   return decryptedText;
 };
+
+export const formateDate = (date: Date): string => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  if (month < 10 && day < 10) {
+    return `0${day}-0${month}-${year}`;
+  } else if (month < 10) {
+    return `${day}-0${month}-${year}`;
+  } else if (day < 10) {
+    return `0${day}-${month}-${year}`;
+  } else {
+    return `${day}-${month}-${year}`;
+  }
+};
+
+const numberWithIndianFormat = (x: number) => {
+  const parts = x
+    .toLocaleString("en-IN", { maximumFractionDigits: 2 })
+    .split(".");
+  return parts.join(".");
+};
+export default numberWithIndianFormat;
+
+const capitalcase = (value: string): string => {
+  const words = value.split(" ");
+
+  const capitalWords = words.map((str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  });
+
+  return capitalWords.join(" ");
+};
+
+export { capitalcase };

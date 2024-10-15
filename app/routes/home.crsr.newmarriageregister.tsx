@@ -407,6 +407,9 @@ const MarriageRegister: React.FC = (): JSX.Element => {
     }
   };
 
+  // add members
+
+
   return (
     <>
       <div className="bg-white rounded-md shadow-lg p-4 my-4 w-full">
@@ -720,8 +723,6 @@ const MarriageRegister: React.FC = (): JSX.Element => {
             />
           </div>
         </div>
-
-       
 
         <div className="flex  flex-wrap gap-4 gap-y-2 px-4 py-2 my-2">
           <div className="flex-none lg:flex-1 w-full lg:w-auto text-xl font-normal text-left text-gray-700 ">
